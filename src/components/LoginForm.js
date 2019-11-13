@@ -115,6 +115,7 @@ const LoginForm = props => {
             label='Password'
             onChange={handlePasswordChange}
             value={password}
+            type='password'
             variant='standard'
           />
           <Button
