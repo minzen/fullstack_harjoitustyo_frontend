@@ -6,7 +6,8 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  Typography
+  Typography,
+  makeStyles
 } from '@material-ui/core'
 // import Note from './Note'
 import AddNote from './AddNote'
@@ -26,7 +27,16 @@ const ALL_NOTES = gql`
   }
 `
 
+const useStyles = makeStyles({
+  card: {
+    minWidth: 275,
+    maxWidth: 345,
+    backgroundColor: 'orange'
+  }
+})
+
 const Notes = ({ show, client }) => {
+  const classes = useStyles()
   const [searchTerm, setSearchTerm] = useState('')
   const [notes, setNotes] = useState(null)
   const [selectedNote, setSelectedNote] = useState(null)
@@ -35,6 +45,7 @@ const Notes = ({ show, client }) => {
   if (!show) {
     return null
   }
+
 
   const handleTextChange = search => {
     console.log(`Setting ${search} to the search term`)
@@ -82,10 +93,10 @@ const Notes = ({ show, client }) => {
             <Grid container spacing={1} direction='row' alignItems='center'>
               {notes.map(note => {
                 return (
-                  <Card key={note.id}>
+                  <Card className={classes.card} key={note.id}>
                     <CardHeader title={note.title} />
                     <CardContent>
-                      <Typography variant='body1' gutterBottom>
+                      <Typography variant='body1' gutterBottom color="primary">
                         {note.content}
                       </Typography>
                     </CardContent>

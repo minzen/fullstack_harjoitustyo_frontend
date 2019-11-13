@@ -25,7 +25,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZlZXR1Lm55cmhpbmVuQGdtYWlsLmNvbSIsImlkIjoiNWRjNTkyNGJlM2NkODM0MmU3Zjg4NzZiIiwiaWF0IjoxNTczNjU2MjE5fQ.lr9IzVvyOMNqEiJmvuixtOCMT3U2_PVp1AJYVmiLzoU'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZlZXR1Lm55cmhpbmVuQGdtYWlsLmNvbSIsImlkIjoiNWRjNTkyNGJlM2NkODM0MmU3Zjg4NzZiIiwiaWF0IjoxNTczNjc5MDc1fQ.rGeu5l2OTSrWZTfpgK4h80M2_C6OTsTHk0ivg57hCdw'
 
   //const token =  localStorage.getItem('memorytracks-user-token')
   return {

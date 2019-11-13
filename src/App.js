@@ -6,6 +6,9 @@ import Profile from './components/Profile'
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { useApolloClient } from '@apollo/react-hooks'
+import NotesIcon from '@material-ui/icons/Notes'
+import PersonIcon from '@material-ui/icons/Person'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 require('dotenv').config()
 
 const App = () => {
@@ -22,18 +25,21 @@ const App = () => {
       <>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Grid container spacing={1} direction='column' alignItems='center'>
+            <Grid container spacing={1} direction="column" alignItems="center">
               <Grid item>
                 <ButtonGroup
-                  variant='contained'
-                  color='primary'
-                  size='large'
-                  aria-label='large contained primary button group'
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  aria-label="large contained primary button group"
                 >
-                  <Button onClick={() => setPage('notes')}>Home (Icon)</Button>
-                  <Button onClick={() => setPage('profile')}>Profile</Button>
+                  <Button onClick={() => setPage('notes')}>
+                    Notes&nbsp;
+                    <NotesIcon />
+                  </Button>
+                  <Button onClick={() => setPage('profile')}>Profile&nbsp;<PersonIcon /></Button>
                   <Button onClick={() => console.log('TODO: Logout')}>
-                    Logout
+                    Logout&nbsp;<ExitToAppIcon />
                   </Button>
                 </ButtonGroup>
               </Grid>
