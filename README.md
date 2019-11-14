@@ -16,3 +16,7 @@ TODO: Lisää osoite, jossa frontend on käynnissä
 ## Työaikakirjanpito
 
 [Työaikakirjanpito](https://github.com/minzen/fullstack_harjoitustyo_backend/blob/master/tyokirjanpito.md)
+
+## Lähteet
+
+Ohjelmistossa ikonina ja kuvana käytettävä muistiinpano-kuva on lähtöisin https://www.svgrepo.com/svg/10030/class-notes -sivustolta ja noudattaa Creative Commons BY 4.0 -lisenssiä.
