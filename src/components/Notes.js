@@ -8,7 +8,8 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core'
-// import Note from './Note'
+import EditIcon from '@material-ui/icons/Edit'
+import Note from './Note'
 import AddNote from './AddNote'
 
 const ALL_NOTES = gql`
@@ -87,6 +88,8 @@ const Notes = ({ show, client }) => {
     return keywords.join()
   }
 
+  // TODO: Create a link of a suitable string automatically
+
   if (notes) {
     console.log('Notes to be printed out', notes)
     return (
@@ -101,24 +104,40 @@ const Notes = ({ show, client }) => {
                     key={note.id}
                     onClick={() => {
                       console.log('card clicked', note.id)
+                      setSelectedNote(note)
                     }}
                   >
                     <CardHeader
                       title={note.title}
                       className={classes.cardHeader}
+                      onClick={() => {
+                        console.log('cardheader clicked', note.id)
+                      }}
+                      action={
+                        <EditIcon
+                          onClick={() => {
+                            console.log('editIcon clicked')
+                          }}
+                        />
+                      }
                     />
                     <CardContent>
                       <Typography variant='body1' gutterBottom>
                         {note.content}
+                      </Typography>
+                      <Typography variant='body1' gutterBottom>
+                        Keywords:{' '}
+                        {extractKeywordsFromArrayWithJoin(note.keywords)}
                       </Typography>
                     </CardContent>
                   </Card>
                 )
               })}
             </Grid>
+            <AddNote />
+            <Note view={true} note={selectedNote} />
           </Grid>
         </Grid>
-        <AddNote />
       </>
     )
   }

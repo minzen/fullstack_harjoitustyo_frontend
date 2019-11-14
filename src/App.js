@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import NotesIcon from '@material-ui/icons/Notes'
 import PersonIcon from '@material-ui/icons/Person'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import { SourceMapGenerator } from 'source-map'
 require('dotenv').config()
 
 const useStyles = makeStyles({
@@ -24,6 +25,31 @@ const App = () => {
   const classes = useStyles()
   const [token, setToken] = useState(true)
   const [page, setPage] = useState('notes')
+
+  const test_user = {
+    id: 12345678,
+    email: 'feetu.nyrhinen@gmail.com',
+    givenname: 'Feetu',
+    surname: 'Nyrhinen',
+    keywords: ['linkki', 'react']
+  }
+
+  const [loggedInUser, setLoggedInUser] = useState(test_user)
+
+  const initials = () => {
+    if (!loggedInUser) {
+      return 'N/A'
+    }
+
+    const givenname =
+      loggedInUser.givenname === null || loggedInUser.givenname === ''
+        ? 'N'
+        : loggedInUser.givenname.substring(0, 1)
+    const surname =
+      loggedInUser.surname === null ? 'N' : loggedInUser.surname.substring(0, 1)
+
+    return givenname + surname
+  }
 
   const client = useApolloClient()
   // If token -> logged in: Menu: Notes | Add Note (implement this as floating button) | Profile | Logout
@@ -48,16 +74,18 @@ const App = () => {
                   size='large'
                   aria-label='large contained primary button group'
                 >
-                  <Button>
-                    <Avatar className={classes.orangeAvatar}>FN</Avatar>
+                  <Button
+                    onClick={() => {
+                      setPage('profile')
+                    }}
+                  >
+                    <Avatar className={classes.orangeAvatar}>
+                      {initials()}
+                    </Avatar>
                   </Button>
                   <Button onClick={() => setPage('notes')}>
                     Notes&nbsp;
                     <NotesIcon />
-                  </Button>
-                  <Button onClick={() => setPage('profile')}>
-                    Profile&nbsp;
-                    <PersonIcon />
                   </Button>
                   <Button
                     onClick={() => {
@@ -78,7 +106,11 @@ const App = () => {
           <Grid item>
             <ApolloProvider client={client}>
               <Notes show={page === 'notes'} client={client} />
-              <Profile show={page === 'profile'} client={client} />
+              <Profile
+                show={page === 'profile'}
+                client={client}
+                user={loggedInUser}
+              />
             </ApolloProvider>
           </Grid>
         </Grid>
