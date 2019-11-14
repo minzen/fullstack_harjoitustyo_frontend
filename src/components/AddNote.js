@@ -7,6 +7,11 @@ const useStyles = makeStyles(theme => ({
   dialog: {
     height: 400,
     width: 300
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200
   }
 }))
 
@@ -31,10 +36,18 @@ const AddNote = props => {
         onClose={() => setModalVisible(false)}
       >
         <form>
-          <TextField>Title</TextField>
-          <TextField>Content</TextField>
-          <TextField>Keywords</TextField>
-          <Button>Save note</Button>
+          <TextField id='title_field' className={classes.textField}>
+            Title
+          </TextField>
+          <TextField id='content_field' className={classes.textField}>
+            Content
+          </TextField>
+          <TextField id='keywords_field' className={classes.textField}>
+            Keywords
+          </TextField>
+          <Button id='save_note_button' variant='contained'>
+            Save note
+          </Button>
         </form>
       </Dialog>
     </>

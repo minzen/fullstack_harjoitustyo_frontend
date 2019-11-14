@@ -1,6 +1,5 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import { gql } from 'apollo-boost'
-import { Query, Mutation } from 'react-apollo'
 import {
   Card,
   CardContent,
@@ -31,7 +30,13 @@ const useStyles = makeStyles({
   card: {
     minWidth: 275,
     maxWidth: 345,
-    backgroundColor: 'orange'
+    backgroundColor: '#EEF0F1',
+    marginTop: 15,
+    marginRight: 10
+  },
+  cardHeader: {
+    backgroundColor: '#CCCCCC',
+    padding: 2
   }
 })
 
@@ -45,7 +50,6 @@ const Notes = ({ show, client }) => {
   if (!show) {
     return null
   }
-
 
   const handleTextChange = search => {
     console.log(`Setting ${search} to the search term`)
@@ -86,17 +90,25 @@ const Notes = ({ show, client }) => {
   if (notes) {
     console.log('Notes to be printed out', notes)
     return (
-      <div>
-        <h2>Stored Notes</h2>
-        <Grid container spacing={3}>
+      <>
+        <Grid container justify='center'>
           <Grid item xs={12} md={6}>
             <Grid container spacing={1} direction='row' alignItems='center'>
               {notes.map(note => {
                 return (
-                  <Card className={classes.card} key={note.id}>
-                    <CardHeader title={note.title} />
+                  <Card
+                    className={classes.card}
+                    key={note.id}
+                    onClick={() => {
+                      console.log('card clicked', note.id)
+                    }}
+                  >
+                    <CardHeader
+                      title={note.title}
+                      className={classes.cardHeader}
+                    />
                     <CardContent>
-                      <Typography variant='body1' gutterBottom color="primary">
+                      <Typography variant='body1' gutterBottom>
                         {note.content}
                       </Typography>
                     </CardContent>
@@ -106,10 +118,8 @@ const Notes = ({ show, client }) => {
             </Grid>
           </Grid>
         </Grid>
-
-        {/* <Note show={true} note={selectedNote} client={client} /> */}
         <AddNote />
-      </div>
+      </>
     )
   }
 
