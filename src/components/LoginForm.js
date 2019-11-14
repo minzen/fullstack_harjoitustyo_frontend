@@ -61,7 +61,22 @@ const LoginForm = props => {
     setSubmitButtonState()
   }
 
+  /*
+    event.preventDefault()
+
+    const result = await props.login({
+      variables: { username, password }
+    })
+
+    if (result) {
+      const token = result.data.login.value
+      props.setToken(token)
+      localStorage.setItem('kirjasto-user-token', token)
+    }
+*/
+
   const handleLoginSubmit = async event => {
+    event.preventDefault()
     console.log('handle login submit', event)
     let passwordObfuscated = ''
     if (password) {
@@ -76,16 +91,20 @@ const LoginForm = props => {
       passwordObfuscated
     )
     console.log('logging in the user....')
-    /*
-    const token = await props.login({
+    const result = await props.login({
       variables: { email, password }
     })
-    */
-    //console.log('token obtained on login', token.data.login.value)
-    //props.tokenChange(token.data.login.value)
+    if (result) {
+      console.log('token obtained on login', result.data.login.value)
+      await props.setToken(result.data.login.value)
+      await localStorage.setItem(
+        'memorytracks-user-token',
+        result.data.login.value
+      )
 
-    setEmail('')
-    setPassword('')
+      setEmail('')
+      setPassword('')
+    }
   }
 
   return (
