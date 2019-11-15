@@ -66,7 +66,7 @@ const App = () => {
   if (error) return 'error'
 
   console.log(data)
-  if (data && loggedInUser === null) {
+  if (data && data.me && loggedInUser === null) {
     setLoggedInUser(data.me)
   }
 

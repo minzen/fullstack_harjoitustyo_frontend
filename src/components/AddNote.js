@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
-import { Fab, Dialog, TextField, Button } from '@material-ui/core'
+import { Fab, Dialog } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
+import NoteForm from './NoteForm'
 
 const useStyles = makeStyles(theme => ({
+  addButton: {
+    marginTop: 50
+  },
   dialog: {
+    alignContent: 'center',
+    justifyContent: 'center',
     height: 400,
     width: 300
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200
   }
 }))
 
@@ -22,11 +23,13 @@ const AddNote = props => {
   return (
     <>
       <Fab
+        id='add_note_button'
         color='primary'
         aria-label='Add note'
         onClick={() => {
           setModalVisible(true)
         }}
+        className={classes.addButton}
       >
         <AddIcon />
       </Fab>
@@ -35,20 +38,7 @@ const AddNote = props => {
         className={classes.dialog}
         onClose={() => setModalVisible(false)}
       >
-        <form>
-          <TextField id='title_field' className={classes.textField}>
-            Title
-          </TextField>
-          <TextField id='content_field' className={classes.textField}>
-            Content
-          </TextField>
-          <TextField id='keywords_field' className={classes.textField}>
-            Keywords
-          </TextField>
-          <Button id='save_note_button' variant='contained'>
-            Save note
-          </Button>
-        </form>
+        <NoteForm />
       </Dialog>
     </>
   )

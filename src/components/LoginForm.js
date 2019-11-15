@@ -109,6 +109,7 @@ const LoginForm = props => {
 
   return (
     <div>
+      <h1>Memory Tracks</h1>
       <Card className={classes.card}>
         <CardHeader
           avatar={

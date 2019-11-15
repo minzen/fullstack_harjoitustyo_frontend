@@ -146,6 +146,9 @@ const Notes = ({ show, client }) => {
     <>
       <h2>Stored Notes</h2>
       <p>No stored notes found.</p>
+      <br />
+      <br />
+      <AddNote />
     </>
   )
 }
