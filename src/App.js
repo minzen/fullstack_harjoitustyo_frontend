@@ -109,6 +109,7 @@ const App = () => {
                   aria-label='large contained primary button group'
                 >
                   <Button
+                    id='menu_profile_button'
                     onClick={() => {
                       setPage('profile')
                     }}
@@ -117,11 +118,15 @@ const App = () => {
                       {initials()}
                     </Avatar>
                   </Button>
-                  <Button onClick={() => setPage('notes')}>
+                  <Button
+                    id='menu_notes_button'
+                    onClick={() => setPage('notes')}
+                  >
                     Notes&nbsp;
                     <NotesIcon />
                   </Button>
                   <Button
+                    id='menu_logout_button'
                     onClick={() => {
                       localStorage.clear()
                       setToken(null)

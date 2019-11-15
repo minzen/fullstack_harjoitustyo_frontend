@@ -13,9 +13,19 @@ describe('Memory Tracks with a user not logged in', function() {
     cy.get('#login_button').click()
     cy.contains('Stored Notes')
   })
+  it('user types in invalid credentials, and an error message is shown on the page', function() {
+    cy.visit('http://localhost:3000')
+    cy.get('#email_field').type('Jani')
+    cy.get('#password_field').type('Seppä')
+    cy.get('#login_button').click()
+    // TODO: Check the error message, when implemented
+    // Still on the login page, after providing invalid credentials
+    cy.contains('Login')
+  })
 })
+
 describe('Memory Tracks with a logged in user', function() {
-  it('a user logs in and sees an empty page with no notesk, and clicks the add button to create a new note', function() {
+  it('a user logs in and sees an empty page with no notes, and clicks the add button to create a new note', function() {
     cy.visit('http://localhost:3000')
     cy.get('#email_field').type(user)
     cy.get('#password_field').type(pwd)
@@ -23,5 +33,14 @@ describe('Memory Tracks with a logged in user', function() {
     cy.contains('Stored Notes')
     cy.contains('No stored notes found')
     cy.get('#add_note_button').click()
+  })
+  it('a logged in user is able to see the logout button and may log out by using it', function() {
+    cy.visit('http://localhost:3000')
+    cy.get('#email_field').type(user)
+    cy.get('#password_field').type(pwd)
+    cy.get('#login_button').click()
+    cy.contains('Stored Notes')
+    cy.get('#menu_logout_button').click()
+    cy.contains('Login')
   })
 })

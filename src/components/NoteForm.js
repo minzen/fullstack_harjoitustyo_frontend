@@ -15,13 +15,21 @@ const NoteForm = props => {
 
   return (
     <form>
-      <TextField id='title_field' className={classes.textField}>
+      <TextField id='title_field' className={classes.textField} title='title'>
         Title
       </TextField>
-      <TextField id='content_field' className={classes.textField}>
+      <TextField
+        id='content_field'
+        className={classes.textField}
+        title='Content'
+      >
         Content
       </TextField>
-      <TextField id='keywords_field' className={classes.textField}>
+      <TextField
+        id='keywords_field'
+        className={classes.textField}
+        title='Keywords (comma-separated)'
+      >
         Keywords
       </TextField>
       <Button id='save_note_button' variant='contained'>

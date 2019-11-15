@@ -1,37 +1,52 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Card, Button, TextField, CardHeader, Avatar } from '@material-ui/core'
-// import { EmailIcon } from '@material-ui/icons/Email'
+import {
+  Card,
+  Button,
+  TextField,
+  CardHeader,
+  Avatar,
+  Grid
+} from '@material-ui/core'
+import EmailIcon from '@material-ui/icons/Email'
+import LockIcon from '@material-ui/icons/Lock'
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200
+  },
+  button: {
+    margin: theme.spacing(1)
+  },
+  card: {
+    maxWidth: 345,
+    padding: 30
+  },
+  cardHeader: {
+    backgroundColor: '#ccddcc'
+  },
+  avatar: {
+    backgroundColor: 'green',
+    width: 60,
+    height: 60
+  },
+  buttonContainer: {
+    marginTop: 10
+  }
+}))
 
 const LoginForm = props => {
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
   const [buttonDisabled, setButtonDisabled] = useState(false)
+  const [errorText, setErrorText] = useState(null)
   const dateNow = new Date().toDateString()
-
-  const useStyles = makeStyles(theme => ({
-    container: {
-      display: 'flex',
-      flexWrap: 'wrap'
-    },
-    textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: 200
-    },
-    button: {
-      margin: theme.spacing(1)
-    },
-    card: {
-      maxWidth: 345,
-      padding: 30
-    },
-    avatar: {
-      backgroundColor: 'green',
-      width: 60,
-      height: 60
-    }
-  }))
   const classes = useStyles()
 
   const setSubmitButtonState = () => {
@@ -104,6 +119,8 @@ const LoginForm = props => {
 
       setEmail('')
       setPassword('')
+    } else {
+      setErrorText('Error: invalid credentials')
     }
   }
 
@@ -112,6 +129,7 @@ const LoginForm = props => {
       <h1>Memory Tracks</h1>
       <Card className={classes.card}>
         <CardHeader
+          className={classes.cardHeader}
           avatar={
             <Avatar aria-label='login' className={classes.avatar}>
               Login
@@ -120,36 +138,59 @@ const LoginForm = props => {
           title='Please login to the system'
           subheader={dateNow}
         />
-        <form className={classes.container} noValidate autoComplete='on'>
-          <TextField
-            id='email_field'
-            className={classes.textField}
-            label='Email address'
-            onChange={handleEmailChange}
-            value={email}
-            variant='standard'
-          ></TextField>
-          <TextField
-            id='password_field'
-            className={classes.textField}
-            label='Password'
-            onChange={handlePasswordChange}
-            value={password}
-            type='password'
-            variant='standard'
-          />
-          <Button
-            id='login_button'
-            className={classes.button}
-            disabled={buttonDisabled}
-            variant='contained'
-            color='primary'
-            onClick={handleLoginSubmit}
+        <form className={classes.container} autoComplete='on'>
+          <Grid container spacing={1} alignItems='flex-end'>
+            <Grid item>
+              <EmailIcon />
+            </Grid>
+            <Grid item>
+              <TextField
+                id='email_field'
+                className={classes.textField}
+                label='Email address'
+                onChange={handleEmailChange}
+                value={email}
+              />
+            </Grid>
+            <Grid container spacing={1} alignItems='flex-end'>
+              <Grid item>
+                <LockIcon />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id='password_field'
+                  className={classes.textField}
+                  label='Password'
+                  onChange={handlePasswordChange}
+                  value={password}
+                  type='password'
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid
+            container
+            className={classes.buttonContainer}
+            spacing={1}
+            alignItems='flex-end'
           >
-            Login
-          </Button>
+            <Grid item>
+              <Button
+                id='login_button'
+                className={classes.button}
+                disabled={buttonDisabled}
+                variant='contained'
+                color='primary'
+                onClick={handleLoginSubmit}
+              >
+                Login
+              </Button>
+            </Grid>
+          </Grid>
         </form>
       </Card>
+      <div>{errorText}</div>
     </div>
   )
 }
