@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Grid, ButtonGroup, Button, Avatar } from '@material-ui/core'
 import { gql } from 'apollo-boost'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import LoginForm from './components/LoginForm'
 import Notes from './components/Notes'
 import Profile from './components/Profile'
@@ -19,6 +19,16 @@ const LOGIN = gql`
     }
   }
 `
+const CURRENT_USER = gql`
+  query {
+    me {
+      email
+      givenname
+      surname
+      id
+    }
+  }
+`
 
 const useStyles = makeStyles({
   orangeAvatar: {
@@ -31,10 +41,34 @@ const useStyles = makeStyles({
 
 const App = () => {
   const classes = useStyles()
-  const [token, setToken] = useState(null)
+  const [token, setToken] = useState(
+    localStorage.getItem('memorytracks-user-token')
+  )
   const [page, setPage] = useState('notes')
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const client = useApolloClient()
+
+  const handleError = error => {
+    setErrorMessage(error.graphQLErrors[0].message)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 10000)
+  }
+
+  const [login] = useMutation(LOGIN, {
+    onError: handleError
+  })
+
+  const { loading, error, data } = useQuery(CURRENT_USER)
+  if (loading) return null
+
+  if (error) return 'error'
+
+  console.log(data)
+  if (data && loggedInUser === null) {
+    setLoggedInUser(data.me)
+  }
 
   const initials = () => {
     if (!loggedInUser) {
@@ -51,21 +85,10 @@ const App = () => {
     return givenname + surname
   }
 
-  const handleError = error => {
-    setErrorMessage(error.graphQLErrors[0].message)
-    setTimeout(() => {
-      setErrorMessage(null)
-    }, 10000)
-  }
-
-  const [login] = useMutation(LOGIN, {
-    onError: handleError
-  })
-
-  const client = useApolloClient()
   // If token -> logged in: Menu: Notes | Add Note (implement this as floating button) | Profile | Logout
   // If no token -> show login and some basic stuff
   // TODO: Checkout the possibilities to use App Bar of Material UI
+
   if (token) {
     return (
       <>
@@ -100,8 +123,7 @@ const App = () => {
                   </Button>
                   <Button
                     onClick={() => {
-                      console.log('TODO: Logout')
-                      // TODO: clear the local storage etc.
+                      localStorage.clear()
                       setToken(null)
                     }}
                   >
@@ -117,11 +139,11 @@ const App = () => {
           <Grid item>
             <ApolloProvider client={client}>
               <Notes show={page === 'notes'} client={client} />
-              {/* <Profile
+              <Profile
                 show={page === 'profile'}
                 client={client}
                 user={loggedInUser}
-              /> */}
+              ></Profile>
             </ApolloProvider>
           </Grid>
         </Grid>
@@ -137,14 +159,3 @@ const App = () => {
 }
 
 export default App
-
-/*
-  const test_user = {
-    id: 12345678,
-    email: 'feetu.nyrhinen@gmail.com',
-    givenname: 'Feetu',
-    surname: 'Nyrhinen',
-    keywords: ['linkki', 'react']
-  }
-
-*/

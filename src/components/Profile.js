@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, TextField, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
@@ -18,11 +18,25 @@ const useStyles = makeStyles({
   }
 })
 
-const Profile = ({ show, user }) => {
-  const [givenname, setGivenname] = useState(user.givenname)
-  const [surname, setSurname] = useState(user.surname)
-  const [email, setEmail] = useState(user.email)
+const Profile = ({ show, client, user }) => {
+  const [givenname, setGivenname] = useState('')
+  const [surname, setSurname] = useState('')
+  const [email, setEmail] = useState('')
   const classes = useStyles()
+
+  if (!user) {
+    return null
+  } else {
+    if (givenname === '') {
+      setGivenname(user.givenname)
+    }
+    if (surname === '') {
+      setSurname(user.surname)
+    }
+    if (email === '') {
+      setEmail(user.email)
+    }
+  }
 
   const handleGivennameChange = event => {
     setGivenname(event.target.value)
@@ -37,7 +51,15 @@ const Profile = ({ show, user }) => {
   }
 
   const handleSubmitClick = event => {
-    console.log('Submit clicked, updating the data...')
+    console.log(
+      'Submit clicked, updating the data [givenname:',
+      givenname,
+      ', surname:',
+      surname,
+      'email:',
+      email,
+      ']'
+    )
     // TODO
     //
   }
