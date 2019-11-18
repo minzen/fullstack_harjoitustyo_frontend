@@ -3,9 +3,10 @@ import { Grid, ButtonGroup, Button, Avatar } from '@material-ui/core'
 import { gql } from 'apollo-boost'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import LoginForm from './components/LoginForm'
+import RegisterUserForm from './components/RegisterUserForm'
 import Notes from './components/Notes'
 import Profile from './components/Profile'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider, Mutation } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
 import { makeStyles } from '@material-ui/core/styles'
 import NotesIcon from '@material-ui/icons/Notes'
@@ -19,6 +20,28 @@ const LOGIN = gql`
     }
   }
 `
+
+const REGISTER = gql`
+  mutation addUser(
+    $email: String!
+    $password: String!
+    $givenname: String
+    $surname: String
+  ) {
+    addUser(
+      email: $email
+      password: $password
+      givenname: $givenname
+      surname: $surname
+    ) {
+      id
+      email
+      givenname
+      surname
+    }
+  }
+`
+
 const CURRENT_USER = gql`
   query {
     me {
@@ -31,11 +54,19 @@ const CURRENT_USER = gql`
 `
 
 const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap'
+  },
   orangeAvatar: {
     width: 60,
     height: 60,
     color: 'white',
     backgroundColor: 'orange'
+  },
+  title: {
+    justify: 'center',
+    fontFamily: 'Cochin'
   }
 })
 
@@ -50,6 +81,7 @@ const App = () => {
   const client = useApolloClient()
 
   const handleError = error => {
+    console.log(error)
     setErrorMessage(error.graphQLErrors[0].message)
     setTimeout(() => {
       setErrorMessage(null)
@@ -57,6 +89,10 @@ const App = () => {
   }
 
   const [login] = useMutation(LOGIN, {
+    onError: handleError
+  })
+
+  const [register] = useMutation(REGISTER, {
     onError: handleError
   })
 
@@ -92,7 +128,12 @@ const App = () => {
   if (token) {
     return (
       <>
-        <Grid container justify='center' spacing={3}>
+        <Grid
+          container
+          justify='center'
+          spacing={3}
+          className={classes.container}
+        >
           <Grid item xs={12} md={6}>
             <Grid
               container
@@ -156,8 +197,22 @@ const App = () => {
     )
   } else {
     return (
-      <Grid container justify='center'>
-        <LoginForm login={login} setToken={token => setToken(token)} />
+      <Grid
+        container
+        direction='column'
+        justify='center'
+        alignItems='center'
+        spacing={1}
+      >
+        <Grid item>
+          <h1 className={classes.title}>Memory Tracks</h1>
+        </Grid>
+        <Grid item>
+          <LoginForm login={login} setToken={token => setToken(token)} />
+        </Grid>
+        <Grid item>
+          <RegisterUserForm addUser={register} />
+        </Grid>
       </Grid>
     )
   }

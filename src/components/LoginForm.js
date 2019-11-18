@@ -6,46 +6,70 @@ import {
   TextField,
   CardHeader,
   Avatar,
-  Grid
+  Collapse,
+  CardContent,
+  CardActions,
+  CardMedia,
+  Box,
+  IconButton,
+  Typography
 } from '@material-ui/core'
 import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import { red } from '@material-ui/core/colors'
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import ShareIcon from '@material-ui/icons/Share'
+import RegisterUserForm from './RegisterUserForm'
+import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap'
+  card: {
+    backgroundColor: '#ededed',
+    maxWidth: 345
+  },
+  cardHeader: {
+    backgroundColor: '#c0c7d6'
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%' // 16:9
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest
+    })
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)'
+  },
+  avatar: {
+    backgroundColor: '#00710D',
+    height: 70,
+    width: 70
   },
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200
+    width: 280
   },
   button: {
     margin: theme.spacing(1)
   },
-  card: {
-    maxWidth: 345,
-    padding: 30
-  },
-  cardHeader: {
-    backgroundColor: '#ccddcc'
-  },
-  avatar: {
-    backgroundColor: 'green',
-    width: 60,
-    height: 60
-  },
-  buttonContainer: {
-    marginTop: 10
+  error: {
+    color: 'red'
   }
 }))
 
 const LoginForm = props => {
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [buttonDisabled, setButtonDisabled] = useState(false)
   const [errorText, setErrorText] = useState(null)
+  const [expanded, setExpanded] = useState(false)
+  const [emailToRestorePwd, setEmailToRestorePwd] = useState('')
   const dateNow = new Date().toDateString()
   const classes = useStyles()
 
@@ -116,7 +140,6 @@ const LoginForm = props => {
         'memorytracks-user-token',
         result.data.login.value
       )
-
       setEmail('')
       setPassword('')
     } else {
@@ -124,9 +147,24 @@ const LoginForm = props => {
     }
   }
 
+  const handleExpandClick = event => {
+    console.log('handleExpandClick')
+    setExpanded(!expanded)
+  }
+
+  const handleEmailToRestorePwdChange = event => {
+    console.log('handleEmailToRestorePwdChange', event.target.value)
+    setEmailToRestorePwd(event.target.value)
+  }
+
+  const handleSubmitPwdForgottenButton = event => {
+    event.preventDefault()
+    console.log('handleSubmitPwdForgottenButton')
+    // TODO
+  }
+
   return (
-    <div>
-      <h1>Memory Tracks</h1>
+    <>
       <Card className={classes.card}>
         <CardHeader
           className={classes.cardHeader}
@@ -135,63 +173,84 @@ const LoginForm = props => {
               Login
             </Avatar>
           }
-          title='Please login to the system'
+          title='Please login to the system with your credentials.'
           subheader={dateNow}
-        />
-        <form className={classes.container} autoComplete='on'>
-          <Grid container spacing={1} alignItems='flex-end'>
-            <Grid item>
-              <EmailIcon />
-            </Grid>
-            <Grid item>
-              <TextField
-                id='email_field'
-                className={classes.textField}
-                label='Email address'
-                onChange={handleEmailChange}
-                value={email}
-              />
-            </Grid>
-            <Grid container spacing={1} alignItems='flex-end'>
-              <Grid item>
-                <LockIcon />
-              </Grid>
-              <Grid item>
-                <TextField
-                  id='password_field'
-                  className={classes.textField}
-                  label='Password'
-                  onChange={handlePasswordChange}
-                  value={password}
-                  type='password'
-                />
-              </Grid>
-            </Grid>
-          </Grid>
+        ></CardHeader>
 
-          <Grid
-            container
-            className={classes.buttonContainer}
-            spacing={1}
-            alignItems='flex-end'
+        <CardContent>
+          <form className={classes.container} autoComplete='on'>
+            <TextField
+              id='email_field'
+              className={classes.textField}
+              label='Email address'
+              onChange={handleEmailChange}
+              value={email}
+            />
+            <TextField
+              id='password_field'
+              className={classes.textField}
+              label='Password'
+              onChange={handlePasswordChange}
+              value={password}
+              type='password'
+            />
+            <div className={classes.error}>{errorText}</div>
+
+            <Button
+              id='login_button'
+              className={classes.button}
+              disabled={buttonDisabled}
+              variant='contained'
+              color='primary'
+              onClick={handleLoginSubmit}
+            >
+              Login
+            </Button>
+          </form>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton
+            className={clsx(classes.expand, {
+              [classes.expandOpen]: expanded
+            })}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label='show more'
           >
-            <Grid item>
+            <ExpandMoreIcon />
+          </IconButton>
+        </CardActions>
+
+        <Collapse in={expanded} timeout='auto' unmountOnExit>
+          <CardContent>
+            <Box fontWeight='fontWeightRegular'>
+              In case you have forgotten your password, you can reset your
+              account by using your Email. Type in your email address, so we'll
+              send instructions on how to reset the password.
+            </Box>
+            <form className={classes.container}>
+              <TextField
+                id='email_to_restore_password_field'
+                className={classes.textField}
+                label='Email to restore password'
+                color='secondary'
+                onChange={handleEmailToRestorePwdChange}
+                value={emailToRestorePwd}
+              />
               <Button
-                id='login_button'
+                id='submitEmailPwdForgottenButton'
                 className={classes.button}
-                disabled={buttonDisabled}
                 variant='contained'
-                color='primary'
-                onClick={handleLoginSubmit}
+                color='secondary'
+                onClick={handleSubmitPwdForgottenButton}
               >
-                Login
+                Restore Password
               </Button>
-            </Grid>
-          </Grid>
-        </form>
+            </form>
+          </CardContent>
+        </Collapse>
       </Card>
-      <div>{errorText}</div>
-    </div>
+    </>
   )
 }
 export default LoginForm
