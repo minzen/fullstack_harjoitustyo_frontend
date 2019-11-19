@@ -7,15 +7,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
+  Card,
+  CardContent,
+  CardHeader
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap'
-  },
   textField: {
     marginLeft: 10,
     marginRight: 10,
@@ -24,17 +23,23 @@ const useStyles = makeStyles({
   },
   button: {
     margin: 15
+  },
+  card: {
+    minWidth: 275,
+    maxWidth: 345,
+    backgroundColor: '#EEF0F1',
+    marginTop: 15,
+    marginRight: 10
+  },
+  cardHeader: {
+    backgroundColor: '#CCCCCC',
+    padding: 2
   }
 })
 
 const EDIT_USER = gql`
-  mutation editUser(
-    $id: ID!
-    $email: String!
-    $givenname: String
-    $surname: String
-  ) {
-    editUser(id: $id, email: $email, givenname: $givenname, surname: $surname) {
+  mutation editUser($email: String!, $givenname: String, $surname: String) {
+    editUser(email: $email, givenname: $givenname, surname: $surname) {
       id
       email
       givenname
@@ -70,6 +75,8 @@ const Profile = ({ show, client, user }) => {
   const [newPassword, setNewPassword] = useState('')
   const [newPassword2, setNewPassword2] = useState('')
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [successDialogTitle, setSuccessDialogTitle] = useState('')
+  const [successDialogContent, setSuccessDialogContent] = useState('')
   const classes = useStyles()
 
   if (!user) {
@@ -98,7 +105,7 @@ const Profile = ({ show, client, user }) => {
     setEmail(event.target.value)
   }
 
-  const handleSubmitClick = async event => {
+  const handleEditUserSubmit = async event => {
     event.preventDefault()
     console.log(
       'Submit clicked, updating the data [givenname:',
@@ -109,7 +116,22 @@ const Profile = ({ show, client, user }) => {
       email,
       ']'
     )
+
     // TODO the call to the backend
+    try {
+      const { data, loading, error } = await client.mutate({
+        mutation: EDIT_USER,
+        variables: { email: email, givenname: givenname, surname: surname }
+      })
+      if (data) {
+        console.log('Response data of editUser', data)
+        setSuccessDialogTitle('User data updated')
+        setSuccessDialogContent('The user data have been updated successfully')
+        handleDialogOpen()
+      }
+    } catch (e) {
+      console.log('Error when updating user data', e)
+    }
   }
 
   const handleCurrentPasswordChange = event => {
@@ -145,6 +167,11 @@ const Profile = ({ show, client, user }) => {
       if (data) {
         console.log('Response data of changePassword', data)
         if (data.changePassword !== null) {
+          setCurrentPassword('')
+          setNewPassword('')
+          setNewPassword2('')
+          setSuccessDialogTitle('Password changed')
+          setSuccessDialogContent('Password changed successfully.')
           handleDialogOpen()
         }
       }
@@ -159,54 +186,62 @@ const Profile = ({ show, client, user }) => {
 
   const handleDialogClose = () => {
     setShowSuccessDialog(false)
+    setSuccessDialogTitle('')
+    setSuccessDialogContent('')
   }
 
   if (!show) {
     return null
   }
   return (
-    <div>
+    <>
       <h2>Profile</h2>
-      <form>
-        <TextField
-          id='givenname_field'
-          variant='standard'
-          label='Givenname: '
-          onChange={handleGivennameChange}
-          value={givenname}
-          className={classes.textField}
-        />
-        <br />
-        <TextField
-          id='surname_field'
-          variant='standard'
-          label='Surname: '
-          onChange={handleSurnameChange}
-          value={surname}
-          className={classes.textField}
-        />
-        <br />
-        <TextField
-          id='email_field'
-          variant='standard'
-          label='Email: '
-          onChange={handleEmailChange}
-          value={email}
-          className={classes.textField}
-        />
-        <br />
-        <br />
-        {/* Data last modified: {user.modified} */}
-        <Button
-          id='submit_user_data_button'
-          color='primary'
-          variant='contained'
-          onClick={handleSubmitClick}
-        >
-          {' '}
-          Update user data
-        </Button>
-      </form>
+      <Card className={classes.card}>
+        <CardHeader title='Basic user data' className={classes.cardHeader} />
+        <CardContent>
+          <form>
+            <TextField
+              id='givenname_field'
+              variant='standard'
+              label='Givenname: '
+              onChange={handleGivennameChange}
+              value={givenname}
+              className={classes.textField}
+            />
+            <br />
+            <TextField
+              id='surname_field'
+              variant='standard'
+              label='Surname: '
+              onChange={handleSurnameChange}
+              value={surname}
+              className={classes.textField}
+            />
+            <br />
+            <TextField
+              id='email_field'
+              variant='standard'
+              label='Email: '
+              onChange={handleEmailChange}
+              value={email}
+              className={classes.textField}
+            />
+            <br />
+            <br />
+            {/* Data last modified: {user.modified} */}
+            <Button
+              id='submit_user_data_button'
+              color='primary'
+              variant='contained'
+              onClick={handleEditUserSubmit}
+            >
+              {' '}
+              Update user data
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+
       <h3>Change password</h3>
       <form>
         <TextField
@@ -248,20 +283,16 @@ const Profile = ({ show, client, user }) => {
         </Button>
       </form>
 
-      <Dialog open={showSuccessDialog} onClose={handleDialogClose}>
-        Password changed successfully.
-      </Dialog>
-
       <Dialog
         open={showSuccessDialog}
         onClose={handleDialogClose}
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id='alert-dialog-title'>Password changed</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>{successDialogTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText id='alert-dialog-description'>
-            Password changed successfully.
+            {successDialogContent}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -274,7 +305,7 @@ const Profile = ({ show, client, user }) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   )
 }
 export default Profile

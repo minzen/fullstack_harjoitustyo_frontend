@@ -16,10 +16,6 @@ import {
 import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import { red } from '@material-ui/core/colors'
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import ShareIcon from '@material-ui/icons/Share'
-import RegisterUserForm from './RegisterUserForm'
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
