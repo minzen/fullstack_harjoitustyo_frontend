@@ -242,46 +242,50 @@ const Profile = ({ show, client, user }) => {
         </CardContent>
       </Card>
 
-      <h3>Change password</h3>
-      <form>
-        <TextField
-          id='currentpassword_field'
-          variant='standard'
-          label='Current password: '
-          onChange={handleCurrentPasswordChange}
-          value={currentPassword}
-          className={classes.textField}
-          type='password'
-        />
-        <TextField
-          id='newpassword_field'
-          variant='standard'
-          label='New password: '
-          onChange={handleNewPasswordChange}
-          value={newPassword}
-          className={classes.textField}
-          type='password'
-        />
-        <TextField
-          id='newpassword2_field'
-          variant='standard'
-          label='New password confirmation: '
-          onChange={handleNewPassword2Change}
-          value={newPassword2}
-          className={classes.textField}
-          type='password'
-        />
-        <br />
-        <br />
-        <Button
-          id='submit_new_password_button'
-          color='default'
-          variant='contained'
-          onClick={handleChangePasswordSubmit}
-        >
-          Change password
-        </Button>
-      </form>
+      <Card className={classes.card}>
+        <CardHeader title='Change password' className={classes.cardHeader} />
+        <CardContent>
+          <form>
+            <TextField
+              id='currentpassword_field'
+              variant='standard'
+              label='Current password: '
+              onChange={handleCurrentPasswordChange}
+              value={currentPassword}
+              className={classes.textField}
+              type='password'
+            />
+            <TextField
+              id='newpassword_field'
+              variant='standard'
+              label='New password: '
+              onChange={handleNewPasswordChange}
+              value={newPassword}
+              className={classes.textField}
+              type='password'
+            />
+            <TextField
+              id='newpassword2_field'
+              variant='standard'
+              label='New password confirmation: '
+              onChange={handleNewPassword2Change}
+              value={newPassword2}
+              className={classes.textField}
+              type='password'
+            />
+            <br />
+            <br />
+            <Button
+              id='submit_new_password_button'
+              color='primary'
+              variant='contained'
+              onClick={handleChangePasswordSubmit}
+            >
+              Change password
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
 
       <Dialog
         open={showSuccessDialog}
