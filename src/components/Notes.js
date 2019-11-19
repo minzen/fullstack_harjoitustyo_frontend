@@ -6,9 +6,11 @@ import {
   CardHeader,
   Grid,
   Typography,
-  makeStyles
+  makeStyles,
+  Button
 } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import Note from './Note'
 import AddNote from './AddNote'
 
@@ -52,24 +54,9 @@ const Notes = ({ show, client }) => {
     return null
   }
 
-  const handleTextChange = search => {
-    console.log(`Setting ${search} to the search term`)
-    setSearchTerm(search)
+  const handleDeleteClick = id => {
+    console.log('Click on delete button on note with the id', id)
   }
-
-  const handleNewNote = () => {
-    console.log('Create a new note event')
-  }
-
-  const handleNotePress = note => {
-    console.log('Press on a list item', note.id)
-    setSelectedNote(note)
-  }
-
-  const handleNoteLongPress = id => {
-    console.log('Long Press on a list item', id)
-  }
-
   const getNotes = async () => {
     console.log('Obtaining notes...')
     const { data } = await client.query({
@@ -102,10 +89,10 @@ const Notes = ({ show, client }) => {
                   <Card
                     className={classes.card}
                     key={note.id}
-                    onClick={() => {
-                      console.log('card clicked', note.id)
-                      setSelectedNote(note)
-                    }}
+                    // onClick={() => {
+                    //   console.log('card clicked', note.id)
+                    //   setSelectedNote(note)
+                    // }}
                   >
                     <CardHeader
                       title={note.title}
@@ -113,14 +100,8 @@ const Notes = ({ show, client }) => {
                       onClick={() => {
                         console.log('cardheader clicked', note.id)
                       }}
-                      action={
-                        <EditIcon
-                          onClick={() => {
-                            console.log('editIcon clicked')
-                          }}
-                        />
-                      }
-                    />
+                    ></CardHeader>
+
                     <CardContent>
                       <Typography variant='body1' gutterBottom>
                         {note.content}
@@ -129,6 +110,29 @@ const Notes = ({ show, client }) => {
                         Keywords:{' '}
                         {extractKeywordsFromArrayWithJoin(note.keywords)}
                       </Typography>
+                    </CardContent>
+
+                    <CardContent>
+                      <Button
+                        startIcon={<EditIcon />}
+                        variant='contained'
+                        onClick={() => {
+                          console.log('editIcon clicked')
+                          setSelectedNote(note)
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        startIcon={<DeleteOutlinedIcon />}
+                        variant='contained'
+                        onClick={() => {
+                          console.log('delete note clicked')
+                          handleDeleteClick(note.id)
+                        }}
+                      >
+                        Delete
+                      </Button>
                     </CardContent>
                   </Card>
                 )
