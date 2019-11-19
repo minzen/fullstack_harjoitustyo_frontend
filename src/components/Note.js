@@ -1,8 +1,7 @@
 import React from 'react'
 import { Grid } from '@material-ui/core'
 
-const Note = ({ show, client, note }) => {
-  console.log(note)
+const Note = ({ client, note }) => {
   if (note) {
     console.log(note)
     const keywords = note.keywords.join()

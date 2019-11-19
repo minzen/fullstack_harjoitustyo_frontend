@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { gql } from 'apollo-boost'
 import {
   Card,
@@ -7,7 +7,12 @@ import {
   Grid,
   Typography,
   makeStyles,
-  Button
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  DialogTitle
 } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
@@ -29,6 +34,12 @@ const ALL_NOTES = gql`
   }
 `
 
+const DELETE_NOTE = gql`
+  mutation deleteNote($id: ID!) {
+    deleteNote(id: $id)
+  }
+`
+
 const useStyles = makeStyles({
   card: {
     minWidth: 275,
@@ -45,18 +56,11 @@ const useStyles = makeStyles({
 
 const Notes = ({ show, client }) => {
   const classes = useStyles()
+  // TODO: Implement search
   const [searchTerm, setSearchTerm] = useState('')
   const [notes, setNotes] = useState(null)
   const [selectedNote, setSelectedNote] = useState(null)
-  const maxLength = 40
-
-  if (!show) {
-    return null
-  }
-
-  const handleDeleteClick = id => {
-    console.log('Click on delete button on note with the id', id)
-  }
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const getNotes = async () => {
     console.log('Obtaining notes...')
     const { data } = await client.query({
@@ -65,7 +69,41 @@ const Notes = ({ show, client }) => {
     console.log('response of allNotes', data.allNotes)
     await setNotes(data.allNotes)
   }
-  getNotes()
+
+  useEffect(() => {
+    getNotes()
+  })
+
+  if (!show) {
+    return null
+  }
+
+  const handleDeleteDialogClose = () => {
+    setShowDeleteDialog(false)
+  }
+
+  const handleDeleteDialogOpen = () => {
+    setShowDeleteDialog(true)
+  }
+
+  const handleDelete = async () => {
+    console.log('handleDelete', selectedNote.id)
+    try {
+      const { data, loading, error } = await client.mutate({
+        mutation: DELETE_NOTE,
+        variables: {
+          id: selectedNote.id
+        },
+        // TODO: Does not work yet
+        refetchQueries: ['allNotes']
+      })
+      if (data) {
+        console.log('Response data of deleteNote', data)
+      }
+    } catch (e) {
+      console.log('error when deleting a note', e)
+    }
+  }
 
   function extractKeywordsFromArrayWithJoin(keywords) {
     console.log('keywords :', keywords)
@@ -128,7 +166,8 @@ const Notes = ({ show, client }) => {
                         variant='contained'
                         onClick={() => {
                           console.log('delete note clicked')
-                          handleDeleteClick(note.id)
+                          setSelectedNote(note)
+                          handleDeleteDialogOpen()
                         }}
                       >
                         Delete
@@ -139,7 +178,41 @@ const Notes = ({ show, client }) => {
               })}
             </Grid>
             <AddNote />
-            <Note view={true} note={selectedNote} />
+            <Note note={selectedNote} />
+
+            <Dialog
+              open={showDeleteDialog}
+              onClose={handleDeleteDialogClose}
+              aria-labelledby='alert-dialog-title'
+              aria-describedby='alert-dialog-description'
+            >
+              <DialogTitle id='alert-dialog-title'>'Delete note?'</DialogTitle>
+              <DialogContent>
+                <DialogContentText id='alert-dialog-description'>
+                  Are you certain that you want to delete the note?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={handleDeleteDialogClose}
+                  color='default'
+                  variant='contained'
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleDeleteDialogClose()
+                    handleDelete()
+                  }}
+                  color='secondary'
+                  autoFocus
+                  variant='contained'
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
         </Grid>
       </>
