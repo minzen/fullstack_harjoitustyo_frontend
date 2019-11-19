@@ -18,9 +18,8 @@ describe('Memory Tracks with a user not logged in', function() {
     cy.get('#email_field').type('Jani')
     cy.get('#password_field').type('Seppä')
     cy.get('#login_button').click()
-    // TODO: Check the error message, when implemented
-    // Still on the login page, after providing invalid credentials
     cy.contains('Login')
+    cy.contains('Error: invalid credentials')
   })
 })
 
@@ -42,5 +41,14 @@ describe('Memory Tracks with a logged in user', function() {
     cy.contains('Stored Notes')
     cy.get('#menu_logout_button').click()
     cy.contains('Login')
+  })
+  it('a user logs in and is able to access his/her profile page', function() {
+    cy.visit('http://localhost:3000')
+    cy.get('#email_field').type(user)
+    cy.get('#password_field').type(pwd)
+    cy.get('#login_button').click()
+    cy.contains('Stored Notes')
+    cy.get('#menu_profile_button').click()
+    cy.contains('Profile')
   })
 })

@@ -9,10 +9,9 @@ import {
   Collapse,
   CardContent,
   CardActions,
-  CardMedia,
   Box,
   IconButton,
-  Typography
+  Grid
 } from '@material-ui/core'
 import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
@@ -53,7 +52,7 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 280
+    width: 240
   },
   button: {
     margin: theme.spacing(1)
@@ -120,7 +119,7 @@ const LoginForm = props => {
     let passwordObfuscated = ''
     if (password) {
       for (let i = 0; i < password.length; i++) {
-        passwordObfuscated += 'X'
+        passwordObfuscated += '*'
       }
     }
     console.log(
@@ -179,21 +178,37 @@ const LoginForm = props => {
 
         <CardContent>
           <form className={classes.container} autoComplete='on'>
-            <TextField
-              id='email_field'
-              className={classes.textField}
-              label='Email address'
-              onChange={handleEmailChange}
-              value={email}
-            />
-            <TextField
-              id='password_field'
-              className={classes.textField}
-              label='Password'
-              onChange={handlePasswordChange}
-              value={password}
-              type='password'
-            />
+            <Grid container spacing={1} alignItems='flex-end'>
+              <Grid item>
+                <EmailIcon />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id='email_field'
+                  className={classes.textField}
+                  label='Email address'
+                  onChange={handleEmailChange}
+                  value={email}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={1} alignItems='flex-end'>
+              <Grid item>
+                <LockIcon />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id='password_field'
+                  className={classes.textField}
+                  label='Password'
+                  onChange={handlePasswordChange}
+                  value={password}
+                  type='password'
+                />
+              </Grid>
+            </Grid>
+
             <div className={classes.error}>{errorText}</div>
 
             <Button
@@ -229,14 +244,21 @@ const LoginForm = props => {
               send instructions on how to reset the password.
             </Box>
             <form className={classes.container}>
-              <TextField
-                id='email_to_restore_password_field'
-                className={classes.textField}
-                label='Email to restore password'
-                color='secondary'
-                onChange={handleEmailToRestorePwdChange}
-                value={emailToRestorePwd}
-              />
+              <Grid container spacing={1} alignItems='flex-end'>
+                <Grid item>
+                  <EmailIcon />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id='email_to_restore_password_field'
+                    className={classes.textField}
+                    label='Email to restore password'
+                    color='secondary'
+                    onChange={handleEmailToRestorePwdChange}
+                    value={emailToRestorePwd}
+                  />
+                </Grid>
+              </Grid>
               <Button
                 id='submitEmailPwdForgottenButton'
                 className={classes.button}

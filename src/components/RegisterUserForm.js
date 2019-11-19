@@ -13,17 +13,25 @@ import {
   Avatar,
   Collapse,
   CardActions,
-  IconButton
+  IconButton,
+  Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import EmailIcon from '@material-ui/icons/Email'
+import LockIcon from '@material-ui/icons/Lock'
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 280
+    width: 240
+  },
+  textFieldWithIcon: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 210
   },
   card: {
     backgroundColor: '#ffffff',
@@ -161,21 +169,35 @@ const RegisterUserForm = props => {
                 onChange={handleSurnameChange}
                 className={classes.textField}
               />
-              <TextField
-                id='register_email'
-                label='Email'
-                value={email}
-                onChange={handleEmailChange}
-                className={classes.textField}
-              />
-              <TextField
-                id='register_password'
-                label='Password'
-                value={password}
-                type='password'
-                onChange={handlePasswordChange}
-                className={classes.textField}
-              />
+              <Grid container spacing={1} alignItems='flex-end'>
+                <Grid item>
+                  <EmailIcon />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id='register_email'
+                    label='Email'
+                    value={email}
+                    onChange={handleEmailChange}
+                    className={classes.textFieldWithIcon}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={1} alignItems='flex-end'>
+                <Grid item>
+                  <LockIcon />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    id='register_password'
+                    label='Password'
+                    value={password}
+                    type='password'
+                    onChange={handlePasswordChange}
+                    className={classes.textFieldWithIcon}
+                  />
+                </Grid>
+              </Grid>
               <div className={classes.error}>{errorText}</div>
               <Button
                 id='register_submit_button'
