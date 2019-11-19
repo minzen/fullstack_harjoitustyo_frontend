@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
   dialog: {
     alignContent: 'center',
     justifyContent: 'center',
-    height: 400,
-    width: 300
+    maxHeight: 400,
+    maxWidth: 370
   }
 }))
 
@@ -38,7 +38,7 @@ const AddNote = props => {
         className={classes.dialog}
         onClose={() => setModalVisible(false)}
       >
-        <NoteForm />
+        <NoteForm client={props.client} />
       </Dialog>
     </>
   )

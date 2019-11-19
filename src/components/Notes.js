@@ -177,7 +177,7 @@ const Notes = ({ show, client }) => {
                 )
               })}
             </Grid>
-            <AddNote />
+            <AddNote client={client} />
             <Note note={selectedNote} />
 
             <Dialog
@@ -186,7 +186,7 @@ const Notes = ({ show, client }) => {
               aria-labelledby='alert-dialog-title'
               aria-describedby='alert-dialog-description'
             >
-              <DialogTitle id='alert-dialog-title'>'Delete note?'</DialogTitle>
+              <DialogTitle id='alert-dialog-title'>Delete note?</DialogTitle>
               <DialogContent>
                 <DialogContentText id='alert-dialog-description'>
                   Are you certain that you want to delete the note?
@@ -225,7 +225,7 @@ const Notes = ({ show, client }) => {
       <p>No stored notes found.</p>
       <br />
       <br />
-      <AddNote />
+      <AddNote client={client} />
     </>
   )
 }
