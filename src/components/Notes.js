@@ -140,6 +140,7 @@ const Notes = ({ show, client, result }) => {
 
                   <CardContent>
                     <Button
+                      data-cy='editSubmit'
                       startIcon={<EditIcon />}
                       variant='contained'
                       onClick={() => {
@@ -151,6 +152,7 @@ const Notes = ({ show, client, result }) => {
                       Edit
                     </Button>
                     <Button
+                      data-cy='deleteSubmit'
                       startIcon={<DeleteOutlinedIcon />}
                       variant='contained'
                       onClick={() => {
@@ -200,6 +202,7 @@ const Notes = ({ show, client, result }) => {
             </DialogContent>
             <DialogActions>
               <Button
+                data-cy='cancelConfirmation'
                 onClick={handleDeleteDialogClose}
                 color='default'
                 variant='contained'
@@ -207,6 +210,7 @@ const Notes = ({ show, client, result }) => {
                 Cancel
               </Button>
               <Button
+                data-cy='submitConfirmation'
                 onClick={() => {
                   handleDeleteDialogClose()
                   handleDelete()
