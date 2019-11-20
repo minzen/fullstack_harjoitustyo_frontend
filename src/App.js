@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Grid, ButtonGroup, Button, Avatar } from '@material-ui/core'
 import { gql } from 'apollo-boost'
-import { useMutation, useQuery } from '@apollo/react-hooks'
+import { useMutation, useQuery, ApolloConsumer } from '@apollo/react-hooks'
 import LoginForm from './components/LoginForm'
 import RegisterUserForm from './components/RegisterUserForm'
 import Notes from './components/Notes'
 import Profile from './components/Profile'
-import { ApolloProvider, Mutation } from 'react-apollo'
+import { ApolloProvider, Mutation, Query } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
 import { makeStyles } from '@material-ui/core/styles'
 import NotesIcon from '@material-ui/icons/Notes'
@@ -49,6 +49,20 @@ const CURRENT_USER = gql`
       givenname
       surname
       id
+    }
+  }
+`
+const ALL_NOTES = gql`
+  query {
+    allNotes {
+      id
+      title
+      content
+      keywords
+      user {
+        id
+        email
+      }
     }
   }
 `
@@ -171,6 +185,7 @@ const App = () => {
                     onClick={() => {
                       localStorage.clear()
                       setToken(null)
+                      client.resetStore()
                     }}
                   >
                     Logout&nbsp;
@@ -183,8 +198,20 @@ const App = () => {
         </Grid>
         <Grid container justify='center'>
           <Grid item>
+            <ApolloConsumer>
+              {client => (
+                <Query query={ALL_NOTES} pollInterval={2000}>
+                  {result => (
+                    <Notes
+                      show={page === 'notes'}
+                      client={client}
+                      result={result}
+                    />
+                  )}
+                </Query>
+              )}
+            </ApolloConsumer>
             <ApolloProvider client={client}>
-              <Notes show={page === 'notes'} client={client} />
               <Profile
                 show={page === 'profile'}
                 client={client}
