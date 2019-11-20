@@ -13,7 +13,8 @@ import {
   DialogContentText,
   DialogActions,
   DialogTitle,
-  Fab
+  Fab,
+  Link
 } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
@@ -84,10 +85,6 @@ const Notes = ({ show, client, result }) => {
     setShowDeleteDialog(true)
   }
 
-  const handleSelectedNoteChange = note => {
-    setSelectedNote(note)
-  }
-
   const handleDelete = async () => {
     console.log('handleDelete', selectedNote.id)
     try {
@@ -115,12 +112,40 @@ const Notes = ({ show, client, result }) => {
     return keywords.join()
   }
 
+  function detectLinkFromText(text) {
+    console.log(
+      'Attempting to construct a link based on the text content...',
+      text
+    )
+    let tokenizedByBlanks
+    if (text.split(' ') === null) {
+      tokenizedByBlanks = [text]
+    } else {
+      tokenizedByBlanks = text.split(' ')
+    }
+    let link
+    tokenizedByBlanks.forEach(element => {
+      console.log(element)
+      let res = element.match(
+        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+      )
+      console.log(res !== null)
+      if (res !== null) {
+        console.log('returning res')
+        link = res
+        return
+      }
+    })
+    return link
+  }
+
   if (notes && notes.length > 0) {
     return (
       <Grid container justify='center'>
         <Grid item xs={12} md={6}>
           <Grid container spacing={1} direction='row' alignItems='center'>
             {notes.map(note => {
+              const link = detectLinkFromText(note.content)
               return (
                 <Card className={classes.card} key={note.id}>
                   <CardHeader
@@ -131,6 +156,9 @@ const Notes = ({ show, client, result }) => {
                   <CardContent>
                     <Typography variant='body1' gutterBottom>
                       Note: {note.content}
+                    </Typography>
+                    <Typography variant='body1' gutterBottom>
+                      <Link href={link}>{link}</Link>
                     </Typography>
                     <Typography variant='body1' gutterBottom>
                       Keywords:{' '}

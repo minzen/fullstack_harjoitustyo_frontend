@@ -117,7 +117,6 @@ const Profile = ({ show, client, user }) => {
       ']'
     )
 
-    // TODO the call to the backend
     try {
       const { data, loading, error } = await client.mutate({
         mutation: EDIT_USER,

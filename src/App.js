@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Grid, ButtonGroup, Button, Avatar } from '@material-ui/core'
 import { gql } from 'apollo-boost'
 import { useMutation, useQuery, ApolloConsumer } from '@apollo/react-hooks'
@@ -86,13 +86,16 @@ const useStyles = makeStyles({
 
 const App = () => {
   const classes = useStyles()
-  const [token, setToken] = useState(
-    localStorage.getItem('memorytracks-user-token')
-  )
+  const [token, setToken] = useState()
   const [page, setPage] = useState('notes')
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
+
+  useEffect(() => {
+    console.log('useEffect')
+    setToken(localStorage.getItem('memorytracks-user-token'))
+  }, [])
 
   const handleError = error => {
     console.log(error)
