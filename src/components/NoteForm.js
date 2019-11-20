@@ -65,6 +65,8 @@ const NoteForm = props => {
       if (props.note.id) {
         setNoteId(props.note.id)
       }
+    } else {
+      resetForm()
     }
     setVisible(props.visible)
   }, [props.note, props.visible])
@@ -186,15 +188,6 @@ const NoteForm = props => {
           </TextField>
           <br />
           <br />
-          <Button
-            id='cancel_button'
-            variant='contained'
-            color='default'
-            onClick={resetForm}
-            className={classes.button}
-          >
-            Cancel
-          </Button>
           <Button
             id='save_note_button'
             variant='contained'
