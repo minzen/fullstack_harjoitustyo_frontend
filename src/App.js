@@ -77,9 +77,22 @@ const ALL_NOTES = gql`
 `
 
 const useStyles = makeStyles({
+  root: {
+    background: 'linear-gradient(45deg, #ff4400 30%, #ff4411 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 80,
+    padding: '0 30px',
+    marginBottom: 10
+  },
   container: {
     display: 'flex',
     flexWrap: 'wrap'
+  },
+  noteDashboard: {
+    backgroundColor: '#e3e5e8'
   },
   orangeAvatar: {
     width: 60,
@@ -191,6 +204,7 @@ const App = () => {
                 direction='column'
                 justify='center'
                 alignItems='center'
+                className={classes.root}
               >
                 <Grid item>
                   <ButtonGroup
@@ -247,7 +261,7 @@ const App = () => {
                 <SnackbarContent message={errorMessage} />
               </Snackbar>
             </Grid>
-            <Grid item>
+            <Grid item className={classes.noteDashboard}>
               <ApolloConsumer>
                 {client => (
                   <Query query={ALL_NOTES} pollInterval={2000}>
@@ -275,42 +289,44 @@ const App = () => {
     )
   } else {
     return (
-      <ThemeProvider theme={MyTheme}>
-        <Grid
-          container
-          direction='column'
-          justify='center'
-          alignItems='center'
-          spacing={1}
-        >
-          <Grid item>
-            <Box className={classes.titleBox}>
-              Memory Tracks &nbsp;
-              <MemoryIcon />
-            </Box>
+      <div className={classes.root}>
+        <ThemeProvider theme={MyTheme}>
+          <Grid
+            container
+            direction='column'
+            justify='center'
+            alignItems='center'
+            spacing={1}
+          >
+            <Grid item>
+              <Box className={classes.titleBox}>
+                Memory Tracks &nbsp;
+                <MemoryIcon />
+              </Box>
+            </Grid>
+            <Grid item>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center'
+                }}
+                open={showErrorNotification}
+                variant='error'
+                autoHideDuration={6000}
+                onClose={console.log('snackbar/handleClose')}
+              >
+                <SnackbarContent message={errorMessage} />
+              </Snackbar>
+            </Grid>
+            <Grid item>
+              <LoginForm login={login} setToken={token => setToken(token)} />
+            </Grid>
+            <Grid item>
+              <RegisterUserForm addUser={register} />
+            </Grid>
           </Grid>
-          <Grid item>
-            <Snackbar
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'center'
-              }}
-              open={showErrorNotification}
-              variant='error'
-              autoHideDuration={6000}
-              onClose={console.log('snackbar/handleClose')}
-            >
-              <SnackbarContent message={errorMessage} />
-            </Snackbar>
-          </Grid>
-          <Grid item>
-            <LoginForm login={login} setToken={token => setToken(token)} />
-          </Grid>
-          <Grid item>
-            <RegisterUserForm addUser={register} />
-          </Grid>
-        </Grid>
-      </ThemeProvider>
+        </ThemeProvider>
+      </div>
     )
   }
 }
