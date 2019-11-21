@@ -69,7 +69,7 @@ const CHANGE_PASSWORD = gql`
   }
 `
 
-const Profile = ({ show, client, user }) => {
+const Profile = ({ show, client, user, handleSpinnerVisibility }) => {
   const [givenname, setGivenname] = useState('')
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
@@ -109,6 +109,8 @@ const Profile = ({ show, client, user }) => {
 
   const handleEditUserSubmit = async event => {
     event.preventDefault()
+    handleSpinnerVisibility(true)
+
     console.log(
       'Submit clicked, updating the data [givenname:',
       givenname,
@@ -126,6 +128,7 @@ const Profile = ({ show, client, user }) => {
       })
       if (data) {
         console.log('Response data of editUser', data)
+        handleSpinnerVisibility(false)
         setSuccessDialogTitle('User data updated')
         setSuccessDialogContent('The user data have been updated successfully')
         handleDialogOpen()
@@ -133,6 +136,7 @@ const Profile = ({ show, client, user }) => {
     } catch (e) {
       console.log('Error when updating user data', e)
       handleError(e)
+      handleSpinnerVisibility(false)
     }
   }
 
@@ -150,6 +154,7 @@ const Profile = ({ show, client, user }) => {
 
   const handleChangePasswordSubmit = async event => {
     event.preventDefault()
+    handleSpinnerVisibility(true)
     console.log(
       'Submit clicked, sending a request to change the password',
       currentPassword,
@@ -169,6 +174,7 @@ const Profile = ({ show, client, user }) => {
       if (data) {
         console.log('Response data of changePassword', data)
         if (data.changePassword !== null) {
+          handleSpinnerVisibility(false)
           setCurrentPassword('')
           setNewPassword('')
           setNewPassword2('')
@@ -180,6 +186,7 @@ const Profile = ({ show, client, user }) => {
     } catch (e) {
       console.log('error when changing a password', e)
       handleError(e)
+      handleSpinnerVisibility(false)
     }
   }
 
@@ -266,7 +273,6 @@ const Profile = ({ show, client, user }) => {
           </form>
         </CardContent>
       </Card>
-
       <Card className={classes.card}>
         <CardHeader title='Change password' className={classes.cardHeader} />
         <CardContent>

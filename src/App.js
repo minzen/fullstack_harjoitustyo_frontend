@@ -14,6 +14,7 @@ import {
   SnackbarContent,
   Box
 } from '@material-ui/core'
+import LoadingOverlay from 'react-loading-overlay'
 import { makeStyles } from '@material-ui/core/styles'
 import NotesIcon from '@material-ui/icons/Notes'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
@@ -131,6 +132,7 @@ const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
+  const [spinnerActive, setSpinnerActive] = useState(false)
   const client = useApolloClient()
 
   useEffect(() => {
@@ -146,6 +148,14 @@ const App = () => {
       setErrorMessage(null)
       setShowErrorNotification(false)
     }, 6000)
+  }
+
+  const handleSpinnerVisibility = value => {
+    if (value) {
+      setSpinnerActive(true)
+    } else {
+      setSpinnerActive(false)
+    }
   }
 
   const [login] = useMutation(LOGIN, {
@@ -190,106 +200,130 @@ const App = () => {
   if (token) {
     return (
       <>
-        <ThemeProvider theme={MyTheme}>
-          <Grid
-            container
-            justify='center'
-            spacing={3}
-            className={classes.container}
-          >
-            <Grid item xs={12} md={6}>
-              <Grid
-                container
-                spacing={1}
-                direction='column'
-                justify='center'
-                alignItems='center'
-                className={classes.root}
-              >
-                <Grid item>
-                  <ButtonGroup
-                    variant='contained'
-                    color='primary'
-                    size='large'
-                    aria-label='large contained primary button group'
-                  >
-                    <Button
-                      id='menu_profile_button'
-                      onClick={() => {
-                        setPage('profile')
-                      }}
+        <LoadingOverlay
+          active={spinnerActive}
+          spinner
+          styles={{
+            overlay: base => ({
+              ...base,
+              background: 'rgba(0, 0, 0, 0.5)'
+            })
+          }}
+          text='Processing...'
+        >
+          <ThemeProvider theme={MyTheme}>
+            <Grid
+              container
+              justify='center'
+              spacing={3}
+              className={classes.container}
+            >
+              <Grid item xs={12} md={6}>
+                <Grid
+                  container
+                  spacing={1}
+                  direction='column'
+                  justify='center'
+                  alignItems='center'
+                  className={classes.root}
+                >
+                  <Grid item>
+                    <ButtonGroup
+                      variant='contained'
+                      color='primary'
+                      size='large'
+                      aria-label='large contained primary button group'
                     >
-                      <Avatar className={classes.orangeAvatar}>
-                        {buildInitialsForMenuAvatar()}
-                      </Avatar>
-                    </Button>
-                    <Button
-                      id='menu_notes_button'
-                      onClick={() => setPage('notes')}
-                    >
-                      Memory Tracks&nbsp;
-                      <NotesIcon />
-                    </Button>
-                    <Button
-                      id='menu_logout_button'
-                      onClick={() => {
-                        localStorage.clear()
-                        setToken(null)
-                        client.resetStore()
-                      }}
-                    >
-                      Logout&nbsp;
-                      <ExitToAppIcon />
-                    </Button>
-                  </ButtonGroup>
+                      <Button
+                        id='menu_profile_button'
+                        onClick={() => {
+                          setPage('profile')
+                        }}
+                      >
+                        <Avatar className={classes.orangeAvatar}>
+                          {buildInitialsForMenuAvatar()}
+                        </Avatar>
+                      </Button>
+                      <Button
+                        id='menu_notes_button'
+                        onClick={() => setPage('notes')}
+                      >
+                        Memory Tracks&nbsp;
+                        <NotesIcon />
+                      </Button>
+                      <Button
+                        id='menu_logout_button'
+                        onClick={() => {
+                          localStorage.clear()
+                          setToken(null)
+                          client.resetStore()
+                        }}
+                      >
+                        Logout&nbsp;
+                        <ExitToAppIcon />
+                      </Button>
+                    </ButtonGroup>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          <Grid container justify='center'>
-            <Grid item>
-              <Snackbar
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center'
-                }}
-                open={showErrorNotification}
-                variant='error'
-                autoHideDuration={6000}
-                onClose={console.log('snackbar/handleClose')}
-              >
-                <SnackbarContent message={errorMessage} />
-              </Snackbar>
+            <Grid container justify='center'>
+              <Grid item>
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                  }}
+                  open={showErrorNotification}
+                  variant='error'
+                  autoHideDuration={6000}
+                  onClose={console.log('snackbar/handleClose')}
+                >
+                  <SnackbarContent message={errorMessage} />
+                </Snackbar>
+              </Grid>
+              <Grid item className={classes.noteDashboard}>
+                <ApolloConsumer>
+                  {client => (
+                    <Query query={ALL_NOTES} pollInterval={2000}>
+                      {result => (
+                        <Notes
+                          show={page === 'notes'}
+                          client={client}
+                          result={result}
+                          handleSpinnerVisibility={handleSpinnerVisibility}
+                        />
+                      )}
+                    </Query>
+                  )}
+                </ApolloConsumer>
+                <ApolloProvider client={client}>
+                  <Profile
+                    show={page === 'profile'}
+                    client={client}
+                    user={loggedInUser}
+                    handleSpinnerVisibility={handleSpinnerVisibility}
+                  ></Profile>
+                </ApolloProvider>
+              </Grid>
             </Grid>
-            <Grid item className={classes.noteDashboard}>
-              <ApolloConsumer>
-                {client => (
-                  <Query query={ALL_NOTES} pollInterval={2000}>
-                    {result => (
-                      <Notes
-                        show={page === 'notes'}
-                        client={client}
-                        result={result}
-                      />
-                    )}
-                  </Query>
-                )}
-              </ApolloConsumer>
-              <ApolloProvider client={client}>
-                <Profile
-                  show={page === 'profile'}
-                  client={client}
-                  user={loggedInUser}
-                ></Profile>
-              </ApolloProvider>
-            </Grid>
-          </Grid>
-        </ThemeProvider>
+          </ThemeProvider>
+        </LoadingOverlay>
       </>
     )
   } else {
     return (
-      <div className={classes.root}>
+      <LoadingOverlay
+        active={spinnerActive}
+        spinner
+        styles={{
+          overlay: base => ({
+            ...base,
+            background: 'rgba(0, 0, 0, 0.75)'
+          })
+        }}
+        text='Processing...'
+      >
         <ThemeProvider theme={MyTheme}>
           <Grid
             container
@@ -319,14 +353,21 @@ const App = () => {
               </Snackbar>
             </Grid>
             <Grid item>
-              <LoginForm login={login} setToken={token => setToken(token)} />
+              <LoginForm
+                login={login}
+                setToken={token => setToken(token)}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
             </Grid>
             <Grid item>
-              <RegisterUserForm addUser={register} />
+              <RegisterUserForm
+                addUser={register}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
             </Grid>
           </Grid>
         </ThemeProvider>
-      </div>
+      </LoadingOverlay>
     )
   }
 }

@@ -95,6 +95,7 @@ const RegisterUserForm = props => {
 
   const handleRegisterSubmit = async event => {
     event.preventDefault()
+    props.handleSpinnerVisibility(true)
     // TODO: implement login after the registration
     console.log('submit registration', email, givenname, surname)
     const result = await props.addUser({
@@ -102,6 +103,7 @@ const RegisterUserForm = props => {
     })
     if (result) {
       console.log('Registration completed for the user', result)
+      props.handleSpinnerVisibility(false)
       handleOpen()
       setEmail('')
       setPassword('')

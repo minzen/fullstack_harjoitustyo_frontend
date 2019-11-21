@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   }
 })
 
-const Notes = ({ show, client, result }) => {
+const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   const classes = useStyles()
   // TODO: Implement search
   //const [searchTerm, setSearchTerm] = useState('')
@@ -86,6 +86,8 @@ const Notes = ({ show, client, result }) => {
 
   const handleDelete = async () => {
     console.log('handleDelete', selectedNote.id)
+    handleSpinnerVisibility(true)
+
     try {
       const { data, loading, error } = await client.mutate({
         mutation: DELETE_NOTE,
@@ -95,11 +97,13 @@ const Notes = ({ show, client, result }) => {
         refetchQueries: [{ query: ALL_NOTES }]
       })
       if (data) {
+        handleSpinnerVisibility(false)
         console.log('Response data of deleteNote', data)
         setSelectedNote(null)
       }
     } catch (e) {
       console.log('error when deleting a note', e)
+      handleSpinnerVisibility(false)
     }
   }
 
@@ -210,6 +214,7 @@ const Notes = ({ show, client, result }) => {
             client={client}
             note={selectedNote}
             visible={editNoteVisible}
+            handleSpinnerVisibility={handleSpinnerVisibility}
           />
 
           <Dialog
@@ -270,7 +275,12 @@ const Notes = ({ show, client, result }) => {
         <AddIcon />
       </Fab>
 
-      <NoteForm client={client} note={null} visible={editNoteVisible} />
+      <NoteForm
+        client={client}
+        note={null}
+        visible={editNoteVisible}
+        handleSpinnerVisibility={handleSpinnerVisibility}
+      />
     </>
   )
 }

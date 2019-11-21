@@ -106,6 +106,7 @@ const LoginForm = props => {
 
   const handleLoginSubmit = async event => {
     event.preventDefault()
+    props.handleSpinnerVisibility(true)
     console.log('handle login submit', event)
     let passwordObfuscated = ''
     if (password) {
@@ -132,6 +133,7 @@ const LoginForm = props => {
       )
       setEmail('')
       setPassword('')
+      props.handleSpinnerVisibility(false)
     }
   }
 

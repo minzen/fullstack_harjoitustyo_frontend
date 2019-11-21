@@ -120,7 +120,7 @@ const NoteForm = props => {
 
   const handleNewNoteSubmit = async event => {
     console.log('handleNewNoteSubmit', title, content, keywords)
-
+    props.handleSpinnerVisibility(true)
     const keywordsArr = getKeywordsArrayFromString(keywords)
 
     try {
@@ -129,10 +129,12 @@ const NoteForm = props => {
         variables: { title: title, content: content, keywords: keywordsArr }
       })
       if (data) {
+        props.handleSpinnerVisibility(false)
         console.log('Response after carrying out the mutation ADD_NOTE', data)
         resetForm()
       }
     } catch (e) {
+      props.handleSpinnerVisibility(false)
       console.log('error when saving a new note', e)
       handleError(e)
     }
@@ -140,7 +142,7 @@ const NoteForm = props => {
 
   const handleEditNoteSubmit = async event => {
     console.log('handleEditNoteSubmit', noteId, title, content, keywords)
-
+    props.handleSpinnerVisibility(true)
     const keywordsArr = getKeywordsArrayFromString(keywords)
     try {
       const { data, loading, error } = await client.mutate({
@@ -153,10 +155,12 @@ const NoteForm = props => {
         }
       })
       if (data) {
+        props.handleSpinnerVisibility(false)
         console.log('Response after carrying out the mutation EDIT_NOTE', data)
         resetForm()
       }
     } catch (e) {
+      props.handleSpinnerVisibility(false)
       console.log('error when saving a new note', e)
       handleError(e)
     }
