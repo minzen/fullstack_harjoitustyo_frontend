@@ -8,9 +8,11 @@ import Notes from './components/Notes'
 import Profile from './components/Profile'
 import { ApolloProvider, Mutation, Query } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
+import { ThemeProvider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import NotesIcon from '@material-ui/icons/Notes'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import MyTheme from './styles/MyTheme'
 require('dotenv').config()
 
 const LOGIN = gql`
@@ -113,6 +115,9 @@ const App = () => {
     onError: handleError
   })
 
+  const errorNotification = () =>
+    errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>
+
   const { loading, error, data } = useQuery(CURRENT_USER)
   if (loading) return null
 
@@ -145,105 +150,110 @@ const App = () => {
   if (token) {
     return (
       <>
-        <Grid
-          container
-          justify='center'
-          spacing={3}
-          className={classes.container}
-        >
-          <Grid item xs={12} md={6}>
-            <Grid
-              container
-              spacing={1}
-              direction='column'
-              justify='center'
-              alignItems='center'
-            >
-              <Grid item>
-                <ButtonGroup
-                  variant='contained'
-                  color='primary'
-                  size='large'
-                  aria-label='large contained primary button group'
-                >
-                  <Button
-                    id='menu_profile_button'
-                    onClick={() => {
-                      setPage('profile')
-                    }}
+        <ThemeProvider theme={MyTheme}>
+          <Grid
+            container
+            justify='center'
+            spacing={3}
+            className={classes.container}
+          >
+            <Grid item xs={12} md={6}>
+              <Grid
+                container
+                spacing={1}
+                direction='column'
+                justify='center'
+                alignItems='center'
+              >
+                <Grid item>
+                  <ButtonGroup
+                    variant='contained'
+                    color='primary'
+                    size='large'
+                    aria-label='large contained primary button group'
                   >
-                    <Avatar className={classes.orangeAvatar}>
-                      {initials()}
-                    </Avatar>
-                  </Button>
-                  <Button
-                    id='menu_notes_button'
-                    onClick={() => setPage('notes')}
-                  >
-                    Notes&nbsp;
-                    <NotesIcon />
-                  </Button>
-                  <Button
-                    id='menu_logout_button'
-                    onClick={() => {
-                      localStorage.clear()
-                      setToken(null)
-                      client.resetStore()
-                    }}
-                  >
-                    Logout&nbsp;
-                    <ExitToAppIcon />
-                  </Button>
-                </ButtonGroup>
+                    <Button
+                      id='menu_profile_button'
+                      onClick={() => {
+                        setPage('profile')
+                      }}
+                    >
+                      <Avatar className={classes.orangeAvatar}>
+                        {initials()}
+                      </Avatar>
+                    </Button>
+                    <Button
+                      id='menu_notes_button'
+                      onClick={() => setPage('notes')}
+                    >
+                      Notes&nbsp;
+                      <NotesIcon />
+                    </Button>
+                    <Button
+                      id='menu_logout_button'
+                      onClick={() => {
+                        localStorage.clear()
+                        setToken(null)
+                        client.resetStore()
+                      }}
+                    >
+                      Logout&nbsp;
+                      <ExitToAppIcon />
+                    </Button>
+                  </ButtonGroup>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <Grid container justify='center'>
-          <Grid item>
-            <ApolloConsumer>
-              {client => (
-                <Query query={ALL_NOTES} pollInterval={2000}>
-                  {result => (
-                    <Notes
-                      show={page === 'notes'}
-                      client={client}
-                      result={result}
-                    />
-                  )}
-                </Query>
-              )}
-            </ApolloConsumer>
-            <ApolloProvider client={client}>
-              <Profile
-                show={page === 'profile'}
-                client={client}
-                user={loggedInUser}
-              ></Profile>
-            </ApolloProvider>
+          <Grid container justify='center'>
+            <Grid item>
+              <ApolloConsumer>
+                {client => (
+                  <Query query={ALL_NOTES} pollInterval={2000}>
+                    {result => (
+                      <Notes
+                        show={page === 'notes'}
+                        client={client}
+                        result={result}
+                      />
+                    )}
+                  </Query>
+                )}
+              </ApolloConsumer>
+              <ApolloProvider client={client}>
+                <Profile
+                  show={page === 'profile'}
+                  client={client}
+                  user={loggedInUser}
+                ></Profile>
+              </ApolloProvider>
+            </Grid>
           </Grid>
-        </Grid>
+        </ThemeProvider>
       </>
     )
   } else {
     return (
-      <Grid
-        container
-        direction='column'
-        justify='center'
-        alignItems='center'
-        spacing={1}
-      >
-        <Grid item>
-          <h1 className={classes.title}>Memory Tracks</h1>
+      <ThemeProvider theme={MyTheme}>
+        <Grid
+          container
+          direction='column'
+          justify='center'
+          alignItems='center'
+          spacing={1}
+        >
+          <Grid item>{errorNotification()}</Grid>
+          <Grid item>
+            <h1 className={classes.title}>Memory Tracks</h1>
+          </Grid>
+          <Grid item>
+            <LoginForm login={login} setToken={token => setToken(token)} />
+          </Grid>
+          <Grid item>
+            <RegisterUserForm addUser={register} />
+          </Grid>
         </Grid>
-        <Grid item>
-          <LoginForm login={login} setToken={token => setToken(token)} />
-        </Grid>
-        <Grid item>
-          <RegisterUserForm addUser={register} />
-        </Grid>
-      </Grid>
+      </ThemeProvider>
     )
   }
 }

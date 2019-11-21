@@ -90,7 +90,6 @@ const LoginForm = props => {
   }
 
   const handlePasswordChange = event => {
-    console.log(event.target.value)
     setPassword(event.target.value)
     setSubmitButtonState()
   }
