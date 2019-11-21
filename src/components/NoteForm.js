@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { gql } from 'apollo-boost'
-import { TextField, Button, Grid } from '@material-ui/core'
+import {
+  TextField,
+  Button,
+  Grid,
+  Snackbar,
+  SnackbarContent
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -48,6 +54,8 @@ const NoteForm = props => {
   const [keywords, setKeywords] = useState('')
   const [noteId, setNoteId] = useState(null)
   const [visible, setVisible] = useState(false)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [showErrorNotification, setShowErrorNotification] = useState(false)
   const classes = useStyles()
   const client = props.client
 
@@ -83,6 +91,16 @@ const NoteForm = props => {
     setKeywords(event.target.value)
   }
 
+  const handleError = error => {
+    console.log(error)
+    setErrorMessage('Error: ' + error.graphQLErrors[0].message)
+    setShowErrorNotification(true)
+    setTimeout(() => {
+      setErrorMessage(null)
+      setShowErrorNotification(false)
+    }, 6000)
+  }
+
   // Help method for getting the keywords as string array instead of a string
   // If no keywords are provided, an empty array is returned.
   const getKeywordsArrayFromString = keywords => {
@@ -116,6 +134,7 @@ const NoteForm = props => {
       }
     } catch (e) {
       console.log('error when saving a new note', e)
+      handleError(e)
     }
   }
 
@@ -139,6 +158,7 @@ const NoteForm = props => {
       }
     } catch (e) {
       console.log('error when saving a new note', e)
+      handleError(e)
     }
   }
 
@@ -152,6 +172,19 @@ const NoteForm = props => {
   if (visible) {
     return (
       <Grid>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center'
+          }}
+          open={showErrorNotification}
+          variant='error'
+          autoHideDuration={6000}
+          onClose={console.log('snackbar/handleClose')}
+        >
+          <SnackbarContent message={errorMessage} />
+        </Snackbar>
+
         <form>
           <h3>Edit note</h3>
           <TextField
