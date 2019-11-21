@@ -84,9 +84,11 @@ const Profile = ({ show, client, user }) => {
   const classes = useStyles()
 
   useEffect(() => {
-    setGivenname(user.givenname)
-    setSurname(user.surname)
-    setEmail(user.email)
+    if (user) {
+      setGivenname(user.givenname)
+      setSurname(user.surname)
+      setEmail(user.email)
+    }
   }, [user])
 
   if (!user) {
