@@ -6,13 +6,19 @@ import LoginForm from './components/LoginForm'
 import RegisterUserForm from './components/RegisterUserForm'
 import Notes from './components/Notes'
 import Profile from './components/Profile'
-import { ApolloProvider, Mutation, Query } from 'react-apollo'
+import { ApolloProvider, Query } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
-import { ThemeProvider, Snackbar, SnackbarContent } from '@material-ui/core'
+import {
+  ThemeProvider,
+  Snackbar,
+  SnackbarContent,
+  Box
+} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import NotesIcon from '@material-ui/icons/Notes'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import ErrorIcon from '@material-ui/icons/Error'
+//import ErrorIcon from '@material-ui/icons/Error'
+import MemoryIcon from '@material-ui/icons/Memory'
 import MyTheme from './styles/MyTheme'
 require('dotenv').config()
 
@@ -81,9 +87,13 @@ const useStyles = makeStyles({
     color: 'white',
     backgroundColor: 'orange'
   },
-  title: {
+  titleBox: {
     justify: 'center',
-    fontFamily: 'Cochin'
+    color: 'black',
+    backgroundColor: '#BFC7D6',
+    padding: 20,
+    fontSize: 30,
+    maxWidth: 345
   },
   errorNotification: {
     backgroundColor: MyTheme.palette.error.light
@@ -203,7 +213,7 @@ const App = () => {
                       id='menu_notes_button'
                       onClick={() => setPage('notes')}
                     >
-                      Notes&nbsp;
+                      Memory Tracks&nbsp;
                       <NotesIcon />
                     </Button>
                     <Button
@@ -223,9 +233,6 @@ const App = () => {
             </Grid>
           </Grid>
           <Grid container justify='center'>
-            <Grid item>
-              <h1 className={classes.title}>Memory Tracks</h1>
-            </Grid>
             <Grid item>
               <Snackbar
                 anchorOrigin={{
@@ -277,7 +284,10 @@ const App = () => {
           spacing={1}
         >
           <Grid item>
-            <h1 className={classes.title}>Memory Tracks</h1>
+            <Box className={classes.titleBox}>
+              Memory Tracks &nbsp;
+              <MemoryIcon />
+            </Box>
           </Grid>
           <Grid item>
             <Snackbar

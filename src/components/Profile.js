@@ -194,7 +194,6 @@ const Profile = ({ show, client, user }) => {
   }
   return (
     <>
-      <h2>Profile</h2>
       <Card className={classes.card}>
         <CardHeader title='Basic user data' className={classes.cardHeader} />
         <CardContent>

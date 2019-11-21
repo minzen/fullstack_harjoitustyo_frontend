@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { gql } from 'apollo-boost'
 import {
   Card,
@@ -20,7 +20,6 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
-import { Query, ApolloConsumer } from 'react-apollo'
 
 const ALL_NOTES = gql`
   query {
@@ -125,13 +124,10 @@ const Notes = ({ show, client, result }) => {
     }
     let link
     tokenizedByBlanks.forEach(element => {
-      console.log(element)
       let res = element.match(
-        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
       )
-      console.log(res !== null)
       if (res !== null) {
-        console.log('returning res')
         link = res
         return
       }

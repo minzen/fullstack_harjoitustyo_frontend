@@ -169,6 +169,7 @@ const NoteForm = props => {
             id='content_field'
             variant='standard'
             label='Content: '
+            multiline
             className={classes.textField}
             onChange={handleContentChange}
             value={content}
