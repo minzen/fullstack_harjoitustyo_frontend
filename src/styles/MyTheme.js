@@ -14,7 +14,11 @@ const MyTheme = createMuiTheme({
       // dark: will be calculated from palette.secondary.main,
       contrastText: '#ffcc00'
     }
-    // error: will use the default color
+    // Use defaults for error
+    // error: {
+    //   light: '#FF3333',
+    //   main: '#CC3300'
+    // }
   }
 })
 export default MyTheme

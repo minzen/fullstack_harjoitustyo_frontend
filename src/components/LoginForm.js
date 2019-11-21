@@ -52,9 +52,6 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     margin: theme.spacing(1)
-  },
-  error: {
-    color: 'red'
   }
 }))
 
@@ -62,7 +59,6 @@ const LoginForm = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [buttonDisabled, setButtonDisabled] = useState(false)
-  const [errorText, setErrorText] = useState(null)
   const [expanded, setExpanded] = useState(false)
   const [emailToRestorePwd, setEmailToRestorePwd] = useState('')
   const dateNow = new Date().toDateString()
@@ -136,8 +132,6 @@ const LoginForm = props => {
       )
       setEmail('')
       setPassword('')
-    } else {
-      setErrorText('Error: invalid credentials')
     }
   }
 
@@ -203,8 +197,6 @@ const LoginForm = props => {
                 />
               </Grid>
             </Grid>
-
-            <div className={classes.error}>{errorText}</div>
 
             <Button
               id='login_button'

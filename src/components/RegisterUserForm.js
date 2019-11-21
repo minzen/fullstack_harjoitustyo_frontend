@@ -73,7 +73,6 @@ const RegisterUserForm = props => {
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [errorText, setErrorText] = useState(null)
   const [showDialog, setShowDialog] = useState(false)
   const classes = useStyles()
   const [expanded, setExpanded] = useState(false)
@@ -108,10 +107,7 @@ const RegisterUserForm = props => {
       setPassword('')
       setGivenname('')
       setSurname('')
-    } else {
-      setErrorText('Error in the registration')
     }
-    console.log(result)
   }
 
   const handleOpen = () => {
@@ -198,7 +194,6 @@ const RegisterUserForm = props => {
                   />
                 </Grid>
               </Grid>
-              <div className={classes.error}>{errorText}</div>
               <Button
                 id='register_submit_button'
                 className={classes.button}

@@ -8,10 +8,11 @@ import Notes from './components/Notes'
 import Profile from './components/Profile'
 import { ApolloProvider, Mutation, Query } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
-import { ThemeProvider } from '@material-ui/core'
+import { ThemeProvider, Snackbar, SnackbarContent } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import NotesIcon from '@material-ui/icons/Notes'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import ErrorIcon from '@material-ui/icons/Error'
 import MyTheme from './styles/MyTheme'
 require('dotenv').config()
 
@@ -83,6 +84,20 @@ const useStyles = makeStyles({
   title: {
     justify: 'center',
     fontFamily: 'Cochin'
+  },
+  errorNotification: {
+    backgroundColor: MyTheme.palette.error.light
+  },
+  errorIcon: {
+    fontSize: 20
+  },
+  errorIconVariant: {
+    opacity: 0.9,
+    marginRight: MyTheme.spacing(1)
+  },
+  errorMessage: {
+    display: 'flex',
+    alignItems: 'center'
   }
 })
 
@@ -92,6 +107,7 @@ const App = () => {
   const [page, setPage] = useState('notes')
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [showErrorNotification, setShowErrorNotification] = useState(false)
   const client = useApolloClient()
 
   useEffect(() => {
@@ -101,10 +117,12 @@ const App = () => {
 
   const handleError = error => {
     console.log(error)
-    setErrorMessage(error.graphQLErrors[0].message)
+    setErrorMessage('Error: ' + error.graphQLErrors[0].message)
+    setShowErrorNotification(true)
     setTimeout(() => {
       setErrorMessage(null)
-    }, 10000)
+      setShowErrorNotification(false)
+    }, 6000)
   }
 
   const [login] = useMutation(LOGIN, {
@@ -115,24 +133,23 @@ const App = () => {
     onError: handleError
   })
 
-  const errorNotification = () =>
-    errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>
-
   const { loading, error, data } = useQuery(CURRENT_USER)
-  if (loading) return null
+  if (loading) {
+    return null
+  }
 
-  if (error) return 'error'
+  if (error) {
+    return 'error'
+  }
 
-  console.log(data)
-  if (data && data.me && loggedInUser === null) {
+  if (data.me && loggedInUser === null) {
     setLoggedInUser(data.me)
   }
 
-  const initials = () => {
+  const buildInitialsForMenuAvatar = () => {
     if (!loggedInUser) {
       return 'N/A'
     }
-
     const givenname =
       loggedInUser.givenname === null || loggedInUser.givenname === ''
         ? 'N'
@@ -179,7 +196,7 @@ const App = () => {
                       }}
                     >
                       <Avatar className={classes.orangeAvatar}>
-                        {initials()}
+                        {buildInitialsForMenuAvatar()}
                       </Avatar>
                     </Button>
                     <Button
@@ -206,6 +223,23 @@ const App = () => {
             </Grid>
           </Grid>
           <Grid container justify='center'>
+            <Grid item>
+              <h1 className={classes.title}>Memory Tracks</h1>
+            </Grid>
+            <Grid item>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center'
+                }}
+                open={showErrorNotification}
+                variant='error'
+                autoHideDuration={6000}
+                onClose={console.log('snackbar/handleClose')}
+              >
+                <SnackbarContent message={errorMessage} />
+              </Snackbar>
+            </Grid>
             <Grid item>
               <ApolloConsumer>
                 {client => (
@@ -242,9 +276,22 @@ const App = () => {
           alignItems='center'
           spacing={1}
         >
-          <Grid item>{errorNotification()}</Grid>
           <Grid item>
             <h1 className={classes.title}>Memory Tracks</h1>
+          </Grid>
+          <Grid item>
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center'
+              }}
+              open={showErrorNotification}
+              variant='error'
+              autoHideDuration={6000}
+              onClose={console.log('snackbar/handleClose')}
+            >
+              <SnackbarContent message={errorMessage} />
+            </Snackbar>
           </Grid>
           <Grid item>
             <LoginForm login={login} setToken={token => setToken(token)} />
