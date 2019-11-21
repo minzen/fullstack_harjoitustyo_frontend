@@ -137,6 +137,7 @@ const RegisterUserForm = props => {
 
         <CardActions disableSpacing>
           <IconButton
+            data-cy='submit_expand_register_form'
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded
             })}
@@ -221,7 +222,12 @@ const RegisterUserForm = props => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color='primary' autoFocus>
+          <Button
+            data-cy='confirm_ok_user_registered'
+            onClick={handleClose}
+            color='primary'
+            autoFocus
+          >
             OK
           </Button>
         </DialogActions>

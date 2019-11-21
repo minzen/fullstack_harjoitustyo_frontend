@@ -53,7 +53,7 @@ describe('Memory Tracks with a logged in user', function() {
     cy.contains('Stored Notes')
     cy.contains('No stored notes found.')
   })
-  it('a logged in user is able to add a new note', function() {
+  it('a logged in user is able to add a new note and the provided keywords are formatted properly', function() {
     const noteTitle = 'This is a fancy test note'
     const noteContent =
       'We can type in a bit more text and it should be shown on the card component.'
