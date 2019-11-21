@@ -103,7 +103,7 @@ const useStyles = makeStyles({
   titleBox: {
     justify: 'center',
     color: 'black',
-    backgroundColor: '#BFC7D6',
+    backgroundColor: '#FF440C',
     padding: 20,
     fontSize: 30,
     maxWidth: 345
