@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { gql } from 'apollo-boost'
 import {
   Button,
@@ -10,7 +10,9 @@ import {
   DialogActions,
   Card,
   CardContent,
-  CardHeader
+  CardHeader,
+  Snackbar,
+  SnackbarContent
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
@@ -77,20 +79,18 @@ const Profile = ({ show, client, user }) => {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [successDialogTitle, setSuccessDialogTitle] = useState('')
   const [successDialogContent, setSuccessDialogContent] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [showErrorNotification, setShowErrorNotification] = useState(false)
   const classes = useStyles()
+
+  useEffect(() => {
+    setGivenname(user.givenname)
+    setSurname(user.surname)
+    setEmail(user.email)
+  }, [user])
 
   if (!user) {
     return null
-  } else {
-    if (givenname === '') {
-      setGivenname(user.givenname)
-    }
-    if (surname === '') {
-      setSurname(user.surname)
-    }
-    if (email === '') {
-      setEmail(user.email)
-    }
   }
 
   const handleGivennameChange = event => {
@@ -130,6 +130,7 @@ const Profile = ({ show, client, user }) => {
       }
     } catch (e) {
       console.log('Error when updating user data', e)
+      handleError(e)
     }
   }
 
@@ -176,6 +177,7 @@ const Profile = ({ show, client, user }) => {
       }
     } catch (e) {
       console.log('error when changing a password', e)
+      handleError(e)
     }
   }
 
@@ -189,15 +191,38 @@ const Profile = ({ show, client, user }) => {
     setSuccessDialogContent('')
   }
 
+  const handleError = error => {
+    console.log(error)
+    setErrorMessage('Error: ' + error.graphQLErrors[0].message)
+    setShowErrorNotification(true)
+    setTimeout(() => {
+      setErrorMessage(null)
+      setShowErrorNotification(false)
+    }, 6000)
+  }
+
   if (!show) {
     return null
   }
   return (
     <>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
+        }}
+        open={showErrorNotification}
+        variant='error'
+        autoHideDuration={6000}
+        onClose={console.log('snackbar/handleClose')}
+      >
+        <SnackbarContent message={errorMessage} />
+      </Snackbar>
+
       <Card className={classes.card}>
         <CardHeader title='Basic user data' className={classes.cardHeader} />
         <CardContent>
-          <form>
+          <form autoComplete='off'>
             <TextField
               id='givenname_field'
               variant='standard'
