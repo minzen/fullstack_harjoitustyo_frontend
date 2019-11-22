@@ -80,7 +80,6 @@ const LoginForm = props => {
   }
 
   const handleEmailChange = event => {
-    console.log('handleEmailChange', event)
     setEmail(event.target.value)
     setSubmitButtonState()
   }
@@ -133,17 +132,15 @@ const LoginForm = props => {
       )
       setEmail('')
       setPassword('')
-      props.handleSpinnerVisibility(false)
     }
+    props.handleSpinnerVisibility(false)
   }
 
   const handleExpandClick = event => {
-    console.log('handleExpandClick')
     setExpanded(!expanded)
   }
 
   const handleEmailToRestorePwdChange = event => {
-    console.log('handleEmailToRestorePwdChange', event.target.value)
     setEmailToRestorePwd(event.target.value)
   }
 

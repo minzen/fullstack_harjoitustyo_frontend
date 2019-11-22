@@ -1,10 +1,16 @@
+const utils = require('./utils')
 const USER = 'end2endtester@example.net'
 const PWD = 'Let us test with this one!'
 const SHORT_PWD = 'h20e?'
 const GIVENNAME = 'End to End'
 const SURNAME = 'Tester'
 
-describe('a new user wants to create a user account for the system', function() {
+describe('A new user wants to create a user account for the system', function() {
+  this.beforeAll(function() {
+    cy.log('Running the re-initialization of the test db')
+    utils.initDb()
+  })
+
   it('types in the user details without providing a valid email address and gets an error notification', function() {
     cy.visit('http://localhost:3000')
     // The register form is not visible as of default, so click on the expand button first

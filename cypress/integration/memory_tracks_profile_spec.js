@@ -1,3 +1,4 @@
+const utils = require('./utils')
 const USER = 'teemu.testaaja@test.net'
 const GIVENNAME = 'Teemu'
 const SURNAME = 'Testaaja'
@@ -10,7 +11,12 @@ const DEFAULT_CONTENT =
   'https://dynamic.hs.fi/2019/karsintakuvat/?_ga=2.73417106.1043337552.1573848580-425762508.1569652028'
 const DEFAULT_KEYWORDS = 'football'
 
-describe('Memory Tracks with a logged in user', function() {
+describe('Profile functionalities', function() {
+  this.beforeAll(function() {
+    cy.log('Running the re-initialization of the test db')
+    utils.initDb()
+  })
+
   it('a logged in user is able to see the logout button and may log out by using it', function() {
     cy.visit('http://localhost:3000')
     cy.get('#email_field').type(USER)
@@ -117,7 +123,6 @@ describe('Memory Tracks with a logged in user', function() {
 })
 
 // TODO:
-// - Reset/Init DB after each round (no dependent tests)
 // - Test validation
 // - Negative cases as well
 // - Change user data

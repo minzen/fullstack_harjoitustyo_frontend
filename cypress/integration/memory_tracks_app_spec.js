@@ -1,3 +1,4 @@
+const utils = require('./utils')
 const USER = 'teemu.testaaja@test.net'
 const GIVENNAME = 'Teemu'
 const SURNAME = 'Testaaja'
@@ -10,7 +11,12 @@ const DEFAULT_CONTENT =
   'https://dynamic.hs.fi/2019/karsintakuvat/?_ga=2.73417106.1043337552.1573848580-425762508.1569652028'
 const DEFAULT_KEYWORDS = 'football'
 
-describe('Memory Tracks with a user not logged in', function() {
+describe('Testing the login/logout with a user not logged in', function() {
+  this.beforeAll(function() {
+    cy.log('Running the re-initialization of the test db')
+    utils.initDb()
+  })
+
   it('front page can be opened', function() {
     cy.visit('http://localhost:3000')
     cy.contains('Memory Tracks')
@@ -28,13 +34,13 @@ describe('Memory Tracks with a user not logged in', function() {
     cy.get('#password_field').type('Seppä')
     cy.get('#login_button').click()
     cy.contains('Login')
-    cy.contains('Error: invalid credentials')
+    cy.contains('Error: wrong credentials')
   })
 })
 
 // Test which views are not visible
 
-describe('Memory Tracks with a logged in user', function() {
+describe('Testing the logout with a logged in user', function() {
   it('a logged in user is able to see the logout button and may log out by using it', function() {
     cy.visit('http://localhost:3000')
     cy.get('#email_field').type(USER)
@@ -46,6 +52,5 @@ describe('Memory Tracks with a logged in user', function() {
 })
 
 // TODO:
-// - Reset/Init DB after each round (no dependent tests)
 // - Test validation
 // - Negative cases as well
