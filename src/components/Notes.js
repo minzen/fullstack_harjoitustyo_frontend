@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { gql } from 'apollo-boost'
 import {
   Card,
@@ -14,7 +14,7 @@ import {
   DialogActions,
   DialogTitle,
   Fab,
-  Link
+  TextField
 } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
@@ -22,7 +22,6 @@ import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
 import Timestamp from './Timestamp'
 import LinkField from './LinkField'
-import { isTSExpressionWithTypeArguments } from '@babel/types'
 
 const ALL_NOTES = gql`
   query {
@@ -46,7 +45,16 @@ const DELETE_NOTE = gql`
   }
 `
 
+const NOTE_KEYWORDS = gql`
+  query {
+    allKeywordsInNotesOfUser
+  }
+`
+
 const useStyles = makeStyles({
+  container: {
+    minWidth: 400
+  },
   card: {
     minWidth: 275,
     maxWidth: 345,
@@ -66,23 +74,38 @@ const useStyles = makeStyles({
 
 const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   const classes = useStyles()
-  // TODO: Implement search
-  //const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
   const [selectedNote, setSelectedNote] = useState(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [editNoteVisible, setEditNoteVisible] = useState(false)
 
-  let notes
+  const fetchKeywords = async () => {
+    try {
+      const { data, loading, error } = await client.query({
+        query: NOTE_KEYWORDS
+      })
+      if (data) {
+        console.log(data)
+        return data.keywords
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  let keywords
+
+  useEffect(() => {
+    keywords = fetchKeywords()
+    console.log(keywords)
+  }, [])
 
   if (!show) {
     return null
   }
-
   if (result && result.loading) {
     return <div>loading...</div>
-  } else {
-    notes = result.data.allNotes
   }
+  let notes = result.data.allNotes
 
   const handleDeleteDialogClose = () => {
     setShowDeleteDialog(false)
@@ -147,85 +170,169 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
     return link
   }
 
+  const handleSearchTermChange = async event => {
+    console.log('Current search term', event.target.value)
+    setSearchTerm(event.target.value)
+  }
+
   if (notes && notes.length > 0) {
     return (
       <Grid container justify='center'>
         <Grid item xs={12} md={6}>
-          <Grid container spacing={1} direction='row' alignItems='center'>
-            {notes.map(note => {
-              const link = detectLinkFromText(note.content)
-              return (
-                <Card className={classes.card} key={note.id}>
-                  <CardHeader
-                    title={note.title}
-                    className={classes.cardHeader}
-                  ></CardHeader>
+          <Grid container spacing={1} direction='column' alignItems='center'>
+            <Grid item>
+              <TextField
+                id='search_field'
+                variant='filled'
+                label='Search by keyword: '
+                onChange={handleSearchTermChange}
+                value={searchTerm}
+                className={classes.textField}
+              />
+            </Grid>
+            <Grid item>
+              {notes.map(note => {
+                const link = detectLinkFromText(note.content)
+                return (
+                  <Card className={classes.card} key={note.id}>
+                    <CardHeader
+                      title={note.title}
+                      className={classes.cardHeader}
+                    ></CardHeader>
 
-                  <CardContent>
-                    <Typography
-                      data-cy='contentField'
-                      variant='body1'
-                      gutterBottom
-                    >
-                      Note: {note.content}
-                    </Typography>
-                    <LinkField link={link} />
-                    <Typography
-                      data-cy='keywordsField'
-                      variant='body1'
-                      gutterBottom
-                    >
-                      Keywords:{' '}
-                      {extractKeywordsFromArrayWithJoin(note.keywords)}
-                    </Typography>
-                    <Typography
-                      className={classes.timestamp}
-                      data-cy='timestampField'
-                      variant='body2'
-                      gutterBottom
-                    >
-                      <Timestamp timestamp={note.modified} />
-                    </Typography>
-                  </CardContent>
+                    <CardContent>
+                      <Typography
+                        data-cy='contentField'
+                        variant='body1'
+                        gutterBottom
+                      >
+                        Note: {note.content}
+                      </Typography>
+                      <LinkField link={link} />
+                      <Typography
+                        data-cy='keywordsField'
+                        variant='body1'
+                        gutterBottom
+                      >
+                        Keywords:{' '}
+                        {extractKeywordsFromArrayWithJoin(note.keywords)}
+                      </Typography>
+                      <Typography
+                        className={classes.timestamp}
+                        data-cy='timestampField'
+                        variant='body2'
+                        gutterBottom
+                      >
+                        <Timestamp timestamp={note.modified} />
+                      </Typography>
+                    </CardContent>
 
-                  <CardContent>
-                    <Button
-                      data-cy='editSubmit'
-                      startIcon={<EditIcon />}
-                      variant='contained'
-                      onClick={() => {
-                        console.log('editIcon clicked')
-                        setSelectedNote(note)
-                        setEditNoteVisible(true)
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      data-cy='deleteSubmit'
-                      startIcon={<DeleteOutlinedIcon />}
-                      variant='contained'
-                      onClick={() => {
-                        console.log('delete note clicked')
-                        setSelectedNote(note)
-                        setEditNoteVisible(false)
-                        handleDeleteDialogOpen()
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </CardContent>
-                </Card>
-              )
-            })}
+                    <CardContent>
+                      <Button
+                        data-cy='editSubmit'
+                        startIcon={<EditIcon />}
+                        variant='contained'
+                        onClick={() => {
+                          console.log('editIcon clicked')
+                          setSelectedNote(note)
+                          setEditNoteVisible(true)
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        data-cy='deleteSubmit'
+                        startIcon={<DeleteOutlinedIcon />}
+                        variant='contained'
+                        onClick={() => {
+                          console.log('delete note clicked')
+                          setSelectedNote(note)
+                          setEditNoteVisible(false)
+                          handleDeleteDialogOpen()
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </Grid>
+            <Fab
+              id='add_note_button'
+              color='primary'
+              aria-label='Add note'
+              onClick={() => {
+                setEditNoteVisible(true)
+                setSelectedNote(null)
+              }}
+              className={classes.addButton}
+            >
+              <AddIcon />
+            </Fab>
+
+            <NoteForm
+              client={client}
+              note={selectedNote}
+              visible={editNoteVisible}
+              handleSpinnerVisibility={handleSpinnerVisibility}
+            />
+
+            <Dialog
+              open={showDeleteDialog}
+              onClose={handleDeleteDialogClose}
+              aria-labelledby='alert-dialog-title'
+              aria-describedby='alert-dialog-description'
+            >
+              <DialogTitle id='alert-dialog-title'>Delete note?</DialogTitle>
+              <DialogContent>
+                <DialogContentText id='alert-dialog-description'>
+                  Are you certain that you want to delete the note?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  data-cy='cancelConfirmation'
+                  onClick={handleDeleteDialogClose}
+                  color='default'
+                  variant='contained'
+                >
+                  Cancel
+                </Button>
+                <Button
+                  data-cy='submitConfirmation'
+                  onClick={() => {
+                    handleDeleteDialogClose()
+                    handleDelete()
+                  }}
+                  color='secondary'
+                  autoFocus
+                  variant='contained'
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Grid>
+        </Grid>
+      </Grid>
+    )
+  }
+
+  return (
+    <>
+      <Grid container className={classes.container} justify='center'>
+        <Grid container spacing={1} direction='column' alignItems='center'>
+          <h2>Stored Notes</h2>
+          <p>No stored notes found.</p>
+          <br />
+          <br />
           <Fab
             id='add_note_button'
             color='primary'
             aria-label='Add note'
             onClick={() => {
               setEditNoteVisible(true)
-              setSelectedNote(null)
             }}
             className={classes.addButton}
           >
@@ -234,75 +341,12 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
 
           <NoteForm
             client={client}
-            note={selectedNote}
+            note={null}
             visible={editNoteVisible}
             handleSpinnerVisibility={handleSpinnerVisibility}
           />
-
-          <Dialog
-            open={showDeleteDialog}
-            onClose={handleDeleteDialogClose}
-            aria-labelledby='alert-dialog-title'
-            aria-describedby='alert-dialog-description'
-          >
-            <DialogTitle id='alert-dialog-title'>Delete note?</DialogTitle>
-            <DialogContent>
-              <DialogContentText id='alert-dialog-description'>
-                Are you certain that you want to delete the note?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                data-cy='cancelConfirmation'
-                onClick={handleDeleteDialogClose}
-                color='default'
-                variant='contained'
-              >
-                Cancel
-              </Button>
-              <Button
-                data-cy='submitConfirmation'
-                onClick={() => {
-                  handleDeleteDialogClose()
-                  handleDelete()
-                }}
-                color='secondary'
-                autoFocus
-                variant='contained'
-              >
-                Delete
-              </Button>
-            </DialogActions>
-          </Dialog>
         </Grid>
       </Grid>
-    )
-  }
-
-  return (
-    <>
-      <h2>Stored Notes</h2>
-      <p>No stored notes found.</p>
-      <br />
-      <br />
-      <Fab
-        id='add_note_button'
-        color='primary'
-        aria-label='Add note'
-        onClick={() => {
-          setEditNoteVisible(true)
-        }}
-        className={classes.addButton}
-      >
-        <AddIcon />
-      </Fab>
-
-      <NoteForm
-        client={client}
-        note={null}
-        visible={editNoteVisible}
-        handleSpinnerVisibility={handleSpinnerVisibility}
-      />
     </>
   )
 }
