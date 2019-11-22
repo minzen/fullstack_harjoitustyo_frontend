@@ -70,6 +70,10 @@ describe('Manipulating notes with a logged in user', function() {
     cy.contains(ANOTHER_NOTE_CONTENT)
     cy.contains('keyword1')
     cy.contains('Last modified')
+
+    cy.get('[data-cy=timestampField').then($tsField => {
+      console.log($tsField)
+    })
     // Get the last modified data so it can be later compared after editing the note
     cy.get('[data-cy=editSubmit]').click()
     cy.wait(1000)
@@ -82,6 +86,7 @@ describe('Manipulating notes with a logged in user', function() {
     cy.wait(2000)
     cy.contains('This is a fancy test note')
     cy.contains('keyword1')
+
     cy.contains('Last modified:')
   })
 })

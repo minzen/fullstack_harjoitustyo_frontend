@@ -26,6 +26,6 @@ const Timestamp = ({ timestamp }) => {
     return <></>
   }
 
-  return <div>Last modified: {convertTimeStampToDate(timestamp)}</div>
+  return <>Last modified: {convertTimeStampToDate(timestamp)}</>
 }
 export default Timestamp

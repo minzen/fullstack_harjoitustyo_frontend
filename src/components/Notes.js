@@ -21,6 +21,8 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
 import Timestamp from './Timestamp'
+import LinkField from './LinkField'
+import { isTSExpressionWithTypeArguments } from '@babel/types'
 
 const ALL_NOTES = gql`
   query {
@@ -55,6 +57,10 @@ const useStyles = makeStyles({
   cardHeader: {
     backgroundColor: '#CCCCCC',
     padding: 2
+  },
+  timestamp: {
+    marginTop: 10,
+    color: '#708090'
   }
 })
 
@@ -156,17 +162,28 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
                   ></CardHeader>
 
                   <CardContent>
-                    <Typography variant='body1' gutterBottom>
+                    <Typography
+                      data-cy='contentField'
+                      variant='body1'
+                      gutterBottom
+                    >
                       Note: {note.content}
                     </Typography>
-                    <Typography variant='body1' gutterBottom>
-                      <Link href={link}>{link}</Link>
-                    </Typography>
-                    <Typography variant='body1' gutterBottom>
+                    <LinkField link={link} />
+                    <Typography
+                      data-cy='keywordsField'
+                      variant='body1'
+                      gutterBottom
+                    >
                       Keywords:{' '}
                       {extractKeywordsFromArrayWithJoin(note.keywords)}
                     </Typography>
-                    <Typography variant='body2' gutterBottom>
+                    <Typography
+                      className={classes.timestamp}
+                      data-cy='timestampField'
+                      variant='body2'
+                      gutterBottom
+                    >
                       <Timestamp timestamp={note.modified} />
                     </Typography>
                   </CardContent>

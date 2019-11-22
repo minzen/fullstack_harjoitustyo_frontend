@@ -109,10 +109,14 @@ const NoteForm = props => {
       let keywordsInLowerCase = keywords.toLowerCase()
       // Split at comma and remove possible whitespaces
       let keywordsArr = keywordsInLowerCase.split(',')
+      console.log('array before trim()', keywordsArr)
+      let trimmedKeywords = []
       keywordsArr.forEach(currentItem => {
-        currentItem.trim()
+        const trimmed = currentItem.trim()
+        trimmedKeywords.push(trimmed)
       })
-      return keywordsArr
+      console.log('array after trim()', trimmedKeywords)
+      return trimmedKeywords
     }
 
     return []
