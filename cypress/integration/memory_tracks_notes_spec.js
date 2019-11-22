@@ -7,7 +7,7 @@ const DEFAULT_CONTENT =
 const DEFAULT_KEYWORDS = 'football'
 const ANOTHER_NOTE_TITLE = 'This is a fancy test note'
 const ANOTHER_NOTE_CONTENT =
-  'We can type in a bit more text and it should be shown on the card component.'
+  'We can type in a bit more text and it should be shown on the card component. '
 const ANOTHER_NOTE_KEYWORDS = 'KeyWord1,      ANOTHer Keyword'
 
 describe('Manipulating notes with a logged in user', function() {
@@ -77,16 +77,14 @@ describe('Manipulating notes with a logged in user', function() {
     // Get the last modified data so it can be later compared after editing the note
     cy.get('[data-cy=editSubmit]').click()
     cy.wait(1000)
-    cy.get('#add_note_button').click()
-    cy.get('#title_field').type(ANOTHER_NOTE_TITLE + ' This was updated!')
-    cy.get('#content_field').type(
-      ANOTHER_NOTE_CONTENT + ' Note this was changed too!'
-    )
+    cy.get('#title_field').type(' Hey this was updated!')
+    cy.get('#content_field').type(' Note this was changed too!')
     cy.get('#save_note_button').click()
     cy.wait(2000)
-    cy.contains('This is a fancy test note')
+    cy.contains('This is a fancy test note Hey this was updated!')
+    cy.contains('Note this was changed too!')
     cy.contains('keyword1')
-
+    cy.contains('another keyword')
     cy.contains('Last modified:')
   })
 })
