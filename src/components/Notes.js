@@ -20,6 +20,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
+import Timestamp from './Timestamp'
 
 const ALL_NOTES = gql`
   query {
@@ -32,6 +33,7 @@ const ALL_NOTES = gql`
         id
         email
       }
+      modified
     }
   }
 `
@@ -115,7 +117,7 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
     return keywords.join()
   }
 
-  function detectLinkFromText(text) {
+  const detectLinkFromText = text => {
     console.log(
       'Attempting to construct a link based on the text content...',
       text
@@ -163,6 +165,9 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
                     <Typography variant='body1' gutterBottom>
                       Keywords:{' '}
                       {extractKeywordsFromArrayWithJoin(note.keywords)}
+                    </Typography>
+                    <Typography variant='body2' gutterBottom>
+                      <Timestamp timestamp={note.modified} />
                     </Typography>
                   </CardContent>
 

@@ -73,6 +73,7 @@ const ALL_NOTES = gql`
         id
         email
       }
+      modified
     }
   }
 `
