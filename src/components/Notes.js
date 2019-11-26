@@ -1,27 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { gql } from 'apollo-boost'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  Typography,
-  makeStyles,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  DialogTitle,
-  Fab,
-  TextField
-} from '@material-ui/core'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
+import { Grid, makeStyles, Fab, TextField } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
-import Timestamp from './Timestamp'
-import LinkField from './LinkField'
+import DeleteDialog from './DeleteDialog'
+import Note from './Note'
 
 const ALL_NOTES = gql`
   query {
@@ -54,21 +37,6 @@ const NOTE_KEYWORDS = gql`
 const useStyles = makeStyles({
   container: {
     minWidth: 400
-  },
-  card: {
-    minWidth: 275,
-    maxWidth: 345,
-    backgroundColor: '#EEF0F1',
-    marginTop: 15,
-    marginRight: 10
-  },
-  cardHeader: {
-    backgroundColor: '#CCCCCC',
-    padding: 2
-  },
-  timestamp: {
-    marginTop: 10,
-    color: '#708090'
   }
 })
 
@@ -78,6 +46,9 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   const [selectedNote, setSelectedNote] = useState(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [editNoteVisible, setEditNoteVisible] = useState(false)
+  const [allKeywords, setAllKeywords] = useState([])
+  const [filteredNotes, setFilteredNotes] = useState(null)
+  let allNotes
 
   const fetchKeywords = async () => {
     try {
@@ -85,18 +56,17 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
         query: NOTE_KEYWORDS
       })
       if (data) {
-        console.log(data)
-        return data.keywords
+        console.log(data.allKeywordsInNotesOfUser)
+        return data.allKeywordsInNotesOfUser
       }
     } catch (e) {
       console.log(e)
     }
   }
-  let keywords
 
   useEffect(() => {
-    keywords = fetchKeywords()
-    console.log(keywords)
+    setAllKeywords(fetchKeywords())
+    console.log(allKeywords)
   }, [])
 
   if (!show) {
@@ -105,7 +75,8 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   if (result && result.loading) {
     return <div>loading...</div>
   }
-  let notes = result.data.allNotes
+  allNotes = result.data.allNotes
+  if (!filteredNotes) setFilteredNotes(allNotes)
 
   const handleDeleteDialogClose = () => {
     setShowDeleteDialog(false)
@@ -138,44 +109,30 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
     }
   }
 
-  const extractKeywordsFromArrayWithJoin = keywords => {
-    console.log('keywords :', keywords)
-    if (!keywords) {
-      return ''
-    }
-    return keywords.join()
-  }
-
-  const detectLinkFromText = text => {
-    console.log(
-      'Attempting to construct a link based on the text content...',
-      text
-    )
-    let tokenizedByBlanks
-    if (text.split(' ') === null) {
-      tokenizedByBlanks = [text]
-    } else {
-      tokenizedByBlanks = text.split(' ')
-    }
-    let link
-    tokenizedByBlanks.forEach(element => {
-      let res = element.match(
-        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
-      )
-      if (res !== null) {
-        link = res
-        return
-      }
-    })
-    return link
-  }
-
   const handleSearchTermChange = async event => {
     console.log('Current search term', event.target.value)
+    // await setAllKeywords(fetchKeywords())
+    // console.log('Value of allKeywords', allKeywords)
     setSearchTerm(event.target.value)
+    // Filter the notes by the provided search term
+    if (searchTerm === '' || searchTerm === null) {
+      setFilteredNotes(allNotes)
+    } else {
+      setFilteredNotes(
+        filteredNotes.filter(n => {
+          const noteKeywords = n.keywords.join(',')
+          console.log(noteKeywords)
+          if (noteKeywords.includes(searchTerm)) {
+            return true
+          }
+          return false
+        })
+      )
+    }
+    console.log('filteredNotes:', filteredNotes)
   }
 
-  if (notes && notes.length > 0) {
+  if (filteredNotes && filteredNotes.length > 0) {
     return (
       <Grid container justify='center'>
         <Grid item xs={12} md={6}>
@@ -191,70 +148,14 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
               />
             </Grid>
             <Grid item>
-              {notes.map(note => {
-                const link = detectLinkFromText(note.content)
+              {filteredNotes.map(note => {
                 return (
-                  <Card className={classes.card} key={note.id}>
-                    <CardHeader
-                      title={note.title}
-                      className={classes.cardHeader}
-                    ></CardHeader>
-
-                    <CardContent>
-                      <Typography
-                        data-cy='contentField'
-                        variant='body1'
-                        gutterBottom
-                      >
-                        Note: {note.content}
-                      </Typography>
-                      <LinkField link={link} />
-                      <Typography
-                        data-cy='keywordsField'
-                        variant='body1'
-                        gutterBottom
-                      >
-                        Keywords:{' '}
-                        {extractKeywordsFromArrayWithJoin(note.keywords)}
-                      </Typography>
-                      <Typography
-                        className={classes.timestamp}
-                        data-cy='timestampField'
-                        variant='body2'
-                        gutterBottom
-                      >
-                        <Timestamp timestamp={note.modified} />
-                      </Typography>
-                    </CardContent>
-
-                    <CardContent>
-                      <Button
-                        data-cy='editSubmit'
-                        startIcon={<EditIcon />}
-                        variant='contained'
-                        onClick={() => {
-                          console.log('editIcon clicked')
-                          setSelectedNote(note)
-                          setEditNoteVisible(true)
-                        }}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        data-cy='deleteSubmit'
-                        startIcon={<DeleteOutlinedIcon />}
-                        variant='contained'
-                        onClick={() => {
-                          console.log('delete note clicked')
-                          setSelectedNote(note)
-                          setEditNoteVisible(false)
-                          handleDeleteDialogOpen()
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <Note
+                    note={note}
+                    setSelectedNote={setSelectedNote}
+                    setEditNoteVisible={setEditNoteVisible}
+                    handleDeleteDialogOpen={handleDeleteDialogOpen}
+                  />
                 )
               })}
             </Grid>
@@ -278,41 +179,13 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
               handleSpinnerVisibility={handleSpinnerVisibility}
             />
 
-            <Dialog
-              open={showDeleteDialog}
-              onClose={handleDeleteDialogClose}
-              aria-labelledby='alert-dialog-title'
-              aria-describedby='alert-dialog-description'
-            >
-              <DialogTitle id='alert-dialog-title'>Delete note?</DialogTitle>
-              <DialogContent>
-                <DialogContentText id='alert-dialog-description'>
-                  Are you certain that you want to delete the note?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  data-cy='cancelConfirmation'
-                  onClick={handleDeleteDialogClose}
-                  color='default'
-                  variant='contained'
-                >
-                  Cancel
-                </Button>
-                <Button
-                  data-cy='submitConfirmation'
-                  onClick={() => {
-                    handleDeleteDialogClose()
-                    handleDelete()
-                  }}
-                  color='secondary'
-                  autoFocus
-                  variant='contained'
-                >
-                  Delete
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <DeleteDialog
+              showDialog={showDeleteDialog}
+              handleDelete={handleDelete}
+              handleDeleteDialogClose={handleDeleteDialogClose}
+              dialogTitle='Delete note?'
+              dialogContent='Are you certain that you want to delete the note?'
+            />
           </Grid>
         </Grid>
       </Grid>
@@ -324,6 +197,18 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
       <Grid container className={classes.container} justify='center'>
         <Grid container spacing={1} direction='column' alignItems='center'>
           <h2>Stored Notes</h2>
+        </Grid>
+        <Grid item>
+          <TextField
+            id='search_field'
+            variant='filled'
+            label='Search by keyword: '
+            onChange={handleSearchTermChange}
+            value={searchTerm}
+            className={classes.textField}
+          />
+        </Grid>
+        <Grid container spacing={1} direction='column' alignItems='center'>
           <p>No stored notes found.</p>
           <br />
           <br />
