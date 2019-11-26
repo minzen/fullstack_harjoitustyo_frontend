@@ -128,7 +128,7 @@ const useStyles = makeStyles({
 
 const App = () => {
   const classes = useStyles()
-  const [token, setToken] = useState()
+  const [token, setToken] = useState(null)
   const [page, setPage] = useState('notes')
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { gql } from 'apollo-boost'
-import { Grid, makeStyles, Fab, TextField } from '@material-ui/core'
+import { Grid, makeStyles, Fab, TextField, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
 import DeleteDialog from './DeleteDialog'
@@ -28,9 +28,15 @@ const DELETE_NOTE = gql`
   }
 `
 
-const NOTE_KEYWORDS = gql`
-  query {
-    allKeywordsInNotesOfUser
+const GET_NOTES_BY_KEYWORD = gql`
+  query notesByKeyword($keyword: String) {
+    notesByKeyword(keyword: $keyword) {
+      id
+      title
+      content
+      keywords
+      modified
+    }
   }
 `
 
@@ -46,37 +52,18 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   const [selectedNote, setSelectedNote] = useState(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [editNoteVisible, setEditNoteVisible] = useState(false)
-  const [allKeywords, setAllKeywords] = useState([])
   const [filteredNotes, setFilteredNotes] = useState(null)
-  let allNotes
-
-  const fetchKeywords = async () => {
-    try {
-      const { data, loading, error } = await client.query({
-        query: NOTE_KEYWORDS
-      })
-      if (data) {
-        console.log(data.allKeywordsInNotesOfUser)
-        return data.allKeywordsInNotesOfUser
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  useEffect(() => {
-    setAllKeywords(fetchKeywords())
-    console.log(allKeywords)
-  }, [])
+  let notes
 
   if (!show) {
     return null
   }
+
   if (result && result.loading) {
     return <div>loading...</div>
   }
-  allNotes = result.data.allNotes
-  if (!filteredNotes) setFilteredNotes(allNotes)
+
+  notes = result.data.allNotes
 
   const handleDeleteDialogClose = () => {
     setShowDeleteDialog(false)
@@ -111,30 +98,41 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
 
   const handleSearchTermChange = async event => {
     console.log('Current search term', event.target.value)
-    // await setAllKeywords(fetchKeywords())
-    // console.log('Value of allKeywords', allKeywords)
-    setSearchTerm(event.target.value)
-    // Filter the notes by the provided search term
-    if (searchTerm === '' || searchTerm === null) {
-      setFilteredNotes(allNotes)
-    } else {
-      setFilteredNotes(
-        filteredNotes.filter(n => {
-          const noteKeywords = n.keywords.join(',')
-          console.log(noteKeywords)
-          if (noteKeywords.includes(searchTerm)) {
-            return true
-          }
-          return false
-        })
-      )
-    }
-    console.log('filteredNotes:', filteredNotes)
+    await setSearchTerm(event.target.value)
   }
 
-  if (filteredNotes && filteredNotes.length > 0) {
+  const execFiltering = async event => {
+    // Filter the notes by the provided search term
+    if (!searchTerm || searchTerm.trim() === '') {
+      await showNotes()
+    } else {
+      await showNotes(searchTerm)
+    }
+  }
+
+  const showNotes = async keyword => {
+    console.log('showNotes', keyword)
+    if (!keyword || keyword.trim() === '') {
+      setFilteredNotes(null)
+      return
+    }
+    console.log('Showing notes by keyword', keyword)
+    try {
+      const { data } = await client.query({
+        query: GET_NOTES_BY_KEYWORD,
+        variables: { keyword: keyword }
+      })
+      console.log(data)
+      setFilteredNotes(data.notesByKeyword)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  if (filteredNotes) {
     return (
       <Grid container justify='center'>
+        <Grid item>Filtered notes: {filteredNotes.length}</Grid>
         <Grid item xs={12} md={6}>
           <Grid container spacing={1} direction='column' alignItems='center'>
             <Grid item>
@@ -146,6 +144,15 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
                 value={searchTerm}
                 className={classes.textField}
               />
+            </Grid>
+            <Grid item>
+              <Button
+                onClick={execFiltering}
+                color='secondary'
+                variant='contained'
+              >
+                Filter
+              </Button>
             </Grid>
             <Grid item>
               {filteredNotes.map(note => {
@@ -190,8 +197,78 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
         </Grid>
       </Grid>
     )
-  }
+  } else {
+    if (notes) {
+      return (
+        <Grid container justify='center'>
+          <Grid item>Notes: {notes.length}</Grid>
+          <Grid item xs={12} md={6}>
+            <Grid container spacing={1} direction='column' alignItems='center'>
+              <Grid item>
+                <TextField
+                  id='search_field'
+                  variant='filled'
+                  label='Search by keyword: '
+                  onChange={handleSearchTermChange}
+                  value={searchTerm}
+                  className={classes.textField}
+                />
+              </Grid>
+              <Grid item>
+                <Button
+                  onClick={execFiltering}
+                  color='secondary'
+                  variant='contained'
+                >
+                  Filter
+                </Button>
+              </Grid>
 
+              <Grid item>
+                {notes.map(note => {
+                  return (
+                    <Note
+                      note={note}
+                      setSelectedNote={setSelectedNote}
+                      setEditNoteVisible={setEditNoteVisible}
+                      handleDeleteDialogOpen={handleDeleteDialogOpen}
+                    />
+                  )
+                })}
+              </Grid>
+              <Fab
+                id='add_note_button'
+                color='primary'
+                aria-label='Add note'
+                onClick={() => {
+                  setEditNoteVisible(true)
+                  setSelectedNote(null)
+                }}
+                className={classes.addButton}
+              >
+                <AddIcon />
+              </Fab>
+
+              <NoteForm
+                client={client}
+                note={selectedNote}
+                visible={editNoteVisible}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
+
+              <DeleteDialog
+                showDialog={showDeleteDialog}
+                handleDelete={handleDelete}
+                handleDeleteDialogClose={handleDeleteDialogClose}
+                dialogTitle='Delete note?'
+                dialogContent='Are you certain that you want to delete the note?'
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      )
+    }
+  }
   return (
     <>
       <Grid container className={classes.container} justify='center'>
