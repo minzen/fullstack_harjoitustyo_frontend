@@ -44,6 +44,10 @@ const GET_NOTES_BY_KEYWORD = gql`
 `
 
 const useStyles = makeStyles({
+  root: {
+    flexGrow: 1,
+    padding: MyTheme.spacing(2)
+  },
   textField: {
     width: 240
   },
@@ -163,115 +167,133 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
 
   if (filteredNotes) {
     return (
-      <Grid container justify='center'>
-        {/* <Grid item>Filtered notes: {filteredNotes.length}</Grid> */}
-        <Grid item xs={12} md={6}>
-          <Grid container spacing={1} direction='column' alignItems='center'>
+      <div className={classes.root}>
+        <Grid
+          container
+          spacing={2}
+          direction='row'
+          justify='center'
+          alignItems='center'
+        >
+          <SearchField
+            handleSubmit={execFiltering}
+            searchTerm={searchTerm}
+            handleSearchTermChange={handleSearchTermChange}
+          />
+        </Grid>
+
+        <Grid
+          container
+          spacing={2}
+          direction='row'
+          justify='flex-start'
+          alignItems='flex-start'
+        >
+          {filteredNotes.map(note => {
+            return (
+              <Grid item xs={12} sm={6} md={3} key={note.id}>
+                <Note
+                  key={note.id}
+                  note={note}
+                  handleEditNoteClick={handleEditNoteClick}
+                  handleDeleteNoteClick={handleDeleteNoteClick}
+                />
+              </Grid>
+            )
+          })}
+        </Grid>
+        <Fab
+          id='add_note_button'
+          color='primary'
+          aria-label='Add note'
+          onClick={event => {
+            handleAddNewNoteClick(event)
+          }}
+          className={classes.fab}
+        >
+          <AddIcon />
+        </Fab>
+
+        <div ref={noteFormRef} />
+        <NoteForm
+          client={client}
+          note={selectedNote}
+          visible={editNoteVisible}
+          handleSpinnerVisibility={handleSpinnerVisibility}
+        />
+
+        <DeleteDialog
+          showDialog={showDeleteDialog}
+          handleDelete={handleDelete}
+          handleDeleteDialogClose={handleDeleteDialogClose}
+          dialogTitle='Delete note?'
+          dialogContent='Are you certain that you want to delete the note?'
+        />
+      </div>
+    )
+  } else {
+    if (notes) {
+      return (
+        <div className={classes.root}>
+          <Grid
+            container
+            spacing={2}
+            direction='row'
+            justify='center'
+            alignItems='center'
+          >
             <SearchField
               handleSubmit={execFiltering}
               searchTerm={searchTerm}
               handleSearchTermChange={handleSearchTermChange}
             />
-            <Grid item>
-              {filteredNotes.map(note => {
-                return (
+          </Grid>
+
+          <Grid
+            container
+            spacing={2}
+            direction='row'
+            justify='flex-start'
+            alignItems='flex-start'
+          >
+            {notes.map(note => {
+              return (
+                <Grid item xs={12} sm={6} md={3} key={note.id}>
                   <Note
+                    key={note.id}
                     note={note}
                     handleEditNoteClick={handleEditNoteClick}
                     handleDeleteNoteClick={handleDeleteNoteClick}
                   />
-                )
-              })}
-            </Grid>
-            <Fab
-              id='add_note_button'
-              color='primary'
-              aria-label='Add note'
-              onClick={event => {
-                handleAddNewNoteClick(event)
-              }}
-              className={classes.fab}
-            >
-              <AddIcon />
-            </Fab>
-
-            <div ref={noteFormRef} />
-            <NoteForm
-              client={client}
-              note={selectedNote}
-              visible={editNoteVisible}
-              handleSpinnerVisibility={handleSpinnerVisibility}
-            />
-
-            <DeleteDialog
-              showDialog={showDeleteDialog}
-              handleDelete={handleDelete}
-              handleDeleteDialogClose={handleDeleteDialogClose}
-              dialogTitle='Delete note?'
-              dialogContent='Are you certain that you want to delete the note?'
-            />
-          </Grid>
-        </Grid>
-      </Grid>
-    )
-  } else {
-    if (notes) {
-      return (
-        <>
-          <Grid container justify='center'>
-            {/* <Grid item>Notes: {notes.length}</Grid> */}
-            <Grid item xs={12} md={6}>
-              <Grid
-                container
-                spacing={1}
-                direction='column'
-                alignItems='center'
-              >
-                <SearchField
-                  handleSubmit={execFiltering}
-                  searchTerm={searchTerm}
-                  handleSearchTermChange={handleSearchTermChange}
-                />
-                <Grid item>
-                  {notes.map(note => {
-                    return (
-                      <Note
-                        key={note.id}
-                        note={note}
-                        handleEditNoteClick={handleEditNoteClick}
-                        handleDeleteNoteClick={handleDeleteNoteClick}
-                      />
-                    )
-                  })}
                 </Grid>
-                <Fab
-                  id='add_note_button'
-                  color='primary'
-                  aria-label='Add note'
-                  onClick={handleAddNewNoteClick}
-                  className={classes.fab}
-                >
-                  <AddIcon />
-                </Fab>
-                <div ref={noteFormRef} />
-                <NoteForm
-                  client={client}
-                  note={selectedNote}
-                  visible={editNoteVisible}
-                  handleSpinnerVisibility={handleSpinnerVisibility}
-                />
-
-                <DeleteDialog
-                  showDialog={showDeleteDialog}
-                  handleDelete={handleDelete}
-                  handleDeleteDialogClose={handleDeleteDialogClose}
-                  dialogTitle='Delete note?'
-                  dialogContent='Are you certain that you want to delete the note?'
-                />
-              </Grid>
-            </Grid>
+              )
+            })}
           </Grid>
-        </>
+          <Fab
+            id='add_note_button'
+            color='primary'
+            aria-label='Add note'
+            onClick={handleAddNewNoteClick}
+            className={classes.fab}
+          >
+            <AddIcon />
+          </Fab>
+          <div ref={noteFormRef} />
+          <NoteForm
+            client={client}
+            note={selectedNote}
+            visible={editNoteVisible}
+            handleSpinnerVisibility={handleSpinnerVisibility}
+          />
+
+          <DeleteDialog
+            showDialog={showDeleteDialog}
+            handleDelete={handleDelete}
+            handleDeleteDialogClose={handleDeleteDialogClose}
+            dialogTitle='Delete note?'
+            dialogContent='Are you certain that you want to delete the note?'
+          />
+        </div>
       )
     }
   }
