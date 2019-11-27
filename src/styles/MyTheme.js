@@ -17,6 +17,7 @@ const MyTheme = createMuiTheme({
       // contrastText: will be calculated to contrast with palette.primary.main
     },
     error: red
-  }
+  },
+  spacing: 5
 })
 export default MyTheme

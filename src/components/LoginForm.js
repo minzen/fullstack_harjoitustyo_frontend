@@ -17,14 +17,20 @@ import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
+import MyTheme from '../styles/MyTheme'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   card: {
-    backgroundColor: '#ededed',
-    maxWidth: 345
+    minWidth: 275,
+    maxWidth: 345,
+    backgroundColor: '#718792',
+    marginTop: 15,
+    marginRight: 10
   },
   cardHeader: {
-    backgroundColor: '#c0c7d6'
+    backgroundColor: '#1c313a',
+    padding: 5,
+    margin: 5
   },
   media: {
     height: 0,
@@ -33,27 +39,28 @@ const useStyles = makeStyles(theme => ({
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
+    transition: MyTheme.transitions.create('transform', {
+      duration: MyTheme.transitions.duration.shortest
     })
   },
   expandOpen: {
     transform: 'rotate(180deg)'
   },
   avatar: {
-    backgroundColor: '#00710D',
+    backgroundColor: '#lightgrey',
     height: 70,
-    width: 70
+    width: 70,
+    color: 'white'
   },
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginLeft: MyTheme.spacing(1),
+    marginRight: MyTheme.spacing(1),
     width: 240
   },
   button: {
-    margin: theme.spacing(1)
+    margin: MyTheme.spacing(1)
   }
-}))
+})
 
 const LoginForm = props => {
   const [email, setEmail] = useState('')
@@ -176,6 +183,8 @@ const LoginForm = props => {
                   className={classes.textField}
                   label='Email address'
                   onChange={handleEmailChange}
+                  variant='filled'
+                  color='secondary'
                   value={email}
                 />
               </Grid>
@@ -191,6 +200,8 @@ const LoginForm = props => {
                   className={classes.textField}
                   label='Password'
                   onChange={handlePasswordChange}
+                  variant='outlined'
+                  color='secondary'
                   value={password}
                   type='password'
                 />

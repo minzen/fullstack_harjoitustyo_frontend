@@ -21,25 +21,28 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
 import clsx from 'clsx'
+import MyTheme from '../styles/MyTheme'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginLeft: MyTheme.spacing(1),
+    marginRight: MyTheme.spacing(1),
     width: 240
   },
   textFieldWithIcon: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
+    marginLeft: MyTheme.spacing(1),
+    marginRight: MyTheme.spacing(1),
     width: 210
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#718792',
     maxWidth: 345,
     paddingTop: 20
   },
   cardHeader: {
-    backgroundColor: '#dddddd'
+    backgroundColor: '#1c313a',
+    padding: 5,
+    margin: 5
   },
   media: {
     height: 0,
@@ -48,25 +51,26 @@ const useStyles = makeStyles(theme => ({
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest
+    transition: MyTheme.transitions.create('transform', {
+      duration: MyTheme.transitions.duration.shortest
     })
   },
   expandOpen: {
     transform: 'rotate(180deg)'
   },
   registerAvatar: {
-    backgroundColor: '#FF6666',
+    backgroundColor: '#455a64',
     width: 80,
-    height: 80
+    height: 80,
+    color: 'white'
   },
   button: {
-    margin: theme.spacing(1)
+    margin: MyTheme.spacing(1)
   },
   error: {
     color: 'red'
   }
-}))
+})
 
 const RegisterUserForm = props => {
   const [givenname, setGivenname] = useState('')
