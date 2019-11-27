@@ -145,6 +145,7 @@ const App = () => {
     console.log(error)
     setErrorMessage('Error: ' + error.graphQLErrors[0].message)
     setShowErrorNotification(true)
+    setSpinnerActive(false)
     setTimeout(() => {
       setErrorMessage(null)
       setShowErrorNotification(false)

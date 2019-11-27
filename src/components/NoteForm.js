@@ -123,6 +123,7 @@ const NoteForm = props => {
   }
 
   const handleNewNoteSubmit = async event => {
+    event.preventDefault()
     console.log('handleNewNoteSubmit', title, content, keywords)
     props.handleSpinnerVisibility(true)
     const keywordsArr = getKeywordsArrayFromString(keywords)
@@ -145,6 +146,7 @@ const NoteForm = props => {
   }
 
   const handleEditNoteSubmit = async event => {
+    event.preventDefault()
     console.log('handleEditNoteSubmit', noteId, title, content, keywords)
     props.handleSpinnerVisibility(true)
     const keywordsArr = getKeywordsArrayFromString(keywords)
@@ -234,14 +236,15 @@ const NoteForm = props => {
             id='save_note_button'
             variant='contained'
             color='primary'
-            onClick={() => {
+            onClick={event => {
               if (props.note) {
-                handleEditNoteSubmit()
+                handleEditNoteSubmit(event)
               } else {
-                handleNewNoteSubmit()
+                handleNewNoteSubmit(event)
               }
             }}
             className={classes.button}
+            type='submit'
           >
             Save note
           </Button>
