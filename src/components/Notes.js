@@ -7,6 +7,7 @@ import NoteForm from './NoteForm'
 import DeleteDialog from './DeleteDialog'
 import Note from './Note'
 import SearchField from './SearchField'
+import MyTheme from '../styles/MyTheme'
 
 const ALL_NOTES = gql`
   query {
@@ -45,6 +46,11 @@ const GET_NOTES_BY_KEYWORD = gql`
 const useStyles = makeStyles({
   textField: {
     width: 240
+  },
+  fab: {
+    position: 'fixed',
+    bottom: MyTheme.spacing(2),
+    right: MyTheme.spacing(2)
   }
 })
 
@@ -184,7 +190,7 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
               onClick={event => {
                 handleAddNewNoteClick(event)
               }}
-              className={classes.addButton}
+              className={classes.fab}
             >
               <AddIcon />
             </Fab>
@@ -211,55 +217,61 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   } else {
     if (notes) {
       return (
-        <Grid container justify='center'>
-          {/* <Grid item>Notes: {notes.length}</Grid> */}
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={1} direction='column' alignItems='center'>
-              <SearchField
-                handleSubmit={execFiltering}
-                searchTerm={searchTerm}
-                handleSearchTermChange={handleSearchTermChange}
-              />
-              <Grid item>
-                {notes.map(note => {
-                  return (
-                    <Note
-                      key={note.id}
-                      note={note}
-                      handleEditNoteClick={handleEditNoteClick}
-                      handleDeleteNoteClick={handleDeleteNoteClick}
-                    />
-                  )
-                })}
-              </Grid>
-              <Fab
-                id='add_note_button'
-                color='primary'
-                aria-label='Add note'
-                onClick={handleAddNewNoteClick}
-                className={classes.addButton}
+        <>
+          <Grid container justify='center'>
+            {/* <Grid item>Notes: {notes.length}</Grid> */}
+            <Grid item xs={12} md={6}>
+              <Grid
+                container
+                spacing={1}
+                direction='column'
+                alignItems='center'
               >
-                <AddIcon />
-              </Fab>
+                <SearchField
+                  handleSubmit={execFiltering}
+                  searchTerm={searchTerm}
+                  handleSearchTermChange={handleSearchTermChange}
+                />
+                <Grid item>
+                  {notes.map(note => {
+                    return (
+                      <Note
+                        key={note.id}
+                        note={note}
+                        handleEditNoteClick={handleEditNoteClick}
+                        handleDeleteNoteClick={handleDeleteNoteClick}
+                      />
+                    )
+                  })}
+                </Grid>
+                <Fab
+                  id='add_note_button'
+                  color='primary'
+                  aria-label='Add note'
+                  onClick={handleAddNewNoteClick}
+                  className={classes.fab}
+                >
+                  <AddIcon />
+                </Fab>
+                <div ref={noteFormRef} />
+                <NoteForm
+                  client={client}
+                  note={selectedNote}
+                  visible={editNoteVisible}
+                  handleSpinnerVisibility={handleSpinnerVisibility}
+                />
 
-              <div ref={noteFormRef} />
-              <NoteForm
-                client={client}
-                note={selectedNote}
-                visible={editNoteVisible}
-                handleSpinnerVisibility={handleSpinnerVisibility}
-              />
-
-              <DeleteDialog
-                showDialog={showDeleteDialog}
-                handleDelete={handleDelete}
-                handleDeleteDialogClose={handleDeleteDialogClose}
-                dialogTitle='Delete note?'
-                dialogContent='Are you certain that you want to delete the note?'
-              />
+                <DeleteDialog
+                  showDialog={showDeleteDialog}
+                  handleDelete={handleDelete}
+                  handleDeleteDialogClose={handleDeleteDialogClose}
+                  dialogTitle='Delete note?'
+                  dialogContent='Are you certain that you want to delete the note?'
+                />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        </>
       )
     }
   }
@@ -285,7 +297,7 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
             onClick={event => {
               handleAddNewNoteClick(event)
             }}
-            className={classes.addButton}
+            className={classes.fab}
           >
             <AddIcon />
           </Fab>
