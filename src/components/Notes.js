@@ -1,28 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { gql } from 'apollo-boost'
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  Typography,
-  makeStyles,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  DialogTitle,
-  Fab,
-  Link
-} from '@material-ui/core'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
+import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Fab } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
-import Timestamp from './Timestamp'
-import LinkField from './LinkField'
-import { isTSExpressionWithTypeArguments } from '@babel/types'
+import DeleteDialog from './DeleteDialog'
+import Note from './Note'
+import SearchField from './SearchField'
 
 const ALL_NOTES = gql`
   query {
@@ -46,32 +30,35 @@ const DELETE_NOTE = gql`
   }
 `
 
+const GET_NOTES_BY_KEYWORD = gql`
+  query notesByKeyword($keyword: String) {
+    notesByKeyword(keyword: $keyword) {
+      id
+      title
+      content
+      keywords
+      modified
+    }
+  }
+`
+
 const useStyles = makeStyles({
-  card: {
-    minWidth: 275,
-    maxWidth: 345,
-    backgroundColor: '#EEF0F1',
-    marginTop: 15,
-    marginRight: 10
-  },
-  cardHeader: {
-    backgroundColor: '#CCCCCC',
-    padding: 2
-  },
-  timestamp: {
-    marginTop: 10,
-    color: '#708090'
+  textField: {
+    width: 240
   }
 })
 
+const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop)
+
 const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   const classes = useStyles()
-  // TODO: Implement search
-  //const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
   const [selectedNote, setSelectedNote] = useState(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [editNoteVisible, setEditNoteVisible] = useState(false)
-
+  const [filteredNotes, setFilteredNotes] = useState(null)
+  const noteFormRef = useRef(null)
+  const scrollToNoteForm = () => scrollToRef(noteFormRef)
   let notes
 
   if (!show) {
@@ -80,9 +67,9 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
 
   if (result && result.loading) {
     return <div>loading...</div>
-  } else {
-    notes = result.data.allNotes
   }
+
+  notes = result.data.allNotes
 
   const handleDeleteDialogClose = () => {
     setShowDeleteDialog(false)
@@ -115,194 +102,203 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
     }
   }
 
-  const extractKeywordsFromArrayWithJoin = keywords => {
-    console.log('keywords :', keywords)
-    if (!keywords) {
-      return ''
-    }
-    return keywords.join()
+  const handleSearchTermChange = async event => {
+    console.log('Current search term', event.target.value)
+    await setSearchTerm(event.target.value)
   }
 
-  const detectLinkFromText = text => {
-    console.log(
-      'Attempting to construct a link based on the text content...',
-      text
-    )
-    let tokenizedByBlanks
-    if (text.split(' ') === null) {
-      tokenizedByBlanks = [text]
+  const execFiltering = async event => {
+    event.preventDefault()
+    // Filter the notes by the provided search term
+    if (!searchTerm || searchTerm.trim() === '') {
+      await showNotes()
     } else {
-      tokenizedByBlanks = text.split(' ')
+      await showNotes(searchTerm)
     }
-    let link
-    tokenizedByBlanks.forEach(element => {
-      let res = element.match(
-        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
-      )
-      if (res !== null) {
-        link = res
-        return
-      }
-    })
-    return link
   }
 
-  if (notes && notes.length > 0) {
+  const showNotes = async keyword => {
+    console.log('showNotes', keyword)
+    if (!keyword || keyword.trim() === '') {
+      setFilteredNotes(null)
+      return
+    }
+    console.log('Showing notes by keyword', keyword)
+    try {
+      const { data } = await client.query({
+        query: GET_NOTES_BY_KEYWORD,
+        variables: { keyword: keyword }
+      })
+      console.log(data)
+      setFilteredNotes(data.notesByKeyword)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const handleAddNewNoteClick = async () => {
+    await setEditNoteVisible(true)
+    await setSelectedNote(null)
+    await scrollToNoteForm()
+  }
+
+  const handleEditNoteClick = async note => {
+    await setEditNoteVisible(true)
+    await setSelectedNote(note)
+    await scrollToNoteForm()
+  }
+
+  const handleDeleteNoteClick = async note => {
+    await setEditNoteVisible(true)
+    await setSelectedNote(note)
+    await scrollToNoteForm()
+    await handleDeleteDialogOpen()
+  }
+
+  if (filteredNotes) {
     return (
       <Grid container justify='center'>
+        {/* <Grid item>Filtered notes: {filteredNotes.length}</Grid> */}
         <Grid item xs={12} md={6}>
-          <Grid container spacing={1} direction='row' alignItems='center'>
-            {notes.map(note => {
-              const link = detectLinkFromText(note.content)
-              return (
-                <Card className={classes.card} key={note.id}>
-                  <CardHeader
-                    title={note.title}
-                    className={classes.cardHeader}
-                  ></CardHeader>
+          <Grid container spacing={1} direction='column' alignItems='center'>
+            <SearchField
+              handleSubmit={execFiltering}
+              searchTerm={searchTerm}
+              handleSearchTermChange={handleSearchTermChange}
+            />
+            <Grid item>
+              {filteredNotes.map(note => {
+                return (
+                  <Note
+                    note={note}
+                    handleEditNoteClick={handleEditNoteClick}
+                    handleDeleteNoteClick={handleDeleteNoteClick}
+                  />
+                )
+              })}
+            </Grid>
+            <Fab
+              id='add_note_button'
+              color='primary'
+              aria-label='Add note'
+              onClick={event => {
+                handleAddNewNoteClick(event)
+              }}
+              className={classes.addButton}
+            >
+              <AddIcon />
+            </Fab>
 
-                  <CardContent>
-                    <Typography
-                      data-cy='contentField'
-                      variant='body1'
-                      gutterBottom
-                    >
-                      Note: {note.content}
-                    </Typography>
-                    <LinkField link={link} />
-                    <Typography
-                      data-cy='keywordsField'
-                      variant='body1'
-                      gutterBottom
-                    >
-                      Keywords:{' '}
-                      {extractKeywordsFromArrayWithJoin(note.keywords)}
-                    </Typography>
-                    <Typography
-                      className={classes.timestamp}
-                      data-cy='timestampField'
-                      variant='body2'
-                      gutterBottom
-                    >
-                      <Timestamp timestamp={note.modified} />
-                    </Typography>
-                  </CardContent>
+            <div ref={noteFormRef} />
+            <NoteForm
+              client={client}
+              note={selectedNote}
+              visible={editNoteVisible}
+              handleSpinnerVisibility={handleSpinnerVisibility}
+            />
 
-                  <CardContent>
-                    <Button
-                      data-cy='editSubmit'
-                      startIcon={<EditIcon />}
-                      variant='contained'
-                      onClick={() => {
-                        console.log('editIcon clicked')
-                        setSelectedNote(note)
-                        setEditNoteVisible(true)
-                      }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      data-cy='deleteSubmit'
-                      startIcon={<DeleteOutlinedIcon />}
-                      variant='contained'
-                      onClick={() => {
-                        console.log('delete note clicked')
-                        setSelectedNote(note)
-                        setEditNoteVisible(false)
-                        handleDeleteDialogOpen()
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </CardContent>
-                </Card>
-              )
-            })}
+            <DeleteDialog
+              showDialog={showDeleteDialog}
+              handleDelete={handleDelete}
+              handleDeleteDialogClose={handleDeleteDialogClose}
+              dialogTitle='Delete note?'
+              dialogContent='Are you certain that you want to delete the note?'
+            />
           </Grid>
+        </Grid>
+      </Grid>
+    )
+  } else {
+    if (notes) {
+      return (
+        <Grid container justify='center'>
+          {/* <Grid item>Notes: {notes.length}</Grid> */}
+          <Grid item xs={12} md={6}>
+            <Grid container spacing={1} direction='column' alignItems='center'>
+              <SearchField
+                handleSubmit={execFiltering}
+                searchTerm={searchTerm}
+                handleSearchTermChange={handleSearchTermChange}
+              />
+              <Grid item>
+                {notes.map(note => {
+                  return (
+                    <Note
+                      key={note.id}
+                      note={note}
+                      handleEditNoteClick={handleEditNoteClick}
+                      handleDeleteNoteClick={handleDeleteNoteClick}
+                    />
+                  )
+                })}
+              </Grid>
+              <Fab
+                id='add_note_button'
+                color='primary'
+                aria-label='Add note'
+                onClick={handleAddNewNoteClick}
+                className={classes.addButton}
+              >
+                <AddIcon />
+              </Fab>
+
+              <div ref={noteFormRef} />
+              <NoteForm
+                client={client}
+                note={selectedNote}
+                visible={editNoteVisible}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
+
+              <DeleteDialog
+                showDialog={showDeleteDialog}
+                handleDelete={handleDelete}
+                handleDeleteDialogClose={handleDeleteDialogClose}
+                dialogTitle='Delete note?'
+                dialogContent='Are you certain that you want to delete the note?'
+              />
+            </Grid>
+          </Grid>
+        </Grid>
+      )
+    }
+  }
+  return (
+    <>
+      <Grid container className={classes.container} justify='center'>
+        <Grid container spacing={1} direction='column' alignItems='center'>
+          <h2>Stored Notes</h2>
+        </Grid>
+        <SearchField
+          handleSubmit={execFiltering}
+          searchTerm={searchTerm}
+          handleSearchTermChange={handleSearchTermChange}
+        />
+        <Grid container spacing={1} direction='column' alignItems='center'>
+          <p>No stored notes found.</p>
+          <br />
+          <br />
           <Fab
             id='add_note_button'
             color='primary'
             aria-label='Add note'
-            onClick={() => {
-              setEditNoteVisible(true)
-              setSelectedNote(null)
+            onClick={event => {
+              handleAddNewNoteClick(event)
             }}
             className={classes.addButton}
           >
             <AddIcon />
           </Fab>
 
+          <div ref={noteFormRef} />
           <NoteForm
             client={client}
-            note={selectedNote}
+            note={null}
             visible={editNoteVisible}
             handleSpinnerVisibility={handleSpinnerVisibility}
           />
-
-          <Dialog
-            open={showDeleteDialog}
-            onClose={handleDeleteDialogClose}
-            aria-labelledby='alert-dialog-title'
-            aria-describedby='alert-dialog-description'
-          >
-            <DialogTitle id='alert-dialog-title'>Delete note?</DialogTitle>
-            <DialogContent>
-              <DialogContentText id='alert-dialog-description'>
-                Are you certain that you want to delete the note?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                data-cy='cancelConfirmation'
-                onClick={handleDeleteDialogClose}
-                color='default'
-                variant='contained'
-              >
-                Cancel
-              </Button>
-              <Button
-                data-cy='submitConfirmation'
-                onClick={() => {
-                  handleDeleteDialogClose()
-                  handleDelete()
-                }}
-                color='secondary'
-                autoFocus
-                variant='contained'
-              >
-                Delete
-              </Button>
-            </DialogActions>
-          </Dialog>
         </Grid>
       </Grid>
-    )
-  }
-
-  return (
-    <>
-      <h2>Stored Notes</h2>
-      <p>No stored notes found.</p>
-      <br />
-      <br />
-      <Fab
-        id='add_note_button'
-        color='primary'
-        aria-label='Add note'
-        onClick={() => {
-          setEditNoteVisible(true)
-        }}
-        className={classes.addButton}
-      >
-        <AddIcon />
-      </Fab>
-
-      <NoteForm
-        client={client}
-        note={null}
-        visible={editNoteVisible}
-        handleSpinnerVisibility={handleSpinnerVisibility}
-      />
     </>
   )
 }

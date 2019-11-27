@@ -20,6 +20,7 @@
     "react-dom": "^16.11.0",
     "react-loading-overlay": "^1.0.1",
     "react-scripts": "3.2.0",
+    "redux": "^4.0.4",
     "subscriptions-transport-ws": "^0.9.16"
   },
   "scripts": {

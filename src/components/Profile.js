@@ -14,7 +14,7 @@ import {
   Snackbar,
   SnackbarContent
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   textField: {
@@ -29,13 +29,14 @@ const useStyles = makeStyles({
   card: {
     minWidth: 275,
     maxWidth: 345,
-    backgroundColor: '#EEF0F1',
+    backgroundColor: '#718792',
     marginTop: 15,
     marginRight: 10
   },
   cardHeader: {
-    backgroundColor: '#CCCCCC',
-    padding: 2
+    backgroundColor: '#1c313a',
+    padding: 5,
+    margin: 5
   }
 })
 

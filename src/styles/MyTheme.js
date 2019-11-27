@@ -1,24 +1,22 @@
 import { createMuiTheme } from '@material-ui/core/styles'
+import { red } from '@material-ui/core/colors'
 
 const MyTheme = createMuiTheme({
   palette: {
+    type: 'dark',
     primary: {
       // light: will be calculated from palette.primary.main,
-      main: '#ff4400'
+      main: '#455a64'
       // dark: will be calculated from palette.primary.main,
       // contrastText: will be calculated to contrast with palette.primary.main
     },
     secondary: {
-      light: '#0066ff',
-      main: '#0044ff',
+      // light: will be calculated from palette.secondary.main
+      main: '#d32f2f'
       // dark: will be calculated from palette.secondary.main,
-      contrastText: '#ffcc00'
-    }
-    // Use defaults for error
-    // error: {
-    //   light: '#FF3333',
-    //   main: '#CC3300'
-    // }
+      // contrastText: will be calculated to contrast with palette.primary.main
+    },
+    error: red
   }
 })
 export default MyTheme

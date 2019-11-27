@@ -204,6 +204,7 @@ const LoginForm = props => {
               variant='contained'
               color='primary'
               onClick={handleLoginSubmit}
+              type='submit'
             >
               Login
             </Button>
@@ -251,6 +252,7 @@ const LoginForm = props => {
                 variant='contained'
                 color='secondary'
                 onClick={handleSubmitPwdForgottenButton}
+                type='submit'
               >
                 Restore Password
               </Button>

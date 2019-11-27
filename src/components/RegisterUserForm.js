@@ -203,6 +203,7 @@ const RegisterUserForm = props => {
                 variant='contained'
                 color='primary'
                 onClick={handleRegisterSubmit}
+                type='submit'
               >
                 Register
               </Button>
