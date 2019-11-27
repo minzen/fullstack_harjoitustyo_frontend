@@ -6,7 +6,7 @@ import {
   Typography,
   Button
 } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import Timestamp from './Timestamp'
@@ -19,26 +19,25 @@ const useStyles = makeStyles({
   card: {
     minWidth: 275,
     maxWidth: 345,
-    backgroundColor: '#EEF0F1',
+    backgroundColor: '#718792',
     marginTop: 15,
     marginRight: 10
   },
   cardHeader: {
-    backgroundColor: '#CCCCCC',
-    padding: 2
+    backgroundColor: '#1c313a',
+    padding: 5,
+    margin: 5
   },
   timestamp: {
-    marginTop: 10,
-    color: '#708090'
+    color: 'lightblue',
+    marginTop: 10
+  },
+  cardContent: {
+    color: 'lightblue'
   }
 })
 
-const Note = ({
-  note,
-  setSelectedNote,
-  setEditNoteVisible,
-  handleDeleteDialogOpen
-}) => {
+const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
   const classes = useStyles()
 
   const extractKeywordsFromArrayWithJoin = keywords => {
@@ -78,18 +77,28 @@ const Note = ({
       ></CardHeader>
 
       <CardContent>
-        <Typography data-cy='contentField' variant='body1' gutterBottom>
+        <Typography
+          data-cy='contentField'
+          variant='body1'
+          gutterBottom
+          className={classes.cardContent}
+        >
           Note: {note.content}
         </Typography>
         <LinkField link={link} />
-        <Typography data-cy='keywordsField' variant='body1' gutterBottom>
+        <Typography
+          data-cy='keywordsField'
+          variant='body1'
+          gutterBottom
+          className={classes.cardContent}
+        >
           Keywords: {extractKeywordsFromArrayWithJoin(note.keywords)}
         </Typography>
         <Typography
-          className={classes.timestamp}
           data-cy='timestampField'
           variant='body2'
           gutterBottom
+          className={classes.timestamp}
         >
           <Timestamp timestamp={note.modified} />
         </Typography>
@@ -100,10 +109,10 @@ const Note = ({
           data-cy='editSubmit'
           startIcon={<EditIcon />}
           variant='contained'
+          color='primary'
           onClick={() => {
-            console.log('editIcon clicked')
-            setSelectedNote(note)
-            setEditNoteVisible(true)
+            console.log('edit note clicked')
+            return handleEditNoteClick(note)
           }}
         >
           Edit
@@ -112,11 +121,10 @@ const Note = ({
           data-cy='deleteSubmit'
           startIcon={<DeleteOutlinedIcon />}
           variant='contained'
+          color='secondary'
           onClick={() => {
             console.log('delete note clicked')
-            setSelectedNote(note)
-            setEditNoteVisible(false)
-            handleDeleteDialogOpen()
+            return handleDeleteNoteClick(note)
           }}
         >
           Delete

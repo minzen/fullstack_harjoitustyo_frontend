@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     marginLeft: 10,
     marginRight: 10,
     minWidth: 200,
-    width: 400
+    width: 280
   }
 })
 
@@ -22,8 +22,9 @@ const SearchField = props => {
       <form>
         <TextField
           id='search_field'
-          variant='standard'
+          variant='filled'
           label='Search by keyword: '
+          color='secondary'
           onChange={props.handleSearchTermChange}
           value={props.searchTerm}
           className={classes.textField}

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { gql } from 'apollo-boost'
-import { Grid, makeStyles, Fab, TextField, Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { Grid, Fab } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
 import DeleteDialog from './DeleteDialog'
@@ -47,6 +48,8 @@ const useStyles = makeStyles({
   }
 })
 
+const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop)
+
 const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   const classes = useStyles()
   const [searchTerm, setSearchTerm] = useState('')
@@ -54,6 +57,8 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [editNoteVisible, setEditNoteVisible] = useState(false)
   const [filteredNotes, setFilteredNotes] = useState(null)
+  const noteFormRef = useRef(null)
+  const scrollToNoteForm = () => scrollToRef(noteFormRef)
   let notes
 
   if (!show) {
@@ -131,10 +136,29 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
     }
   }
 
+  const handleAddNewNoteClick = async () => {
+    await setEditNoteVisible(true)
+    await setSelectedNote(null)
+    await scrollToNoteForm()
+  }
+
+  const handleEditNoteClick = async note => {
+    await setEditNoteVisible(true)
+    await setSelectedNote(note)
+    await scrollToNoteForm()
+  }
+
+  const handleDeleteNoteClick = async note => {
+    await setEditNoteVisible(true)
+    await setSelectedNote(note)
+    await scrollToNoteForm()
+    await handleDeleteDialogOpen()
+  }
+
   if (filteredNotes) {
     return (
       <Grid container justify='center'>
-        <Grid item>Filtered notes: {filteredNotes.length}</Grid>
+        {/* <Grid item>Filtered notes: {filteredNotes.length}</Grid> */}
         <Grid item xs={12} md={6}>
           <Grid container spacing={1} direction='column' alignItems='center'>
             <SearchField
@@ -147,9 +171,8 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
                 return (
                   <Note
                     note={note}
-                    setSelectedNote={setSelectedNote}
-                    setEditNoteVisible={setEditNoteVisible}
-                    handleDeleteDialogOpen={handleDeleteDialogOpen}
+                    handleEditNoteClick={handleEditNoteClick}
+                    handleDeleteNoteClick={handleDeleteNoteClick}
                   />
                 )
               })}
@@ -158,15 +181,15 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
               id='add_note_button'
               color='primary'
               aria-label='Add note'
-              onClick={() => {
-                setEditNoteVisible(true)
-                setSelectedNote(null)
+              onClick={event => {
+                handleAddNewNoteClick(event)
               }}
               className={classes.addButton}
             >
               <AddIcon />
             </Fab>
 
+            <div ref={noteFormRef} />
             <NoteForm
               client={client}
               note={selectedNote}
@@ -189,7 +212,7 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
     if (notes) {
       return (
         <Grid container justify='center'>
-          <Grid item>Notes: {notes.length}</Grid>
+          {/* <Grid item>Notes: {notes.length}</Grid> */}
           <Grid item xs={12} md={6}>
             <Grid container spacing={1} direction='column' alignItems='center'>
               <SearchField
@@ -197,16 +220,14 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
                 searchTerm={searchTerm}
                 handleSearchTermChange={handleSearchTermChange}
               />
-
               <Grid item>
                 {notes.map(note => {
                   return (
                     <Note
                       key={note.id}
                       note={note}
-                      setSelectedNote={setSelectedNote}
-                      setEditNoteVisible={setEditNoteVisible}
-                      handleDeleteDialogOpen={handleDeleteDialogOpen}
+                      handleEditNoteClick={handleEditNoteClick}
+                      handleDeleteNoteClick={handleDeleteNoteClick}
                     />
                   )
                 })}
@@ -215,15 +236,13 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
                 id='add_note_button'
                 color='primary'
                 aria-label='Add note'
-                onClick={() => {
-                  setEditNoteVisible(true)
-                  setSelectedNote(null)
-                }}
+                onClick={handleAddNewNoteClick}
                 className={classes.addButton}
               >
                 <AddIcon />
               </Fab>
 
+              <div ref={noteFormRef} />
               <NoteForm
                 client={client}
                 note={selectedNote}
@@ -263,14 +282,15 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
             id='add_note_button'
             color='primary'
             aria-label='Add note'
-            onClick={() => {
-              setEditNoteVisible(true)
+            onClick={event => {
+              handleAddNewNoteClick(event)
             }}
             className={classes.addButton}
           >
             <AddIcon />
           </Fab>
 
+          <div ref={noteFormRef} />
           <NoteForm
             client={client}
             note={null}

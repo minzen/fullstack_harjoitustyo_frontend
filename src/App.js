@@ -6,6 +6,7 @@ import LoginForm from './components/LoginForm'
 import RegisterUserForm from './components/RegisterUserForm'
 import Notes from './components/Notes'
 import Profile from './components/Profile'
+import About from './components/About'
 import { ApolloProvider, Query } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
 import {
@@ -14,9 +15,9 @@ import {
   SnackbarContent,
   Box
 } from '@material-ui/core'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import LoadingOverlay from 'react-loading-overlay'
 import { makeStyles } from '@material-ui/core/styles'
-import NotesIcon from '@material-ui/icons/Notes'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 //import ErrorIcon from '@material-ui/icons/Error'
 import MemoryIcon from '@material-ui/icons/Memory'
@@ -80,7 +81,7 @@ const ALL_NOTES = gql`
 
 const useStyles = makeStyles({
   root: {
-    background: 'linear-gradient(45deg, #ff4400 30%, #ff4411 90%)',
+    background: MyTheme.palette.primary.main,
     border: 0,
     borderRadius: 3,
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
@@ -94,7 +95,7 @@ const useStyles = makeStyles({
     flexWrap: 'wrap'
   },
   noteDashboard: {
-    backgroundColor: '#e3e5e8'
+    //    backgroundColor: '#e3e5e8'
   },
   orangeAvatar: {
     width: 60,
@@ -105,13 +106,13 @@ const useStyles = makeStyles({
   titleBox: {
     justify: 'center',
     color: 'black',
-    backgroundColor: '#FF440C',
-    padding: 20,
-    fontSize: 30,
-    maxWidth: 345
+    backgroundColor: MyTheme.palette.primary.main,
+    padding: '0 30px',
+    fontSize: 30
+    //maxWidth: 345
   },
   errorNotification: {
-    backgroundColor: MyTheme.palette.error.light
+    backgroundColor: MyTheme.palette.error.main
   },
   errorIcon: {
     fontSize: 20
@@ -214,6 +215,7 @@ const App = () => {
           text='Processing...'
         >
           <ThemeProvider theme={MyTheme}>
+            <CssBaseline />
             <Grid
               container
               justify='center'
@@ -251,7 +253,15 @@ const App = () => {
                         onClick={() => setPage('notes')}
                       >
                         Memory Tracks&nbsp;
-                        <NotesIcon />
+                        <MemoryIcon />
+                      </Button>
+                      <Button
+                        id='menu_about_button'
+                        onClick={() => {
+                          setPage('about')
+                        }}
+                      >
+                        About
                       </Button>
                       <Button
                         id='menu_logout_button'
@@ -308,6 +318,13 @@ const App = () => {
                   ></Profile>
                 </ApolloProvider>
               </Grid>
+              <Grid item className={classes.aboutPage}>
+                <About
+                  show={page === 'about'}
+                  client={client}
+                  handleSpinnerVisibility={handleSpinnerVisibility}
+                />
+              </Grid>
             </Grid>
           </ThemeProvider>
         </LoadingOverlay>
@@ -327,6 +344,7 @@ const App = () => {
         text='Processing...'
       >
         <ThemeProvider theme={MyTheme}>
+          <CssBaseline />
           <Grid
             container
             direction='column'
@@ -335,7 +353,7 @@ const App = () => {
             spacing={1}
           >
             <Grid item>
-              <Box className={classes.titleBox}>
+              <Box className={classes.root}>
                 Memory Tracks &nbsp;
                 <MemoryIcon />
               </Box>
