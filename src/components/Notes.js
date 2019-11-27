@@ -5,6 +5,7 @@ import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
 import DeleteDialog from './DeleteDialog'
 import Note from './Note'
+import SearchField from './SearchField'
 
 const ALL_NOTES = gql`
   query {
@@ -41,8 +42,8 @@ const GET_NOTES_BY_KEYWORD = gql`
 `
 
 const useStyles = makeStyles({
-  container: {
-    minWidth: 400
+  textField: {
+    width: 240
   }
 })
 
@@ -102,6 +103,7 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
   }
 
   const execFiltering = async event => {
+    event.preventDefault()
     // Filter the notes by the provided search term
     if (!searchTerm || searchTerm.trim() === '') {
       await showNotes()
@@ -135,25 +137,11 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
         <Grid item>Filtered notes: {filteredNotes.length}</Grid>
         <Grid item xs={12} md={6}>
           <Grid container spacing={1} direction='column' alignItems='center'>
-            <Grid item>
-              <TextField
-                id='search_field'
-                variant='filled'
-                label='Search by keyword: '
-                onChange={handleSearchTermChange}
-                value={searchTerm}
-                className={classes.textField}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={execFiltering}
-                color='secondary'
-                variant='contained'
-              >
-                Filter
-              </Button>
-            </Grid>
+            <SearchField
+              handleSubmit={execFiltering}
+              searchTerm={searchTerm}
+              handleSearchTermChange={handleSearchTermChange}
+            />
             <Grid item>
               {filteredNotes.map(note => {
                 return (
@@ -204,30 +192,17 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
           <Grid item>Notes: {notes.length}</Grid>
           <Grid item xs={12} md={6}>
             <Grid container spacing={1} direction='column' alignItems='center'>
-              <Grid item>
-                <TextField
-                  id='search_field'
-                  variant='filled'
-                  label='Search by keyword: '
-                  onChange={handleSearchTermChange}
-                  value={searchTerm}
-                  className={classes.textField}
-                />
-              </Grid>
-              <Grid item>
-                <Button
-                  onClick={execFiltering}
-                  color='secondary'
-                  variant='contained'
-                >
-                  Filter
-                </Button>
-              </Grid>
+              <SearchField
+                handleSubmit={execFiltering}
+                searchTerm={searchTerm}
+                handleSearchTermChange={handleSearchTermChange}
+              />
 
               <Grid item>
                 {notes.map(note => {
                   return (
                     <Note
+                      key={note.id}
                       note={note}
                       setSelectedNote={setSelectedNote}
                       setEditNoteVisible={setEditNoteVisible}
@@ -275,16 +250,11 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
         <Grid container spacing={1} direction='column' alignItems='center'>
           <h2>Stored Notes</h2>
         </Grid>
-        <Grid item>
-          <TextField
-            id='search_field'
-            variant='filled'
-            label='Search by keyword: '
-            onChange={handleSearchTermChange}
-            value={searchTerm}
-            className={classes.textField}
-          />
-        </Grid>
+        <SearchField
+          handleSubmit={execFiltering}
+          searchTerm={searchTerm}
+          handleSearchTermChange={handleSearchTermChange}
+        />
         <Grid container spacing={1} direction='column' alignItems='center'>
           <p>No stored notes found.</p>
           <br />
