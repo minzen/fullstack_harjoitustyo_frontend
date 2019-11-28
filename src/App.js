@@ -102,11 +102,11 @@ const useStyles = makeStyles({
   noteDashboard: {
     // backgroundColor: '#e3e5e8'
   },
-  orangeAvatar: {
+  avatar: {
     width: 60,
     height: 60,
     color: 'white',
-    backgroundColor: 'orange'
+    backgroundColor: MyTheme.palette.secondary.main
   },
   titleBox: {
     justify: 'center',
@@ -245,7 +245,7 @@ const App = () => {
                           setPage('profile')
                         }}
                       >
-                        <Avatar className={classes.orangeAvatar}>
+                        <Avatar className={classes.avatar}>
                           {buildInitialsForMenuAvatar()}
                         </Avatar>
                       </Button>
