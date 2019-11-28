@@ -11,12 +11,15 @@ const useStyles = makeStyles({
     marginRight: 10,
     minWidth: 200,
     width: 280
+  },
+  button: {
+    backgroundColor: '#718792'
   }
 })
 
 const SearchField = props => {
   const classes = useStyles()
-  console.log(props)
+  // console.log(props)
   return (
     <form>
       <TextField
@@ -39,7 +42,7 @@ const SearchField = props => {
       </Button>
       <Button
         onClick={props.handleSearchAll}
-        color='default'
+        className={classes.button}
         variant='contained'
         size='large'
         type='submit'
