@@ -167,6 +167,7 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
 
   const handleSearchAll = async event => {
     event.preventDefault()
+    await setSearchTerm('')
     await showNotes()
   }
 
