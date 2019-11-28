@@ -150,20 +150,15 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     }
   }
 
-  const handleAddNewNoteClick = async () => {
-    await setEditNoteVisible(true)
-    await setSelectedNote(null)
-    await scrollToNoteForm()
-  }
-
   const handleEditNoteClick = async note => {
+    console.log('handleEditNoteClick', note)
     await setEditNoteVisible(true)
     await setSelectedNote(note)
     await scrollToNoteForm()
   }
 
   const handleDeleteNoteClick = async note => {
-    await setEditNoteVisible(true)
+    await setEditNoteVisible(false)
     await setSelectedNote(note)
     await scrollToNoteForm()
     await handleDeleteDialogOpen()
@@ -173,6 +168,14 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     event.preventDefault()
     await setSearchTerm('')
     await showNotes()
+  }
+
+  const handleFormVisibility = async value => {
+    if (value) {
+      setEditNoteVisible(true)
+    } else {
+      setEditNoteVisible(false)
+    }
   }
 
   if (filteredNotes) {
@@ -206,32 +209,49 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
                 <Note
                   key={note.id}
                   note={note}
-                  handleEditNoteClick={handleEditNoteClick}
+                  handleEditNoteClick={() => {
+                    return handleEditNoteClick(note)
+                  }}
                   handleDeleteNoteClick={handleDeleteNoteClick}
                 />
               </Grid>
             )
           })}
         </Grid>
+
+        <Grid
+          container
+          spacing={2}
+          direction='column'
+          justify='center'
+          alignItems='center'
+        >
+          <Grid item>
+            <div ref={noteFormRef} />
+            <NoteForm
+              client={client}
+              note={selectedNote}
+              visible={editNoteVisible}
+              handleFormVisibility={handleFormVisibility}
+              handleEditNoteClick={() => {
+                return handleEditNoteClick(selectedNote)
+              }}
+              handleSpinnerVisibility={handleSpinnerVisibility}
+            />
+          </Grid>
+        </Grid>
+
         <Fab
           id='add_note_button'
           color='primary'
           aria-label='Add note'
-          onClick={event => {
-            handleAddNewNoteClick(event)
+          onClick={note => {
+            handleEditNoteClick(null)
           }}
           className={classes.fab}
         >
           <AddIcon />
         </Fab>
-
-        <div ref={noteFormRef} />
-        <NoteForm
-          client={client}
-          note={selectedNote}
-          visible={editNoteVisible}
-          handleSpinnerVisibility={handleSpinnerVisibility}
-        />
 
         <DeleteDialog
           showDialog={showDeleteDialog}
@@ -283,22 +303,36 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               )
             })}
           </Grid>
+
+          <Grid
+            container
+            spacing={2}
+            direction='column'
+            justify='center'
+            alignItems='center'
+          >
+            <Grid item>
+              <div ref={noteFormRef} />
+              <NoteForm
+                client={client}
+                note={selectedNote}
+                visible={editNoteVisible}
+                handleFormVisibility={handleFormVisibility}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
+            </Grid>
+          </Grid>
           <Fab
             id='add_note_button'
             color='primary'
             aria-label='Add note'
-            onClick={handleAddNewNoteClick}
+            onClick={note => {
+              handleEditNoteClick(null)
+            }}
             className={classes.fab}
           >
             <AddIcon />
           </Fab>
-          <div ref={noteFormRef} />
-          <NoteForm
-            client={client}
-            note={selectedNote}
-            visible={editNoteVisible}
-            handleSpinnerVisibility={handleSpinnerVisibility}
-          />
 
           <DeleteDialog
             showDialog={showDeleteDialog}
@@ -327,25 +361,35 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
           <p>No stored notes found.</p>
           <br />
           <br />
+          <Grid
+            container
+            spacing={2}
+            direction='column'
+            justify='center'
+            alignItems='center'
+          >
+            <Grid item>
+              <div ref={noteFormRef} />
+              <NoteForm
+                client={client}
+                note={null}
+                visible={editNoteVisible}
+                handleFormVisibility={handleFormVisibility}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
+            </Grid>
+          </Grid>
           <Fab
             id='add_note_button'
             color='primary'
             aria-label='Add note'
-            onClick={event => {
-              handleAddNewNoteClick(event)
+            onClick={note => {
+              handleEditNoteClick(null)
             }}
             className={classes.fab}
           >
             <AddIcon />
           </Fab>
-
-          <div ref={noteFormRef} />
-          <NoteForm
-            client={client}
-            note={null}
-            visible={editNoteVisible}
-            handleSpinnerVisibility={handleSpinnerVisibility}
-          />
         </Grid>
       </Grid>
     </>

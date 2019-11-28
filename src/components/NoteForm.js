@@ -3,9 +3,12 @@ import { gql } from 'apollo-boost'
 import {
   TextField,
   Button,
-  Grid,
+  Card,
+  CardHeader,
+  CardContent,
   Snackbar,
-  SnackbarContent
+  SnackbarContent,
+  Container
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -13,7 +16,12 @@ const useStyles = makeStyles(theme => ({
   textField: {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
-    width: 200
+    width: 350,
+    backgroundColor: '#1c313a'
+  },
+  noteForm: {
+    backgroundColor: '#718792',
+    padding: 10
   },
   button: {
     margin: 10
@@ -53,11 +61,12 @@ const NoteForm = props => {
   const [content, setContent] = useState('')
   const [keywords, setKeywords] = useState('')
   const [noteId, setNoteId] = useState(null)
-  const [visible, setVisible] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
   const classes = useStyles()
   const client = props.client
+
+  let visible = props.visible
 
   useEffect(() => {
     if (props.note) {
@@ -76,8 +85,7 @@ const NoteForm = props => {
     } else {
       resetForm()
     }
-    setVisible(props.visible)
-  }, [props.note, props.visible])
+  }, [props.note])
 
   const handleTitleChange = event => {
     setTitle(event.target.value)
@@ -121,6 +129,14 @@ const NoteForm = props => {
 
     return []
   }
+  const handleSubmit = async event => {
+    if (props.note) {
+      await handleEditNoteSubmit(event)
+    } else {
+      await handleNewNoteSubmit(event)
+    }
+    props.handleFormVisibility(false)
+  }
 
   const handleNewNoteSubmit = async event => {
     event.preventDefault()
@@ -147,6 +163,7 @@ const NoteForm = props => {
 
   const handleEditNoteSubmit = async event => {
     event.preventDefault()
+    resetForm()
     console.log('handleEditNoteSubmit', noteId, title, content, keywords)
     props.handleSpinnerVisibility(true)
     const keywordsArr = getKeywordsArrayFromString(keywords)
@@ -161,12 +178,12 @@ const NoteForm = props => {
         }
       })
       if (data) {
-        props.handleSpinnerVisibility(false)
         console.log('Response after carrying out the mutation EDIT_NOTE', data)
+        props.handleSpinnerVisibility(false)
         resetForm()
       }
-    } catch (e) {
       props.handleSpinnerVisibility(false)
+    } catch (e) {
       console.log('error when saving a new note', e)
       handleError(e)
     }
@@ -181,7 +198,7 @@ const NoteForm = props => {
 
   if (visible) {
     return (
-      <Grid>
+      <>
         <Snackbar
           anchorOrigin={{
             vertical: 'top',
@@ -195,61 +212,72 @@ const NoteForm = props => {
           <SnackbarContent message={errorMessage} />
         </Snackbar>
 
-        <form>
-          <h3>Edit note</h3>
-          <TextField
-            id='title_field'
-            variant='standard'
-            label='Title: '
-            className={classes.textField}
-            onChange={handleTitleChange}
-            value={title}
-          >
-            Title
-          </TextField>
-          <br />
-          <TextField
-            id='content_field'
-            variant='standard'
-            label='Content: '
-            multiline
-            className={classes.textField}
-            onChange={handleContentChange}
-            value={content}
-          >
-            Content
-          </TextField>
-          <br />
-          <TextField
-            id='keywords_field'
-            variant='standard'
-            label='Keywords (comma-separated)'
-            className={classes.textField}
-            onChange={handleKeywordsChange}
-            value={keywords}
-          >
-            Keywords
-          </TextField>
-          <br />
-          <br />
-          <Button
-            id='save_note_button'
-            variant='contained'
-            color='primary'
-            onClick={event => {
-              if (props.note) {
-                handleEditNoteSubmit(event)
-              } else {
-                handleNewNoteSubmit(event)
-              }
-            }}
-            className={classes.button}
-            type='submit'
-          >
-            Save note
-          </Button>
-        </form>
-      </Grid>
+        <Container maxWidth='sm' className={classes.noteForm}>
+          <form>
+            <Card>
+              <CardHeader title='Edit note' className={classes.cardHeader} />
+              <CardContent>
+                <TextField
+                  id='title_field'
+                  variant='filled'
+                  label='Title: '
+                  className={classes.textField}
+                  onChange={handleTitleChange}
+                  value={title}
+                >
+                  Title
+                </TextField>
+                <br />
+                <TextField
+                  id='content_field'
+                  variant='filled'
+                  label='Content: '
+                  multiline
+                  className={classes.textField}
+                  onChange={handleContentChange}
+                  value={content}
+                >
+                  Content
+                </TextField>
+                <br />
+                <TextField
+                  id='keywords_field'
+                  variant='filled'
+                  label='Keywords (comma-separated)'
+                  className={classes.textField}
+                  onChange={handleKeywordsChange}
+                  value={keywords}
+                >
+                  Keywords
+                </TextField>
+                <br />
+                <br />
+                <Button
+                  id='cancel_note_edit_button'
+                  variant='contained'
+                  color='default'
+                  onClick={() => {
+                    resetForm()
+                    props.handleFormVisibility(false)
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  id='save_note_button'
+                  variant='contained'
+                  color='primary'
+                  onClick={handleSubmit}
+                  className={classes.button}
+                  type='submit'
+                >
+                  Save note
+                </Button>
+              </CardContent>
+            </Card>
+          </form>
+        </Container>
+      </>
     )
   }
   return <></>
