@@ -19,10 +19,12 @@ describe('Manipulating notes with a logged in user', function() {
   beforeEach(function() {
     cy.log('Executing login before each test!')
     cy.visit('http://localhost:3000')
+    // Click the menu bar button to get the login view
+    cy.get('#menu_login_button').click()
     cy.get('#email_field').type(USER)
     cy.get('#password_field').type(CURRENT_PWD)
     cy.get('#login_button').click()
-    cy.wait(5000)
+    cy.get('#menu_notes_button').click()
   })
 
   it('a logged in user wants to delete an existing note, but clicks cancel on the confirmation modal element', function() {
@@ -32,7 +34,6 @@ describe('Manipulating notes with a logged in user', function() {
     cy.get('[data-cy=deleteSubmit]').click()
     cy.contains('Are you certain that you want to delete the note?')
     cy.get('[data-cy=cancelConfirmation').click()
-    cy.wait(1000)
     cy.contains(DEFAULT_TITLE)
     cy.contains(DEFAULT_CONTENT)
     cy.contains(DEFAULT_KEYWORDS)
@@ -45,7 +46,6 @@ describe('Manipulating notes with a logged in user', function() {
     cy.get('[data-cy=deleteSubmit]').click()
     cy.contains('Are you certain that you want to delete the note?')
     cy.get('[data-cy=submitConfirmation').click()
-    cy.wait(1000)
     cy.contains('Stored Notes')
     cy.contains('No stored notes found.')
   })
@@ -56,7 +56,6 @@ describe('Manipulating notes with a logged in user', function() {
     cy.get('#content_field').type(ANOTHER_NOTE_CONTENT)
     cy.get('#keywords_field').type(ANOTHER_NOTE_KEYWORDS)
     cy.get('#save_note_button').click()
-    cy.wait(2000)
     cy.contains('This is a fancy test note')
     cy.contains('keyword1')
     cy.contains('another keyword')
@@ -76,11 +75,9 @@ describe('Manipulating notes with a logged in user', function() {
     })
     // Get the last modified data so it can be later compared after editing the note
     cy.get('[data-cy=editSubmit]').click()
-    cy.wait(1000)
     cy.get('#title_field').type(' Hey this was updated!')
     cy.get('#content_field').type(' Note this was changed too!')
     cy.get('#save_note_button').click()
-    cy.wait(2000)
     cy.contains('This is a fancy test note Hey this was updated!')
     cy.contains('Note this was changed too!')
     cy.contains('keyword1')

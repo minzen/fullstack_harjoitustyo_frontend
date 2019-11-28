@@ -63,52 +63,20 @@ const useStyles = makeStyles({
 })
 
 const LoginForm = props => {
+  const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [buttonDisabled, setButtonDisabled] = useState(false)
   const [expanded, setExpanded] = useState(false)
   const [emailToRestorePwd, setEmailToRestorePwd] = useState('')
   const dateNow = new Date().toDateString()
-  const classes = useStyles()
-
-  const setSubmitButtonState = () => {
-    setButtonDisabled(false)
-    // console.log('setSubmitState, email', email, 'password', password)
-    // if (
-    //   email === null ||
-    //   email === '' ||
-    //   password === null ||
-    //   password === ''
-    // ) {
-    //   setButtonDisabled(true)
-    // } else {
-    //   setButtonDisabled(false)
-    // }
-  }
 
   const handleEmailChange = event => {
     setEmail(event.target.value)
-    setSubmitButtonState()
   }
 
   const handlePasswordChange = event => {
     setPassword(event.target.value)
-    setSubmitButtonState()
   }
-
-  /*
-    event.preventDefault()
-
-    const result = await props.login({
-      variables: { username, password }
-    })
-
-    if (result) {
-      const token = result.data.login.value
-      props.setToken(token)
-      localStorage.setItem('kirjasto-user-token', token)
-    }
-*/
 
   const handleLoginSubmit = async event => {
     event.preventDefault()
@@ -130,13 +98,12 @@ const LoginForm = props => {
     const result = await props.login({
       variables: { email, password }
     })
+
     if (result) {
       console.log('token obtained on login', result.data.login.value)
-      await props.setToken(result.data.login.value)
-      await localStorage.setItem(
-        'memorytracks-user-token',
-        result.data.login.value
-      )
+      const token = result.data.login.value
+      await props.setToken(token)
+      await localStorage.setItem('memorytracks-user-token', token)
       setEmail('')
       setPassword('')
     }
@@ -211,7 +178,6 @@ const LoginForm = props => {
             <Button
               id='login_button'
               className={classes.button}
-              disabled={buttonDisabled}
               variant='contained'
               color='primary'
               onClick={handleLoginSubmit}

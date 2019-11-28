@@ -178,7 +178,10 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     }
   }
 
-  if (filteredNotes) {
+  console.log('filteredNotes', filteredNotes)
+  console.log('notes', notes)
+
+  if (filteredNotes && filteredNotes.length > 0) {
     return (
       <div className={classes.root}>
         <Grid
@@ -263,7 +266,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
       </div>
     )
   } else {
-    if (notes) {
+    if (notes && notes.length > 0) {
       return (
         <div className={classes.root}>
           <Grid
