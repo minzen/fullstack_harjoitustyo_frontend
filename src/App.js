@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
   Grid,
-  ButtonGroup,
-  Button,
-  Avatar,
   Typography,
   ThemeProvider,
   Snackbar,
@@ -21,12 +18,10 @@ import { useApolloClient } from '@apollo/react-hooks'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import LoadingOverlay from 'react-loading-overlay'
 import { makeStyles } from '@material-ui/core/styles'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import LockOpenIcon from '@material-ui/icons/LockOpen'
-import PersonAddIcon from '@material-ui/icons/PersonAdd'
 //import ErrorIcon from '@material-ui/icons/Error'
-import MemoryIcon from '@material-ui/icons/Memory'
 import MyTheme from './styles/MyTheme'
+import MenubarForLoggedInUser from './components/MenubarForLoggedInUser'
+import MenubarForNoLoggedInUser from './components/MenubarForNoLoggedInUser'
 require('dotenv').config()
 
 const LOGIN = gql`
@@ -101,12 +96,6 @@ const useStyles = makeStyles({
   },
   noteDashboard: {
     // backgroundColor: '#e3e5e8'
-  },
-  avatar: {
-    width: 60,
-    height: 60,
-    color: 'white',
-    backgroundColor: MyTheme.palette.secondary.main
   },
   titleBox: {
     justify: 'center',
@@ -186,20 +175,6 @@ const App = () => {
     setLoggedInUser(data.me)
   }
 
-  const buildInitialsForMenuAvatar = () => {
-    if (!loggedInUser) {
-      return 'N/A'
-    }
-    const givenname =
-      loggedInUser.givenname === null || loggedInUser.givenname === ''
-        ? 'N'
-        : loggedInUser.givenname.substring(0, 1)
-    const surname =
-      loggedInUser.surname === null ? 'N' : loggedInUser.surname.substring(0, 1)
-
-    return givenname + surname
-  }
-
   // User logged in, show the full app
   if (token) {
     return (
@@ -233,49 +208,12 @@ const App = () => {
                   className={classes.root}
                 >
                   <Grid item>
-                    <ButtonGroup
-                      variant='contained'
-                      color='primary'
-                      size='large'
-                      aria-label='large contained primary button group'
-                    >
-                      <Button
-                        id='menu_profile_button'
-                        onClick={() => {
-                          setPage('profile')
-                        }}
-                      >
-                        <Avatar className={classes.avatar}>
-                          {buildInitialsForMenuAvatar()}
-                        </Avatar>
-                      </Button>
-                      <Button
-                        id='menu_notes_button'
-                        onClick={() => setPage('notes')}
-                      >
-                        Memory Tracks&nbsp;
-                        <MemoryIcon />
-                      </Button>
-                      <Button
-                        id='menu_about_button'
-                        onClick={() => {
-                          setPage('about')
-                        }}
-                      >
-                        About
-                      </Button>
-                      <Button
-                        id='menu_logout_button'
-                        onClick={() => {
-                          localStorage.clear()
-                          setToken(null)
-                          client.resetStore()
-                        }}
-                      >
-                        Logout&nbsp;
-                        <ExitToAppIcon />
-                      </Button>
-                    </ButtonGroup>
+                    <MenubarForLoggedInUser
+                      setPage={setPage}
+                      setToken={setToken}
+                      client={client}
+                      loggedInUser={loggedInUser}
+                    />
                   </Grid>
                 </Grid>
               </Grid>
@@ -361,31 +299,7 @@ const App = () => {
             </Grid>
 
             <Grid item>
-              <ButtonGroup
-                variant='contained'
-                color='primary'
-                size='large'
-                aria-label='large contained primary button group'
-              >
-                <Button
-                  id='menu_login_button'
-                  onClick={() => {
-                    setPage('login')
-                  }}
-                >
-                  Login&nbsp;
-                  <LockOpenIcon />
-                </Button>
-                <Button
-                  id='menu_register_button'
-                  onClick={() => {
-                    setPage('register')
-                  }}
-                >
-                  Register&nbsp;
-                  <PersonAddIcon />
-                </Button>
-              </ButtonGroup>
+              <MenubarForNoLoggedInUser setPage={setPage} />
             </Grid>
             <Grid item>
               <LoginPage
