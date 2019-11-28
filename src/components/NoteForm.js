@@ -10,6 +10,7 @@ import {
   SnackbarContent,
   Container
 } from '@material-ui/core'
+import ContentPaste from 'mdi-material-ui/ContentPaste'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({
@@ -189,11 +190,24 @@ const NoteForm = props => {
     }
   }
 
-  const resetForm = () => {
+  const resetForm = async () => {
     setNoteId(null)
     setTitle('')
     setContent('')
     setKeywords('')
+  }
+
+  const handlePasteFromClipboard = async () => {
+    console.log('Pasting from the clipboard')
+    try {
+      const contentToPaste = await navigator.clipboard.readText()
+      console.log('Pasted from clipboard', contentToPaste)
+      if (contentToPaste && contentToPaste.length > 0) {
+        setContent(contentToPaste)
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   if (visible) {
@@ -239,6 +253,15 @@ const NoteForm = props => {
                 >
                   Content
                 </TextField>
+                <Button
+                  id='paste_from_clipboard_button'
+                  variant='contained'
+                  color='primary'
+                  onClick={handlePasteFromClipboard}
+                >
+                  <ContentPaste />
+                  Paste
+                </Button>
                 <br />
                 <TextField
                   id='keywords_field'

@@ -3,6 +3,7 @@ import { ButtonGroup, Button, Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import MemoryIcon from '@material-ui/icons/Memory'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import InfoIcon from '@material-ui/icons/Info'
 import MyTheme from '../styles/MyTheme'
 
 const useStyles = makeStyles({
@@ -63,7 +64,8 @@ const MenubarForLoggedInUser = ({
           setPage('about')
         }}
       >
-        About
+        About&nbsp;
+        <InfoIcon />
       </Button>
       <Button
         id='menu_logout_button'
