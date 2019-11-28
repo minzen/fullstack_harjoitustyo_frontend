@@ -129,8 +129,10 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
 
   const showNotes = async keyword => {
     console.log('showNotes', keyword)
+    handleSpinnerVisibility(true)
     if (!keyword || keyword.trim() === '') {
       setFilteredNotes(null)
+      handleSpinnerVisibility(false)
       return
     }
     console.log('Showing notes by keyword', keyword)
@@ -141,8 +143,10 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
       })
       console.log(data)
       setFilteredNotes(data.notesByKeyword)
+      handleSpinnerVisibility(false)
     } catch (e) {
       console.log(e)
+      handleSpinnerVisibility(false)
     }
   }
 
