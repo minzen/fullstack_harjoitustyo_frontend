@@ -23,7 +23,7 @@ const useStyle = makeStyles({
   }
 })
 
-const About = ({ show }) => {
+const AboutPage = ({ show }) => {
   const classes = useStyle()
   if (!show) {
     return null
@@ -115,4 +115,4 @@ const About = ({ show }) => {
     </>
   )
 }
-export default About
+export default AboutPage

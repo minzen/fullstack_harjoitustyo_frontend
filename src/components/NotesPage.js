@@ -60,7 +60,7 @@ const useStyles = makeStyles({
 
 const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop)
 
-const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
+const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   const classes = useStyles()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedNote, setSelectedNote] = useState(null)
@@ -351,4 +351,4 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
     </>
   )
 }
-export default Notes
+export default NotesPage

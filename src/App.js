@@ -8,9 +8,9 @@ import {
 } from '@material-ui/core'
 import { gql } from 'apollo-boost'
 import { useMutation, useQuery, ApolloConsumer } from '@apollo/react-hooks'
-import Notes from './components/Notes'
-import Profile from './components/Profile'
-import About from './components/About'
+import NotesPage from './components/NotesPage'
+import ProfilePage from './components/ProfilePage'
+import AboutPage from './components/AboutPage'
 import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage'
 import { ApolloProvider, Query } from 'react-apollo'
@@ -238,7 +238,7 @@ const App = () => {
                   {client => (
                     <Query query={ALL_NOTES} pollInterval={2000}>
                       {result => (
-                        <Notes
+                        <NotesPage
                           show={page === 'notes'}
                           client={client}
                           result={result}
@@ -249,16 +249,16 @@ const App = () => {
                   )}
                 </ApolloConsumer>
                 <ApolloProvider client={client}>
-                  <Profile
+                  <ProfilePage
                     show={page === 'profile'}
                     client={client}
                     user={loggedInUser}
                     handleSpinnerVisibility={handleSpinnerVisibility}
-                  ></Profile>
+                  ></ProfilePage>
                 </ApolloProvider>
               </Grid>
               <Grid item className={classes.aboutPage}>
-                <About
+                <AboutPage
                   show={page === 'about'}
                   client={client}
                   handleSpinnerVisibility={handleSpinnerVisibility}
@@ -315,7 +315,7 @@ const App = () => {
               />
             </Grid>
             <Grid item className={classes.aboutPage}>
-              <About
+              <AboutPage
                 show={true}
                 client={client}
                 handleSpinnerVisibility={handleSpinnerVisibility}

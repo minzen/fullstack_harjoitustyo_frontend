@@ -71,7 +71,7 @@ const CHANGE_PASSWORD = gql`
   }
 `
 
-const Profile = ({ show, client, user, handleSpinnerVisibility }) => {
+const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
   const [givenname, setGivenname] = useState('')
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
@@ -363,4 +363,4 @@ const Profile = ({ show, client, user, handleSpinnerVisibility }) => {
     </>
   )
 }
-export default Profile
+export default ProfilePage
