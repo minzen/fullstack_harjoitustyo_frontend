@@ -165,6 +165,11 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
     await handleDeleteDialogOpen()
   }
 
+  const handleSearchAll = async event => {
+    event.preventDefault()
+    await showNotes()
+  }
+
   if (filteredNotes) {
     return (
       <div className={classes.root}>
@@ -179,6 +184,7 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
             handleSubmit={execFiltering}
             searchTerm={searchTerm}
             handleSearchTermChange={handleSearchTermChange}
+            handleSearchAll={handleSearchAll}
           />
         </Grid>
 
@@ -242,11 +248,14 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
             justify='center'
             alignItems='center'
           >
-            <SearchField
-              handleSubmit={execFiltering}
-              searchTerm={searchTerm}
-              handleSearchTermChange={handleSearchTermChange}
-            />
+            <Grid item>
+              <SearchField
+                handleSubmit={execFiltering}
+                searchTerm={searchTerm}
+                handleSearchTermChange={handleSearchTermChange}
+                handleSearchAll={handleSearchAll}
+              />
+            </Grid>
           </Grid>
 
           <Grid
@@ -307,6 +316,7 @@ const Notes = ({ show, client, result, handleSpinnerVisibility }) => {
           handleSubmit={execFiltering}
           searchTerm={searchTerm}
           handleSearchTermChange={handleSearchTermChange}
+          handleSearchAll={handleSearchAll}
         />
         <Grid container spacing={1} direction='column' alignItems='center'>
           <p>No stored notes found.</p>
