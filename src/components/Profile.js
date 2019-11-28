@@ -12,7 +12,8 @@ import {
   CardContent,
   CardHeader,
   Snackbar,
-  SnackbarContent
+  SnackbarContent,
+  Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -229,95 +230,113 @@ const Profile = ({ show, client, user, handleSpinnerVisibility }) => {
         <SnackbarContent message={errorMessage} />
       </Snackbar>
 
-      <Card className={classes.card}>
-        <CardHeader title='Basic user data' className={classes.cardHeader} />
-        <CardContent>
-          <form autoComplete='off'>
-            <TextField
-              id='givenname_field'
-              variant='standard'
-              label='Givenname: '
-              onChange={handleGivennameChange}
-              value={givenname}
-              className={classes.textField}
+      <Grid
+        container
+        spacing={2}
+        direction='row'
+        justify='center'
+        alignItems='center'
+      >
+        <Grid item>
+          <Card className={classes.card}>
+            <CardHeader
+              title='Basic user data'
+              className={classes.cardHeader}
             />
-            <br />
-            <TextField
-              id='surname_field'
-              variant='standard'
-              label='Surname: '
-              onChange={handleSurnameChange}
-              value={surname}
-              className={classes.textField}
+            <CardContent>
+              <form autoComplete='off'>
+                <TextField
+                  id='givenname_field'
+                  variant='standard'
+                  label='Givenname: '
+                  onChange={handleGivennameChange}
+                  value={givenname}
+                  className={classes.textField}
+                />
+                <br />
+                <TextField
+                  id='surname_field'
+                  variant='standard'
+                  label='Surname: '
+                  onChange={handleSurnameChange}
+                  value={surname}
+                  className={classes.textField}
+                />
+                <br />
+                <TextField
+                  id='email_field'
+                  variant='standard'
+                  label='Email: '
+                  onChange={handleEmailChange}
+                  value={email}
+                  className={classes.textField}
+                />
+                <br />
+                <br />
+                {/* Data last modified: {user.modified} */}
+                <Button
+                  id='submit_user_data_button'
+                  color='primary'
+                  variant='contained'
+                  onClick={handleEditUserSubmit}
+                >
+                  {' '}
+                  Update user data
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item>
+          <Card className={classes.card}>
+            <CardHeader
+              title='Change password'
+              className={classes.cardHeader}
             />
-            <br />
-            <TextField
-              id='email_field'
-              variant='standard'
-              label='Email: '
-              onChange={handleEmailChange}
-              value={email}
-              className={classes.textField}
-            />
-            <br />
-            <br />
-            {/* Data last modified: {user.modified} */}
-            <Button
-              id='submit_user_data_button'
-              color='primary'
-              variant='contained'
-              onClick={handleEditUserSubmit}
-            >
-              {' '}
-              Update user data
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-      <Card className={classes.card}>
-        <CardHeader title='Change password' className={classes.cardHeader} />
-        <CardContent>
-          <form>
-            <TextField
-              id='currentpassword_field'
-              variant='standard'
-              label='Current password: '
-              onChange={handleCurrentPasswordChange}
-              value={currentPassword}
-              className={classes.textField}
-              type='password'
-            />
-            <TextField
-              id='newpassword_field'
-              variant='standard'
-              label='New password: '
-              onChange={handleNewPasswordChange}
-              value={newPassword}
-              className={classes.textField}
-              type='password'
-            />
-            <TextField
-              id='newpassword2_field'
-              variant='standard'
-              label='New password confirmation: '
-              onChange={handleNewPassword2Change}
-              value={newPassword2}
-              className={classes.textField}
-              type='password'
-            />
-            <br />
-            <br />
-            <Button
-              id='submit_new_password_button'
-              color='primary'
-              variant='contained'
-              onClick={handleChangePasswordSubmit}
-            >
-              Change password
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+            <CardContent>
+              <form>
+                <TextField
+                  id='currentpassword_field'
+                  variant='standard'
+                  label='Current password: '
+                  onChange={handleCurrentPasswordChange}
+                  value={currentPassword}
+                  className={classes.textField}
+                  type='password'
+                />
+                <TextField
+                  id='newpassword_field'
+                  variant='standard'
+                  label='New password: '
+                  onChange={handleNewPasswordChange}
+                  value={newPassword}
+                  className={classes.textField}
+                  type='password'
+                />
+                <TextField
+                  id='newpassword2_field'
+                  variant='standard'
+                  label='New password confirmation: '
+                  onChange={handleNewPassword2Change}
+                  value={newPassword2}
+                  className={classes.textField}
+                  type='password'
+                />
+                <br />
+                <br />
+                <Button
+                  id='submit_new_password_button'
+                  color='primary'
+                  variant='contained'
+                  onClick={handleChangePasswordSubmit}
+                >
+                  Change password
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
       <Dialog
         open={showSuccessDialog}

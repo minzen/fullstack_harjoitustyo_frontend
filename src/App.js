@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, ButtonGroup, Button, Avatar } from '@material-ui/core'
+import {
+  Grid,
+  ButtonGroup,
+  Button,
+  Avatar,
+  Typography,
+  ThemeProvider,
+  Snackbar,
+  SnackbarContent
+} from '@material-ui/core'
 import { gql } from 'apollo-boost'
 import { useMutation, useQuery, ApolloConsumer } from '@apollo/react-hooks'
-import LoginForm from './components/LoginForm'
-import RegisterUserForm from './components/RegisterUserForm'
 import Notes from './components/Notes'
 import Profile from './components/Profile'
 import About from './components/About'
+import LoginPage from './components/LoginPage'
+import RegisterPage from './components/RegisterPage'
 import { ApolloProvider, Query } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
-import {
-  ThemeProvider,
-  Snackbar,
-  SnackbarContent,
-  Box
-} from '@material-ui/core'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import LoadingOverlay from 'react-loading-overlay'
 import { makeStyles } from '@material-ui/core/styles'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import LockOpenIcon from '@material-ui/icons/LockOpen'
+import PersonAddIcon from '@material-ui/icons/PersonAdd'
 //import ErrorIcon from '@material-ui/icons/Error'
 import MemoryIcon from '@material-ui/icons/Memory'
 import MyTheme from './styles/MyTheme'
@@ -95,7 +100,7 @@ const useStyles = makeStyles({
     flexWrap: 'wrap'
   },
   noteDashboard: {
-    //    backgroundColor: '#e3e5e8'
+    // backgroundColor: '#e3e5e8'
   },
   orangeAvatar: {
     width: 60,
@@ -109,7 +114,6 @@ const useStyles = makeStyles({
     backgroundColor: MyTheme.palette.primary.main,
     padding: '0 30px',
     fontSize: 30
-    //maxWidth: 345
   },
   errorNotification: {
     backgroundColor: MyTheme.palette.error.main
@@ -196,10 +200,7 @@ const App = () => {
     return givenname + surname
   }
 
-  // If token -> logged in: Menu: Notes | Add Note (implement this as floating button) | Profile | Logout
-  // If no token -> show login and some basic stuff
-  // TODO: Checkout the possibilities to use App Bar of Material UI
-
+  // User logged in, show the full app
   if (token) {
     return (
       <>
@@ -331,6 +332,7 @@ const App = () => {
       </>
     )
   } else {
+    // User not logged in, show the registration, login and information about the application
     return (
       <LoadingOverlay
         active={spinnerActive}
@@ -353,11 +355,59 @@ const App = () => {
             spacing={1}
           >
             <Grid item>
-              <Box className={classes.root}>
-                Memory Tracks &nbsp;
-                <MemoryIcon />
-              </Box>
+              <Typography variant='h3' gutterBottom>
+                Memory Tracks
+              </Typography>
             </Grid>
+
+            <Grid item>
+              <ButtonGroup
+                variant='contained'
+                color='primary'
+                size='large'
+                aria-label='large contained primary button group'
+              >
+                <Button
+                  id='menu_login_button'
+                  onClick={() => {
+                    setPage('login')
+                  }}
+                >
+                  Login&nbsp;
+                  <LockOpenIcon />
+                </Button>
+                <Button
+                  id='menu_register_button'
+                  onClick={() => {
+                    setPage('register')
+                  }}
+                >
+                  Register&nbsp;
+                  <PersonAddIcon />
+                </Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item>
+              <LoginPage
+                show={page === 'login'}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+                login={login}
+                setToken={setToken}
+              />
+              <RegisterPage
+                show={page === 'register'}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+                register={register}
+              />
+            </Grid>
+            <Grid item className={classes.aboutPage}>
+              <About
+                show={true}
+                client={client}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
+            </Grid>
+
             <Grid item>
               <Snackbar
                 anchorOrigin={{
@@ -371,19 +421,6 @@ const App = () => {
               >
                 <SnackbarContent message={errorMessage} />
               </Snackbar>
-            </Grid>
-            <Grid item>
-              <LoginForm
-                login={login}
-                setToken={token => setToken(token)}
-                handleSpinnerVisibility={handleSpinnerVisibility}
-              />
-            </Grid>
-            <Grid item>
-              <RegisterUserForm
-                addUser={register}
-                handleSpinnerVisibility={handleSpinnerVisibility}
-              />
             </Grid>
           </Grid>
         </ThemeProvider>

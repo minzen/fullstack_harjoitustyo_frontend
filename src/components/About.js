@@ -11,6 +11,8 @@ import notesImg from '../assets/notes_overview.png'
 import filteringImg from '../assets/filtering.png'
 import addNoteImg from '../assets/add_note.png'
 import registerImg from '../assets/register.png'
+import personalDataImg from '../assets/edit_personal_data.png'
+import changePasswordImg from '../assets/change_password.png'
 
 const useStyle = makeStyles({
   cardContainer: {
@@ -31,7 +33,7 @@ const About = ({ show }) => {
     <>
       <Grid container className={classes.cardContainer}>
         <Card className={classes.card}>
-          <CardHeader title='Memory Tracks' />{' '}
+          <CardHeader title='About' />{' '}
           <CardContent>
             <h3>General</h3>
             <p>
@@ -43,7 +45,8 @@ const About = ({ show }) => {
               You will need a user account to be able to manage notes on the
               system. On the image below you'll find the registration component
               where you have to fill in at least an email address that is used
-              as your username as well as a password.
+              as your username as well as a password. After you have logged in,
+              you will have to log in by using your credentials.
             </p>
             <CardMedia className={classes.image} title='Register'>
               <img src={registerImg} alt='Registration' />
@@ -79,6 +82,33 @@ const About = ({ show }) => {
             <CardMedia className={classes.image} title='Filtering'>
               <img src={filteringImg} alt='Filtering' />
             </CardMedia>
+
+            <h3>Managing your profile</h3>
+            <p>
+              After you have logged in, you have an access to your personal
+              profile. By clicking the icon with your name initials on the top
+              menu bar, a profile page is opened. There you may change your
+              personal data, e.g. name or email address as well as switch your
+              current password.
+            </p>
+            <Grid
+              container
+              spacing={2}
+              direction='row'
+              justify='center'
+              alignItems='center'
+            >
+              <Grid item>
+                <CardMedia className={classes.image} title='Edit personal data'>
+                  <img src={personalDataImg} alt='Edit personal data' />
+                </CardMedia>
+              </Grid>
+              <Grid item>
+                <CardMedia className={classes.image} title='Change password'>
+                  <img src={changePasswordImg} alt='Change password' />
+                </CardMedia>
+              </Grid>
+            </Grid>
           </CardContent>
         </Card>
       </Grid>
