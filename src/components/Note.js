@@ -50,21 +50,24 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
 
   const detectLinkFromText = text => {
     let tokenizedByBlanks
+    let link
     if (text.split(' ') === null) {
       tokenizedByBlanks = [text]
     } else {
       tokenizedByBlanks = text.split(' ')
     }
-    let link
-    tokenizedByBlanks.forEach(element => {
-      let res = element.match(
-        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
-      )
-      if (res !== null) {
-        link = res
-        return
-      }
-    })
+    if (tokenizedByBlanks) {
+      tokenizedByBlanks.forEach(element => {
+        let res = element.match(
+          /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
+        )
+        if (res !== null) {
+          link = res
+          return
+        }
+      })
+    }
+
     return link
   }
   const link = detectLinkFromText(note.content)
@@ -111,7 +114,7 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
           variant='contained'
           color='primary'
           onClick={() => {
-            console.log('edit note clicked')
+            //   console.log('edit note clicked')
             return handleEditNoteClick(note)
           }}
         >
@@ -123,7 +126,7 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
           variant='contained'
           color='secondary'
           onClick={() => {
-            console.log('delete note clicked')
+            // console.log('delete note clicked')
             return handleDeleteNoteClick(note)
           }}
         >

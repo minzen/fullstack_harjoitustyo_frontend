@@ -102,7 +102,6 @@ describe('Manipulating notes with a logged in user', function() {
     cy.contains('A reminder from 28.11.2019')
 
     cy.get('#search_field').type('shpp')
-    cy.get('#submit_filtering_button').click()
     cy.wait(1000)
     cy.contains('No stored notes found')
   })

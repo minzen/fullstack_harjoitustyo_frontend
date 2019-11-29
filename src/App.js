@@ -136,7 +136,6 @@ const App = () => {
   const client = useApolloClient()
 
   useEffect(() => {
-    console.log('useEffect')
     setToken(localStorage.getItem('memorytracks-user-token'))
   }, [])
 
@@ -170,118 +169,26 @@ const App = () => {
   const { loading, error, data } = useQuery(CURRENT_USER)
   if (loading) {
     return null
-  } else {
-    if (error) {
-      return 'error'
-    }
+  }
+  if (error) {
+    return 'error'
+  }
 
-    if (data.me && loggedInUser === null) {
-      setLoggedInUser(data.me)
-    }
+  if (data.me && loggedInUser === null) {
+    setLoggedInUser(data.me)
+  }
 
-    // User logged in, show the full app
-    if (token) {
-      return (
-        <>
-          <LoadingOverlay
-            active={spinnerActive}
-            spinner
-            styles={{
-              overlay: base => ({
-                ...base,
-                background: 'rgba(0, 0, 0, 0.5)'
-              })
-            }}
-            text='Processing...'
-          >
-            <ThemeProvider theme={MyTheme}>
-              <CssBaseline />
-              <Grid
-                container
-                justify='center'
-                spacing={3}
-                className={classes.container}
-              >
-                <Grid item xs={12} md={6}>
-                  <Grid
-                    container
-                    spacing={1}
-                    direction='column'
-                    justify='center'
-                    alignItems='center'
-                    className={classes.root}
-                  >
-                    <Grid item>
-                      <MenubarForLoggedInUser
-                        setPage={setPage}
-                        setToken={setToken}
-                        client={client}
-                        loggedInUser={loggedInUser}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid container justify='center'>
-                <Grid item>
-                  <Snackbar
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'center'
-                    }}
-                    open={showErrorNotification}
-                    variant='error'
-                    autoHideDuration={6000}
-                  >
-                    <SnackbarContent message={errorMessage} />
-                  </Snackbar>
-                </Grid>
-                <Grid item className={classes.noteDashboard}>
-                  <ApolloConsumer>
-                    {client => (
-                      <Query query={ALL_NOTES} pollInterval={2000}>
-                        {result => (
-                          <NotesPage
-                            show={page === 'notes'}
-                            client={client}
-                            result={result}
-                            handleSpinnerVisibility={handleSpinnerVisibility}
-                          />
-                        )}
-                      </Query>
-                    )}
-                  </ApolloConsumer>
-                  <ApolloProvider client={client}>
-                    <ProfilePage
-                      show={page === 'profile'}
-                      client={client}
-                      user={loggedInUser}
-                      handleSpinnerVisibility={handleSpinnerVisibility}
-                    ></ProfilePage>
-                  </ApolloProvider>
-                </Grid>
-                <Grid item className={classes.aboutPage}>
-                  <AboutPage
-                    show={page === 'about'}
-                    client={client}
-                    handleSpinnerVisibility={handleSpinnerVisibility}
-                  />
-                </Grid>
-              </Grid>
-            </ThemeProvider>
-          </LoadingOverlay>
-        </>
-      )
-    } else {
-      // User not logged in, show the registration, login and information about the application
-      return (
+  // User logged in, show the full app
+  if (token) {
+    return (
+      <>
         <LoadingOverlay
           active={spinnerActive}
           spinner
           styles={{
             overlay: base => ({
               ...base,
-              background: 'rgba(0, 0, 0, 0.75)'
+              background: 'rgba(0, 0, 0, 0.5)'
             })
           }}
           text='Processing...'
@@ -290,41 +197,31 @@ const App = () => {
             <CssBaseline />
             <Grid
               container
-              direction='column'
               justify='center'
-              alignItems='center'
-              spacing={1}
+              spacing={3}
+              className={classes.container}
             >
-              <Grid item>
-                <Typography variant='h3' gutterBottom>
-                  Memory Tracks
-                </Typography>
+              <Grid item xs={12} md={6}>
+                <Grid
+                  container
+                  spacing={1}
+                  direction='column'
+                  justify='center'
+                  alignItems='center'
+                  className={classes.root}
+                >
+                  <Grid item>
+                    <MenubarForLoggedInUser
+                      setPage={setPage}
+                      setToken={setToken}
+                      client={client}
+                      loggedInUser={loggedInUser}
+                    />
+                  </Grid>
+                </Grid>
               </Grid>
-
-              <Grid item>
-                <MenubarForNoLoggedInUser setPage={setPage} />
-              </Grid>
-              <Grid item>
-                <LoginPage
-                  show={page === 'login'}
-                  handleSpinnerVisibility={handleSpinnerVisibility}
-                  login={login}
-                  setToken={setToken}
-                />
-                <RegisterPage
-                  show={page === 'register'}
-                  handleSpinnerVisibility={handleSpinnerVisibility}
-                  register={register}
-                />
-              </Grid>
-              <Grid item className={classes.aboutPage}>
-                <AboutPage
-                  show={true}
-                  client={client}
-                  handleSpinnerVisibility={handleSpinnerVisibility}
-                />
-              </Grid>
-
+            </Grid>
+            <Grid container justify='center'>
               <Grid item>
                 <Snackbar
                   anchorOrigin={{
@@ -338,11 +235,112 @@ const App = () => {
                   <SnackbarContent message={errorMessage} />
                 </Snackbar>
               </Grid>
+              <Grid item className={classes.noteDashboard}>
+                <ApolloConsumer>
+                  {client => (
+                    <Query query={ALL_NOTES} pollInterval={2000}>
+                      {result => (
+                        <NotesPage
+                          show={page === 'notes'}
+                          client={client}
+                          result={result}
+                          handleSpinnerVisibility={handleSpinnerVisibility}
+                        />
+                      )}
+                    </Query>
+                  )}
+                </ApolloConsumer>
+                <ApolloProvider client={client}>
+                  <ProfilePage
+                    show={page === 'profile'}
+                    client={client}
+                    user={loggedInUser}
+                    handleSpinnerVisibility={handleSpinnerVisibility}
+                  ></ProfilePage>
+                </ApolloProvider>
+              </Grid>
+              <Grid item className={classes.aboutPage}>
+                <AboutPage
+                  show={page === 'about'}
+                  client={client}
+                  handleSpinnerVisibility={handleSpinnerVisibility}
+                />
+              </Grid>
             </Grid>
           </ThemeProvider>
         </LoadingOverlay>
-      )
-    }
+      </>
+    )
+  } else {
+    // User not logged in, show the registration, login and information about the application
+    return (
+      <LoadingOverlay
+        active={spinnerActive}
+        spinner
+        styles={{
+          overlay: base => ({
+            ...base,
+            background: 'rgba(0, 0, 0, 0.75)'
+          })
+        }}
+        text='Processing...'
+      >
+        <ThemeProvider theme={MyTheme}>
+          <CssBaseline />
+          <Grid
+            container
+            direction='column'
+            justify='center'
+            alignItems='center'
+            spacing={1}
+          >
+            <Grid item>
+              <Typography variant='h3' gutterBottom>
+                Memory Tracks
+              </Typography>
+            </Grid>
+
+            <Grid item>
+              <MenubarForNoLoggedInUser setPage={setPage} />
+            </Grid>
+            <Grid item>
+              <LoginPage
+                show={page === 'login'}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+                login={login}
+                setToken={setToken}
+              />
+              <RegisterPage
+                show={page === 'register'}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+                register={register}
+              />
+            </Grid>
+            <Grid item className={classes.aboutPage}>
+              <AboutPage
+                show={true}
+                client={client}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
+            </Grid>
+
+            <Grid item>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center'
+                }}
+                open={showErrorNotification}
+                variant='error'
+                autoHideDuration={6000}
+              >
+                <SnackbarContent message={errorMessage} />
+              </Snackbar>
+            </Grid>
+          </Grid>
+        </ThemeProvider>
+      </LoadingOverlay>
+    )
   }
 }
 
