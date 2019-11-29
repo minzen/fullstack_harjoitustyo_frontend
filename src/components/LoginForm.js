@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { gql } from 'apollo-boost'
 import {
   Card,
   Button,
@@ -62,6 +63,24 @@ const useStyles = makeStyles({
   }
 })
 
+const USER_DETAILS = gql`
+  fragment UserDetails on User {
+    id
+    email
+    givenname
+    surname
+  }
+`
+
+const CURRENT_USER = gql`
+  query {
+    me {
+      ...UserDetails
+    }
+  }
+  ${USER_DETAILS}
+`
+
 const LoginForm = props => {
   const classes = useStyles()
   const [email, setEmail] = useState('')
@@ -76,6 +95,13 @@ const LoginForm = props => {
 
   const handlePasswordChange = event => {
     setPassword(event.target.value)
+  }
+
+  const getTheLoggedInUser = async () => {
+    const { data } = props.client.request(CURRENT_USER, null)
+    if (data && data.me) {
+      props.setLoggedInUser(data.me)
+    }
   }
 
   const handleLoginSubmit = async event => {
@@ -104,6 +130,7 @@ const LoginForm = props => {
       const token = result.data.login.value
       await props.setToken(token)
       await localStorage.setItem('memorytracks-user-token', token)
+      await getTheLoggedInUser()
       setEmail('')
       setPassword('')
     }

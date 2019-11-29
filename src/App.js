@@ -18,10 +18,16 @@ import { useApolloClient } from '@apollo/react-hooks'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import LoadingOverlay from 'react-loading-overlay'
 import { makeStyles } from '@material-ui/core/styles'
-//import ErrorIcon from '@material-ui/icons/Error'
 import MyTheme from './styles/MyTheme'
 import MenubarForLoggedInUser from './components/MenubarForLoggedInUser'
 import MenubarForNoLoggedInUser from './components/MenubarForNoLoggedInUser'
+import {
+  LOGIN_PAGE,
+  NOTES_PAGE,
+  PROFILE_PAGE,
+  ABOUT_PAGE,
+  REGISTER_PAGE
+} from './constants/pages'
 require('dotenv').config()
 
 const LOGIN = gql`
@@ -136,6 +142,7 @@ const App = () => {
   const client = useApolloClient()
 
   useEffect(() => {
+    console.log(LOGIN_PAGE, REGISTER_PAGE)
     setToken(localStorage.getItem('memorytracks-user-token'))
   }, [])
 
@@ -241,7 +248,7 @@ const App = () => {
                     <Query query={ALL_NOTES} pollInterval={2000}>
                       {result => (
                         <NotesPage
-                          show={page === 'notes'}
+                          show={page === NOTES_PAGE}
                           client={client}
                           result={result}
                           handleSpinnerVisibility={handleSpinnerVisibility}
@@ -252,7 +259,7 @@ const App = () => {
                 </ApolloConsumer>
                 <ApolloProvider client={client}>
                   <ProfilePage
-                    show={page === 'profile'}
+                    show={page === PROFILE_PAGE}
                     client={client}
                     user={loggedInUser}
                     handleSpinnerVisibility={handleSpinnerVisibility}
@@ -261,7 +268,7 @@ const App = () => {
               </Grid>
               <Grid item className={classes.aboutPage}>
                 <AboutPage
-                  show={page === 'about'}
+                  show={page === ABOUT_PAGE}
                   client={client}
                   handleSpinnerVisibility={handleSpinnerVisibility}
                 />
@@ -304,14 +311,18 @@ const App = () => {
               <MenubarForNoLoggedInUser setPage={setPage} />
             </Grid>
             <Grid item>
-              <LoginPage
-                show={page === 'login'}
-                handleSpinnerVisibility={handleSpinnerVisibility}
-                login={login}
-                setToken={setToken}
-              />
+              <ApolloProvider client={client}>
+                <LoginPage
+                  show={page === LOGIN_PAGE}
+                  handleSpinnerVisibility={handleSpinnerVisibility}
+                  login={login}
+                  client={client}
+                  setToken={setToken}
+                  setLoggedInUser={setLoggedInUser}
+                />
+              </ApolloProvider>
               <RegisterPage
-                show={page === 'register'}
+                show={page === REGISTER_PAGE}
                 handleSpinnerVisibility={handleSpinnerVisibility}
                 register={register}
               />

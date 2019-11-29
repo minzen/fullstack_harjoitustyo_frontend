@@ -1,7 +1,14 @@
 import React from 'react'
 import LoginForm from './LoginForm'
 
-const LoginPage = ({ show, handleSpinnerVisibility, login, setToken }) => {
+const LoginPage = ({
+  show,
+  handleSpinnerVisibility,
+  login,
+  client,
+  setToken,
+  setLoggedInUser
+}) => {
   if (!show) {
     return null
   }
@@ -10,8 +17,10 @@ const LoginPage = ({ show, handleSpinnerVisibility, login, setToken }) => {
     <>
       <LoginForm
         login={login}
+        client={client}
         setToken={token => setToken(token)}
         handleSpinnerVisibility={handleSpinnerVisibility}
+        setLoggedInUser={setLoggedInUser}
       />
     </>
   )
