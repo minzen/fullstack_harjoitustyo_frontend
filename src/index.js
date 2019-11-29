@@ -25,7 +25,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('memorytracks-user-token')
-  console.log('Obtained the token from the localStorage: ', token)
+  // console.log('Obtained the token from the localStorage: ', token)
   return {
     headers: {
       ...headers,

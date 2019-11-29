@@ -181,90 +181,142 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   console.log('filteredNotes', filteredNotes)
   console.log('notes', notes)
 
-  if (filteredNotes && filteredNotes.length > 0) {
-    return (
-      <div className={classes.root}>
-        <Grid
-          container
-          spacing={2}
-          direction='row'
-          justify='center'
-          alignItems='center'
-        >
-          <SearchField
-            handleSubmit={execFiltering}
-            searchTerm={searchTerm}
-            handleSearchTermChange={handleSearchTermChange}
-            handleSearchAll={handleSearchAll}
-          />
-        </Grid>
-
-        <Grid
-          container
-          spacing={2}
-          direction='row'
-          justify='flex-start'
-          alignItems='flex-start'
-        >
-          {filteredNotes.map(note => {
-            return (
-              <Grid item xs={12} sm={6} md={3} key={note.id}>
-                <Note
-                  key={note.id}
-                  note={note}
-                  handleEditNoteClick={() => {
-                    return handleEditNoteClick(note)
-                  }}
-                  handleDeleteNoteClick={handleDeleteNoteClick}
-                />
-              </Grid>
-            )
-          })}
-        </Grid>
-
-        <Grid
-          container
-          spacing={2}
-          direction='column'
-          justify='center'
-          alignItems='center'
-        >
-          <Grid item>
-            <div ref={noteFormRef} />
-            <NoteForm
-              client={client}
-              note={selectedNote}
-              visible={editNoteVisible}
-              handleFormVisibility={handleFormVisibility}
-              handleEditNoteClick={() => {
-                return handleEditNoteClick(selectedNote)
-              }}
-              handleSpinnerVisibility={handleSpinnerVisibility}
+  if (filteredNotes) {
+    if (filteredNotes.length > 0) {
+      return (
+        <div className={classes.root}>
+          <Grid
+            container
+            spacing={2}
+            direction='row'
+            justify='center'
+            alignItems='center'
+          >
+            <SearchField
+              handleSubmit={execFiltering}
+              searchTerm={searchTerm}
+              handleSearchTermChange={handleSearchTermChange}
+              handleSearchAll={handleSearchAll}
             />
           </Grid>
-        </Grid>
 
-        <Fab
-          id='add_note_button'
-          color='primary'
-          aria-label='Add note'
-          onClick={note => {
-            handleEditNoteClick(null)
-          }}
-          className={classes.fab}
-        >
-          <AddIcon />
-        </Fab>
+          <Grid
+            container
+            spacing={2}
+            direction='row'
+            justify='flex-start'
+            alignItems='flex-start'
+          >
+            {filteredNotes.map(note => {
+              return (
+                <Grid item xs={12} sm={6} md={3} key={note.id}>
+                  <Note
+                    key={note.id}
+                    note={note}
+                    handleEditNoteClick={() => {
+                      return handleEditNoteClick(note)
+                    }}
+                    handleDeleteNoteClick={handleDeleteNoteClick}
+                  />
+                </Grid>
+              )
+            })}
+          </Grid>
 
-        <DeleteDialog
-          showDialog={showDeleteDialog}
-          handleDelete={handleDelete}
-          handleDeleteDialogClose={handleDeleteDialogClose}
-          dialogTitle='Delete note?'
-          dialogContent='Are you certain that you want to delete the note?'
-        />
-      </div>
-    )
+          <Grid
+            container
+            spacing={2}
+            direction='column'
+            justify='center'
+            alignItems='center'
+          >
+            <Grid item>
+              <div ref={noteFormRef} />
+              <NoteForm
+                client={client}
+                note={selectedNote}
+                visible={editNoteVisible}
+                handleFormVisibility={handleFormVisibility}
+                handleEditNoteClick={() => {
+                  return handleEditNoteClick(selectedNote)
+                }}
+                handleSpinnerVisibility={handleSpinnerVisibility}
+              />
+            </Grid>
+          </Grid>
+
+          <Fab
+            id='add_note_button'
+            color='primary'
+            aria-label='Add note'
+            onClick={note => {
+              handleEditNoteClick(null)
+            }}
+            className={classes.fab}
+          >
+            <AddIcon />
+          </Fab>
+
+          <DeleteDialog
+            showDialog={showDeleteDialog}
+            handleDelete={handleDelete}
+            handleDeleteDialogClose={handleDeleteDialogClose}
+            dialogTitle='Delete note?'
+            dialogContent='Are you certain that you want to delete the note?'
+          />
+        </div>
+      )
+    } else {
+      return (
+        <>
+          <Grid container className={classes.container} justify='center'>
+            <Grid container spacing={1} direction='column' alignItems='center'>
+              <h2>Stored Notes</h2>
+            </Grid>
+            <SearchField
+              handleSubmit={execFiltering}
+              searchTerm={searchTerm}
+              handleSearchTermChange={handleSearchTermChange}
+              handleSearchAll={handleSearchAll}
+            />
+            <Grid container spacing={1} direction='column' alignItems='center'>
+              <p>No stored notes found.</p>
+              <br />
+              <br />
+              <Grid
+                container
+                spacing={2}
+                direction='column'
+                justify='center'
+                alignItems='center'
+              >
+                <Grid item>
+                  <div ref={noteFormRef} />
+                  <NoteForm
+                    client={client}
+                    note={null}
+                    visible={editNoteVisible}
+                    handleFormVisibility={handleFormVisibility}
+                    handleSpinnerVisibility={handleSpinnerVisibility}
+                  />
+                </Grid>
+              </Grid>
+              <Fab
+                id='add_note_button'
+                color='primary'
+                aria-label='Add note'
+                onClick={note => {
+                  handleEditNoteClick(null)
+                }}
+                className={classes.fab}
+              >
+                <AddIcon />
+              </Fab>
+            </Grid>
+          </Grid>
+        </>
+      )
+    }
   } else {
     if (notes && notes.length > 0) {
       return (
@@ -351,15 +403,14 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   return (
     <>
       <Grid container className={classes.container} justify='center'>
-        <Grid container spacing={1} direction='column' alignItems='center'>
-          <h2>Stored Notes</h2>
+        <Grid item>
+          <SearchField
+            handleSubmit={execFiltering}
+            searchTerm={searchTerm}
+            handleSearchTermChange={handleSearchTermChange}
+            handleSearchAll={handleSearchAll}
+          />
         </Grid>
-        <SearchField
-          handleSubmit={execFiltering}
-          searchTerm={searchTerm}
-          handleSearchTermChange={handleSearchTermChange}
-          handleSearchAll={handleSearchAll}
-        />
         <Grid container spacing={1} direction='column' alignItems='center'>
           <p>No stored notes found.</p>
           <br />

@@ -32,6 +32,7 @@ const SearchField = props => {
         className={classes.textField}
       />
       <Button
+        id='submit_filtering_button'
         onClick={props.handleSubmit}
         color='primary'
         variant='contained'

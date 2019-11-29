@@ -46,7 +46,6 @@ describe('Manipulating notes with a logged in user', function() {
     cy.get('[data-cy=deleteSubmit]').click()
     cy.contains('Are you certain that you want to delete the note?')
     cy.get('[data-cy=submitConfirmation').click()
-    cy.contains('Stored Notes')
     cy.contains('No stored notes found.')
   })
 
@@ -83,6 +82,29 @@ describe('Manipulating notes with a logged in user', function() {
     cy.contains('keyword1')
     cy.contains('another keyword')
     cy.contains('Last modified:')
+  })
+
+  it('no note is shown on the page, if the content is filtered by using a non-existent keyword', function() {
+    cy.log(
+      'Adding an additional note to enable better chances for the filtering'
+    )
+    cy.get('#menu_notes_button').click()
+    cy.get('#add_note_button').click()
+    cy.wait(2000)
+    cy.get('#title_field').type('A reminder from 28.11.2019')
+    cy.wait(500)
+    cy.get('#content_field').type('Buy milk at the store')
+    cy.wait(500)
+    cy.get('#keywords_field').type('shopping')
+    cy.wait(500)
+    cy.get('#save_note_button').click()
+    cy.wait(2000)
+    cy.contains('A reminder from 28.11.2019')
+
+    cy.get('#search_field').type('shpp')
+    cy.get('#submit_filtering_button').click()
+    cy.wait(1000)
+    cy.contains('No stored notes found')
   })
 })
 

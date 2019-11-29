@@ -66,7 +66,7 @@ describe('A new user wants to create a user account for the system', function() 
     cy.get('#password_field').type(PWD)
     cy.get('#login_button').click()
     cy.get('#menu_notes_button').click()
-    cy.contains('Stored Notes')
+    cy.contains('No stored notes found')
   })
   it('another user account is attempted to be created by using the same email address as in the previous step, and an error notification is shown to the user', function() {
     cy.visit('http://localhost:3000')

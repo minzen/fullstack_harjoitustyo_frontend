@@ -232,7 +232,6 @@ const App = () => {
                     open={showErrorNotification}
                     variant='error'
                     autoHideDuration={6000}
-                    onClose={console.log('snackbar/handleClose')}
                   >
                     <SnackbarContent message={errorMessage} />
                   </Snackbar>
@@ -335,7 +334,6 @@ const App = () => {
                   open={showErrorNotification}
                   variant='error'
                   autoHideDuration={6000}
-                  onClose={console.log('snackbar/handleClose')}
                 >
                   <SnackbarContent message={errorMessage} />
                 </Snackbar>

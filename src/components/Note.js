@@ -41,7 +41,7 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
   const classes = useStyles()
 
   const extractKeywordsFromArrayWithJoin = keywords => {
-    console.log('keywords :', keywords)
+    // console.log('keywords :', keywords)
     if (!keywords) {
       return ''
     }

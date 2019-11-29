@@ -225,7 +225,6 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
         open={showErrorNotification}
         variant='error'
         autoHideDuration={6000}
-        onClose={console.log('snackbar/handleClose')}
       >
         <SnackbarContent message={errorMessage} />
       </Snackbar>
