@@ -9,6 +9,9 @@ const ANOTHER_NOTE_TITLE = 'This is a fancy test note'
 const ANOTHER_NOTE_CONTENT =
   'We can type in a bit more text and it should be shown on the card component. '
 const ANOTHER_NOTE_KEYWORDS = 'KeyWord1,      ANOTHer Keyword'
+const THIRD_NOTE_TITLE = 'A reminder from 28.11.2019'
+const THIRD_NOTE_CONTENT = 'Buy milk at the store'
+const THIRD_NOTE_KEYWORDS = 'shopping'
 
 describe('Manipulating notes with a logged in user', function() {
   this.beforeAll(function() {
@@ -91,19 +94,28 @@ describe('Manipulating notes with a logged in user', function() {
     cy.get('#menu_notes_button').click()
     cy.get('#add_note_button').click()
     cy.wait(2000)
-    cy.get('#title_field').type('A reminder from 28.11.2019')
+    cy.get('#title_field').type(THIRD_NOTE_TITLE)
     cy.wait(500)
-    cy.get('#content_field').type('Buy milk at the store')
+    cy.get('#content_field').type(THIRD_NOTE_CONTENT)
     cy.wait(500)
-    cy.get('#keywords_field').type('shopping')
+    cy.get('#keywords_field').type(THIRD_NOTE_KEYWORDS)
     cy.wait(500)
     cy.get('#save_note_button').click()
     cy.wait(2000)
-    cy.contains('A reminder from 28.11.2019')
-
+    cy.contains(THIRD_NOTE_TITLE)
+    // Type in a search term that is not available in the existing notes
     cy.get('#search_field').type('shpp')
     cy.wait(1000)
     cy.contains('No stored notes found')
+  })
+
+  it('one note is shown on the screen, when filtering by a keyword used in one note', function() {
+    cy.contains(THIRD_NOTE_TITLE)
+    cy.contains(THIRD_NOTE_CONTENT)
+    cy.contains(THIRD_NOTE_KEYWORDS)
+    cy.get('#search_field').type('shopping')
+    cy.wait(500)
+    cy.contains(THIRD_NOTE_TITLE)
   })
 })
 
