@@ -235,7 +235,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               id='add_note_button'
               color='primary'
               aria-label='Add note'
-              onClick={note => {
+              onClick={() => {
                 handleEditNoteClick(null)
               }}
               className={classes.fab}
@@ -295,7 +295,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               id='add_note_button'
               color='primary'
               aria-label='Add note'
-              onClick={note => {
+              onClick={() => {
                 handleEditNoteClick(null)
               }}
               className={classes.fab}

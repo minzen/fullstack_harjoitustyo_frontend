@@ -128,12 +128,19 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
         mutation: EDIT_USER,
         variables: { email: email, givenname: givenname, surname: surname }
       })
-      if (data) {
-        console.log('Response data of editUser', data)
-        handleSpinnerVisibility(false)
-        setSuccessDialogTitle('User data updated')
-        setSuccessDialogContent('The user data have been updated successfully')
-        handleDialogOpen()
+      if (!loading) {
+        if (data) {
+          console.log('Response data of editUser', data)
+          handleSpinnerVisibility(false)
+          setSuccessDialogTitle('User data updated')
+          setSuccessDialogContent(
+            'The user data have been updated successfully'
+          )
+          handleDialogOpen()
+        }
+        if (error) {
+          console.log(error)
+        }
       }
     } catch (e) {
       console.log('Error when updating user data', e)
@@ -173,16 +180,21 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
           newPassword2: newPassword2
         }
       })
-      if (data) {
-        console.log('Response data of changePassword', data)
-        if (data.changePassword !== null) {
-          handleSpinnerVisibility(false)
-          setCurrentPassword('')
-          setNewPassword('')
-          setNewPassword2('')
-          setSuccessDialogTitle('Password changed')
-          setSuccessDialogContent('Password changed successfully.')
-          handleDialogOpen()
+      if (!loading) {
+        if (data) {
+          console.log('Response data of changePassword', data)
+          if (data.changePassword !== null) {
+            handleSpinnerVisibility(false)
+            setCurrentPassword('')
+            setNewPassword('')
+            setNewPassword2('')
+            setSuccessDialogTitle('Password changed')
+            setSuccessDialogContent('Password changed successfully.')
+            handleDialogOpen()
+          }
+        }
+        if (error) {
+          console.log(error)
         }
       }
     } catch (e) {

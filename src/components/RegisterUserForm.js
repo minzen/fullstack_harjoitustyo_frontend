@@ -123,7 +123,7 @@ const RegisterUserForm = props => {
     setShowDialog(false)
   }
 
-  const handleExpandClick = event => {
+  const handleExpandClick = () => {
     setExpanded(!expanded)
   }
 

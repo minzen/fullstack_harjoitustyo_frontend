@@ -37,16 +37,17 @@ const AboutPage = ({ show }) => {
           <CardContent>
             <h3>General</h3>
             <p>
-              The application enables storing of "memory tracks", i.e. relevant
-              notes, links etc. to be searched and obtained later when needed.
+              The application enables storing of &quot;memory tracks&quot;, i.e.
+              relevant notes, links etc. to be searched and obtained later when
+              needed.
             </p>
             <h3>Registration</h3>
             <p>
               You will need a user account to be able to manage notes on the
-              system. On the image below you'll find the registration component
-              where you have to fill in at least an email address that is used
-              as your username as well as a password. After you have logged in,
-              you will have to log in by using your credentials.
+              system. On the image below you will find the registration
+              component where you have to fill in at least an email address that
+              is used as your username as well as a password. After you have
+              logged in, you will have to log in by using your credentials.
             </p>
             <CardMedia className={classes.image} title='Register'>
               <img src={registerImg} alt='Registration' />

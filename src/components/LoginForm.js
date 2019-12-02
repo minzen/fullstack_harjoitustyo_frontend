@@ -98,9 +98,11 @@ const LoginForm = props => {
   }
 
   const getTheLoggedInUser = async () => {
-    const { data } = props.client.request(CURRENT_USER, null)
-    if (data && data.me) {
-      props.setLoggedInUser(data.me)
+    if (props.client && props.client.request) {
+      const { data } = props.client.request(CURRENT_USER, null)
+      if (data && data.me) {
+        props.setLoggedInUser(data.me)
+      }
     }
   }
 
@@ -137,7 +139,7 @@ const LoginForm = props => {
     props.handleSpinnerVisibility(false)
   }
 
-  const handleExpandClick = event => {
+  const handleExpandClick = () => {
     setExpanded(!expanded)
   }
 
@@ -231,8 +233,8 @@ const LoginForm = props => {
           <CardContent>
             <Box fontWeight='fontWeightRegular'>
               In case you have forgotten your password, you can reset your
-              account by using your Email. Type in your email address, so we'll
-              send instructions on how to reset the password.
+              account by using your Email. Type in your email address, so
+              we&apos;ll send instructions on how to reset the password.
             </Box>
             <form className={classes.container}>
               <Grid container spacing={1} alignItems='flex-end'>

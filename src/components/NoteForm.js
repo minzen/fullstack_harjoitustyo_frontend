@@ -150,12 +150,16 @@ const NoteForm = props => {
         mutation: ADD_NOTE,
         variables: { title: title, content: content, keywords: keywordsArr }
       })
-      if (!loading)
+      if (!loading) {
         if (data) {
           props.handleSpinnerVisibility(false)
           console.log('Response after carrying out the mutation ADD_NOTE', data)
           resetForm()
         }
+        if (error) {
+          console.log(error)
+        }
+      }
     } catch (e) {
       props.handleSpinnerVisibility(false)
       console.log('error when saving a new note', e)
@@ -179,10 +183,18 @@ const NoteForm = props => {
           keywords: keywordsArr
         }
       })
-      if (data) {
-        console.log('Response after carrying out the mutation EDIT_NOTE', data)
-        props.handleSpinnerVisibility(false)
-        resetForm()
+      if (!loading) {
+        if (data) {
+          console.log(
+            'Response after carrying out the mutation EDIT_NOTE',
+            data
+          )
+          props.handleSpinnerVisibility(false)
+          resetForm()
+        }
+        if (error) {
+          console.log(error)
+        }
       }
       props.handleSpinnerVisibility(false)
     } catch (e) {

@@ -1,15 +1,6 @@
 const utils = require('./utils')
 const USER = 'teemu.testaaja@test.net'
-const GIVENNAME = 'Teemu'
-const SURNAME = 'Testaaja'
-const NEW_GIVENNAME = 'Team'
-const NEW_SURNAME = 'Testaajax'
 const CURRENT_PWD = 'ThisIsMyPwd_2019'
-const NEW_PWD = 'ThisIsMyPwd_2019b'
-const DEFAULT_TITLE = 'An interesting story about the Finnish football'
-const DEFAULT_CONTENT =
-  'https://dynamic.hs.fi/2019/karsintakuvat/?_ga=2.73417106.1043337552.1573848580-425762508.1569652028'
-const DEFAULT_KEYWORDS = 'football'
 
 describe('Testing the login/logout with a user not logged in', function() {
   this.beforeAll(function() {
