@@ -35,5 +35,6 @@ module.exports = {
     contentBase: path.resolve(__dirname, 'build'),
     compress: true,
     port: 3000
-  }
+  },
+  devtool: 'source-map'
 }
