@@ -2,11 +2,6 @@ import React, { useState } from 'react'
 import {
   TextField,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   Card,
   CardHeader,
   CardContent,
@@ -22,6 +17,7 @@ import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
 import clsx from 'clsx'
 import MyTheme from '../styles/MyTheme'
+import SuccessDialog from './dialogs/SuccessDialog'
 
 const useStyles = makeStyles({
   textField: {
@@ -216,29 +212,13 @@ const RegisterUserForm = props => {
         </Collapse>
       </Card>
 
-      <Dialog
+      <SuccessDialog
+        title='User registered'
+        content='A user has been created. Please use your credentials to log in.'
+        confirmationText='OK'
+        handleClose={handleClose}
         open={showDialog}
-        onClose={handleClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
-      >
-        <DialogTitle id='alert-dialog-title'>User registered</DialogTitle>
-        <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
-            A user has been created. Please use your credentials to log in.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            data-cy='confirm_ok_user_registered'
-            onClick={handleClose}
-            color='primary'
-            autoFocus
-          >
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
+      />
     </>
   )
 }

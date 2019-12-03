@@ -13,7 +13,8 @@ const DeleteDialog = ({
   handleDelete,
   handleDeleteDialogClose,
   dialogTitle,
-  dialogContent
+  dialogContent,
+  dialogConfirmationText
 }) => {
   return (
     <Dialog
@@ -47,7 +48,7 @@ const DeleteDialog = ({
           autoFocus
           variant='contained'
         >
-          Delete
+          {dialogConfirmationText}
         </Button>
       </DialogActions>
     </Dialog>

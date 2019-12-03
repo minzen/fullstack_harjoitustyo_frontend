@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Fab } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import NoteForm from './NoteForm'
-import DeleteDialog from './DeleteDialog'
+import DeleteDialog from './dialogs/DeleteDialog'
 import Note from './Note'
-import FilterField from './FilterField'
+import FilterField from './fieldcomponents/FilterField'
 import MyTheme from '../styles/MyTheme'
 
 const ALL_NOTES = gql`
@@ -162,9 +162,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     await setEditNoteVisible(true)
     await setSelectedNote(note)
     console.log('handleEditNoteClick()', note)
-    if (note !== null) {
-      await scrollToNoteForm()
-    }
+    await scrollToNoteForm()
   }
 
   const handleDeleteNoteClick = async note => {
@@ -311,6 +309,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
           handleDeleteDialogClose={handleDeleteDialogClose}
           dialogTitle='Delete note?'
           dialogContent='Are you certain that you want to delete the note?'
+          dialogConfirmationText='Delete'
         />
       </div>
     )

@@ -8,19 +8,19 @@ import {
 } from '@material-ui/core'
 import { gql } from 'apollo-boost'
 import { useMutation, useQuery, ApolloConsumer } from '@apollo/react-hooks'
+import { ApolloProvider, Query } from 'react-apollo'
+import { useApolloClient } from '@apollo/react-hooks'
+import LoadingOverlay from 'react-loading-overlay'
+import { makeStyles } from '@material-ui/core/styles'
 import NotesPage from './components/NotesPage'
 import ProfilePage from './components/ProfilePage'
 import AboutPage from './components/AboutPage'
 import LoginPage from './components/LoginPage'
 import RegisterPage from './components/RegisterPage'
-import { ApolloProvider, Query } from 'react-apollo'
-import { useApolloClient } from '@apollo/react-hooks'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import LoadingOverlay from 'react-loading-overlay'
-import { makeStyles } from '@material-ui/core/styles'
 import MyTheme from './styles/MyTheme'
 import MenubarForLoggedInUser from './components/MenubarForLoggedInUser'
 import MenubarForNoLoggedInUser from './components/MenubarForNoLoggedInUser'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import {
   LOGIN_PAGE,
   NOTES_PAGE,
@@ -117,17 +117,6 @@ const useStyles = makeStyles({
   },
   errorNotification: {
     backgroundColor: MyTheme.palette.error.main
-  },
-  errorIcon: {
-    fontSize: 20
-  },
-  errorIconVariant: {
-    opacity: 0.9,
-    marginRight: MyTheme.spacing(1)
-  },
-  errorMessage: {
-    display: 'flex',
-    alignItems: 'center'
   }
 })
 

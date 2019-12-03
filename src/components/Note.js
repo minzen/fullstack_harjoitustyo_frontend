@@ -9,8 +9,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
-import Timestamp from './Timestamp'
-import LinkField from './LinkField'
+import Timestamp from './fieldcomponents/Timestamp'
+import LinkField from './fieldcomponents/LinkField'
 
 const useStyles = makeStyles({
   container: {
