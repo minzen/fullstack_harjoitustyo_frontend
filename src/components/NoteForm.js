@@ -190,7 +190,7 @@ const NoteForm = props => {
             data
           )
           props.handleSpinnerVisibility(false)
-          resetForm()
+          await resetForm()
         }
         if (error) {
           console.log(error)
