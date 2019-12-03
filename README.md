@@ -11,7 +11,17 @@ Tämä sovellus on rakennettu Full Stack Web Development -kurssille. Projekti on
 
 Frontend-toteutus rakennetaan ReactJS:n ja sopivan CSS-Frameworkin päälle. Lisäksi on tarkoitus tehdä lyhyt ekskursio React Nativeen, ja toteuttaa sillä yksinkertainen frontend mobiililaitteille.
 
-TODO: Lisää osoite, jossa frontend on käynnissä
+## Järjestelmävaatimukset
+
+- esim. Linux-palvelin, jossa käytettävissä npm/yarn ja nodejs (tämänhetkinen LTS-versio 12.13.1 toimii ainakin)
+- Memorytracks-sovelluksen backend-puoli toiminnassa
+
+## Buildaus
+
+Frontendin tuotantoversio generoidaan komennolla _yarn run build_ ja saatu hakemisto kopioidaan halutulle serverille, jossa sitä voidaan ajaa esim. komennolla _serve -s build -l 3000_, jossa viimeinen parametri on portti, missä sovellus on ajossa. Serve komento on oltava asennettuna yarn- tai npm-pakettimanagerilla luonnollisesti ensin.
+
+Tällä hetkellä tuotantoversio löytyy ajossa osoitteesta:
+http://37.120.176.60:3000/
 
 ## Työaikakirjanpito
 
