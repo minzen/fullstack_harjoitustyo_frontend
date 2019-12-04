@@ -32,10 +32,6 @@ const DELETE_NOTE = gql`
 `
 
 const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    padding: MyTheme.spacing(2)
-  },
   textField: {
     width: 240
   },
@@ -100,9 +96,8 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   const rows = () =>
     notesToShow.map(note => {
       return (
-        <Grid item xs={12} sm={6} md={3} key={note.id}>
+        <Grid item xs={12} sm={6} md={3} lg={2} key={note.id}>
           <Note
-            key={note.id}
             note={note}
             handleEditNoteClick={() => {
               return handleEditNoteClick(note)
@@ -182,28 +177,21 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   //console.log('rows', rows())
   if (rows().length === 0) {
     return (
-      <div className={classes.root}>
+      <>
         <Grid
           container
           spacing={2}
-          direction='row'
+          direction='column'
           justify='center'
           alignItems='center'
         >
-          <FilterField
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            handleSearchTermChange={handleSearchTermChange}
-          />
-        </Grid>
-        <Grid
-          container
-          spacing={2}
-          direction='row'
-          justify='flex-start'
-          alignItems='flex-start'
-        >
           <Grid item>
+            <FilterField
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              handleSearchTermChange={handleSearchTermChange}
+            />
+            <Grid item></Grid>
             <h3>No stored notes found.</h3>
           </Grid>
         </Grid>
@@ -242,29 +230,31 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
             </Fab>
           </Grid>
         </Grid>
-      </div>
+      </>
     )
   } else {
     return (
-      <div className={classes.root}>
+      <>
         <Grid
           container
           spacing={2}
-          direction='row'
+          direction='column'
           justify='center'
           alignItems='center'
         >
-          <FilterField
-            searchTerm={searchTerm}
-            handleSearchTermChange={handleSearchTermChange}
-          />
+          <Grid item style={{ padding: '12px' }}>
+            <FilterField
+              searchTerm={searchTerm}
+              handleSearchTermChange={handleSearchTermChange}
+            />
+          </Grid>
         </Grid>
         <Grid
           container
-          spacing={2}
           direction='row'
-          justify='flex-start'
-          alignItems='flex-start'
+          justify='center'
+          spacing={8}
+          style={{ padding: '18px' }}
         >
           {rows()}
         </Grid>
@@ -288,20 +278,18 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               handleSpinnerVisibility={handleSpinnerVisibility}
             />
           </Grid>
-          <Grid item>
-            <Fab
-              id='add_note_button'
-              color='primary'
-              aria-label='Add note'
-              onClick={() => {
-                handleEditNoteClick(null)
-              }}
-              className={classes.fab}
-            >
-              <AddIcon />
-            </Fab>
-          </Grid>
         </Grid>
+        <Fab
+          id='add_note_button'
+          color='primary'
+          aria-label='Add note'
+          onClick={() => {
+            handleEditNoteClick(null)
+          }}
+          className={classes.fab}
+        >
+          <AddIcon />
+        </Fab>
 
         <DeleteDialog
           showDialog={showDeleteDialog}
@@ -311,7 +299,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
           dialogContent='Are you certain that you want to delete the note?'
           dialogConfirmationText='Delete'
         />
-      </div>
+      </>
     )
   }
 }

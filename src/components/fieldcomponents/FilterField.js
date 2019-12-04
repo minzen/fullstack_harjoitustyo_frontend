@@ -4,9 +4,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import ClearIcon from '@material-ui/icons/Clear'
 
 const useStyles = makeStyles({
-  container: {
-    minWidth: 400
-  },
   textField: {
     marginLeft: 10,
     marginRight: 10,
@@ -24,24 +21,26 @@ const FilterField = props => {
     }
   }
   return (
-    <form>
-      <TextField
-        id='search_field'
-        variant='filled'
-        label='Search by keyword: '
-        color='secondary'
-        onChange={props.handleSearchTermChange}
-        value={props.searchTerm}
-        className={classes.textField}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position='end' onClick={handleClearField}>
-              <ClearIcon />
-            </InputAdornment>
-          )
-        }}
-      />
-    </form>
+    <>
+      <form>
+        <TextField
+          id='search_field'
+          variant='filled'
+          label='Search by keyword: '
+          color='secondary'
+          onChange={props.handleSearchTermChange}
+          value={props.searchTerm}
+          className={classes.textField}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end' onClick={handleClearField}>
+                <ClearIcon />
+              </InputAdornment>
+            )
+          }}
+        />
+      </form>
+    </>
   )
 }
 export default FilterField
