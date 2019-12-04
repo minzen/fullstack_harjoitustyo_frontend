@@ -4,7 +4,8 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardMedia
+  CardMedia,
+  Container
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import notesImg from '../assets/notes_overview.png'
@@ -14,7 +15,7 @@ import registerImg from '../assets/register.png'
 import personalDataImg from '../assets/edit_personal_data.png'
 import changePasswordImg from '../assets/change_password.png'
 
-const useStyle = makeStyles({
+const useStyles = makeStyles({
   cardContainer: {
     justifyContent: 'center'
   },
@@ -24,14 +25,14 @@ const useStyle = makeStyles({
 })
 
 const AboutPage = ({ show }) => {
-  const classes = useStyle()
+  const classes = useStyles()
   if (!show) {
     return null
   }
 
   return (
     <>
-      <Grid container className={classes.cardContainer}>
+      <Container maxWidth='xl'>
         <Card className={classes.card}>
           <CardHeader title='About' />{' '}
           <CardContent>
@@ -112,7 +113,7 @@ const AboutPage = ({ show }) => {
             </Grid>
           </CardContent>
         </Card>
-      </Grid>
+      </Container>
     </>
   )
 }

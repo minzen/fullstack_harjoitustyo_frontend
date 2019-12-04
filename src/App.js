@@ -191,47 +191,16 @@ const App = () => {
         >
           <ThemeProvider theme={MyTheme}>
             <CssBaseline />
-            <Grid
-              container
-              justify='center'
-              spacing={3}
-              className={classes.container}
-            >
-              <Grid item xs={12} md={6}>
-                <Grid
-                  container
-                  spacing={1}
-                  direction='column'
-                  justify='center'
-                  alignItems='center'
-                  className={classes.root}
-                >
-                  <Grid item>
-                    <MenubarForLoggedInUser
-                      setPage={setPage}
-                      setToken={setToken}
-                      client={client}
-                      loggedInUser={loggedInUser}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid container justify='center'>
+            <Grid container direction='column' spacing={1}>
               <Grid item>
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center'
-                  }}
-                  open={showErrorNotification}
-                  variant='error'
-                  autoHideDuration={6000}
-                >
-                  <SnackbarContent message={errorMessage} />
-                </Snackbar>
+                <MenubarForLoggedInUser
+                  setPage={setPage}
+                  setToken={setToken}
+                  client={client}
+                  loggedInUser={loggedInUser}
+                />
               </Grid>
-              <Grid item className={classes.noteDashboard}>
+              <Grid item>
                 <ApolloConsumer>
                   {client => (
                     <Query query={ALL_NOTES} pollInterval={2000}>
@@ -246,6 +215,8 @@ const App = () => {
                     </Query>
                   )}
                 </ApolloConsumer>
+              </Grid>
+              <Grid item>
                 <ApolloProvider client={client}>
                   <ProfilePage
                     show={page === PROFILE_PAGE}
@@ -255,12 +226,25 @@ const App = () => {
                   ></ProfilePage>
                 </ApolloProvider>
               </Grid>
-              <Grid item className={classes.aboutPage}>
+              <Grid item>
                 <AboutPage
                   show={page === ABOUT_PAGE}
                   client={client}
                   handleSpinnerVisibility={handleSpinnerVisibility}
                 />
+              </Grid>
+              <Grid item>
+                <Snackbar
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center'
+                  }}
+                  open={showErrorNotification}
+                  variant='error'
+                  autoHideDuration={6000}
+                >
+                  <SnackbarContent message={errorMessage} />
+                </Snackbar>
               </Grid>
             </Grid>
           </ThemeProvider>
@@ -316,7 +300,7 @@ const App = () => {
                 register={register}
               />
             </Grid>
-            <Grid item className={classes.aboutPage}>
+            <Grid item>
               <AboutPage
                 show={true}
                 client={client}

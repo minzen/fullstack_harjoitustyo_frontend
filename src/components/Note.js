@@ -4,7 +4,8 @@ import {
   CardHeader,
   CardContent,
   Typography,
-  Button
+  Button,
+  Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
@@ -13,12 +14,7 @@ import Timestamp from './fieldcomponents/Timestamp'
 import LinkField from './fieldcomponents/LinkField'
 
 const useStyles = makeStyles({
-  container: {
-    minWidth: 400
-  },
   card: {
-    minWidth: 275,
-    maxWidth: 345,
     backgroundColor: '#718792',
     marginTop: 15,
     marginRight: 10
@@ -108,30 +104,36 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
       </CardContent>
 
       <CardContent>
-        <Button
-          data-cy='editSubmit'
-          startIcon={<EditIcon />}
-          variant='contained'
-          color='primary'
-          onClick={() => {
-            //   console.log('edit note clicked')
-            return handleEditNoteClick(note)
-          }}
-        >
-          Edit
-        </Button>
-        <Button
-          data-cy='deleteSubmit'
-          startIcon={<DeleteOutlinedIcon />}
-          variant='contained'
-          color='secondary'
-          onClick={() => {
-            // console.log('delete note clicked')
-            return handleDeleteNoteClick(note)
-          }}
-        >
-          Delete
-        </Button>
+        <Grid container spacing={1} direction='row'>
+          <Grid item>
+            <Button
+              data-cy='editSubmit'
+              startIcon={<EditIcon />}
+              variant='contained'
+              color='primary'
+              onClick={() => {
+                //   console.log('edit note clicked')
+                return handleEditNoteClick(note)
+              }}
+            >
+              Edit
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              data-cy='deleteSubmit'
+              startIcon={<DeleteOutlinedIcon />}
+              variant='contained'
+              color='secondary'
+              onClick={() => {
+                // console.log('delete note clicked')
+                return handleDeleteNoteClick(note)
+              }}
+            >
+              Delete
+            </Button>
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   )
