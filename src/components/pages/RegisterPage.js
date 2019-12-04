@@ -1,5 +1,5 @@
 import React from 'react'
-import RegisterUserForm from './RegisterUserForm'
+import RegisterUserForm from '../forms/RegisterUserForm'
 
 const RegisterPage = ({ show, register, handleSpinnerVisibility }) => {
   if (!show) {
