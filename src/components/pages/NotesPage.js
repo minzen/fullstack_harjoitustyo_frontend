@@ -1,13 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { gql } from 'apollo-boost'
-import { makeStyles } from '@material-ui/core/styles'
-import { Grid, Fab } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import NoteForm from './NoteForm'
-import DeleteDialog from './dialogs/DeleteDialog'
-import Note from './Note'
-import FilterField from './fieldcomponents/FilterField'
-import MyTheme from '../styles/MyTheme'
+import { Grid } from '@material-ui/core'
+import NoteForm from '../forms/NoteForm'
+import DeleteDialog from '../dialogs/DeleteDialog'
+import Note from '../Note'
+import FilterField from '../fieldcomponents/FilterField'
+import AddNoteButton from '../fieldcomponents/AddNoteButton'
 
 const ALL_NOTES = gql`
   query {
@@ -31,21 +29,9 @@ const DELETE_NOTE = gql`
   }
 `
 
-const useStyles = makeStyles({
-  textField: {
-    width: 240
-  },
-  fab: {
-    position: 'fixed',
-    bottom: MyTheme.spacing(2),
-    right: MyTheme.spacing(2)
-  }
-})
-
 const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop)
 
 const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
-  const classes = useStyles()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedNote, setSelectedNote] = useState(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -58,6 +44,8 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   if (!show) {
     return null
   }
+
+  useEffect
 
   if (result && result.loading) {
     return <div>loading...</div>
@@ -96,7 +84,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   const rows = () =>
     notesToShow.map(note => {
       return (
-        <Grid item xs={12} sm={6} md={3} lg={2} key={note.id}>
+        <Grid item xs={12} sm={6} md={3} key={note.id}>
           <Note
             note={note}
             handleEditNoteClick={() => {
@@ -185,7 +173,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
           justify='center'
           alignItems='center'
         >
-          <Grid item>
+          <Grid item style={{ padding: '12px' }}>
             <FilterField
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -215,21 +203,8 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               handleSpinnerVisibility={handleSpinnerVisibility}
             />
           </Grid>
-
-          <Grid item>
-            <Fab
-              id='add_note_button'
-              color='primary'
-              aria-label='Add note'
-              onClick={() => {
-                handleEditNoteClick(null)
-              }}
-              className={classes.fab}
-            >
-              <AddIcon />
-            </Fab>
-          </Grid>
         </Grid>
+        <AddNoteButton handleEditNoteClick={handleEditNoteClick} />
       </>
     )
   } else {
@@ -273,24 +248,13 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               visible={editNoteVisible}
               handleFormVisibility={handleFormVisibility}
               handleEditNoteClick={() => {
-                return handleEditNoteClick(selectedNote)
+                handleEditNoteClick(selectedNote)
               }}
               handleSpinnerVisibility={handleSpinnerVisibility}
             />
           </Grid>
         </Grid>
-        <Fab
-          id='add_note_button'
-          color='primary'
-          aria-label='Add note'
-          onClick={() => {
-            handleEditNoteClick(null)
-          }}
-          className={classes.fab}
-        >
-          <AddIcon />
-        </Fab>
-
+        <AddNoteButton handleEditNoteClick={handleEditNoteClick} />
         <DeleteDialog
           showDialog={showDeleteDialog}
           handleDelete={handleDelete}

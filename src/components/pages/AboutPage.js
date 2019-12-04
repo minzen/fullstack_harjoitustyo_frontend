@@ -8,12 +8,12 @@ import {
   Container
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import notesImg from '../assets/notes_overview.png'
-import filteringImg from '../assets/filtering.png'
-import addNoteImg from '../assets/add_note.png'
-import registerImg from '../assets/register.png'
-import personalDataImg from '../assets/edit_personal_data.png'
-import changePasswordImg from '../assets/change_password.png'
+import notesImg from '../../assets/notes_overview.png'
+import filteringImg from '../../assets/filtering.png'
+import addNoteImg from '../../assets/add_note.png'
+import registerImg from '../../assets/register.png'
+import personalDataImg from '../../assets/edit_personal_data.png'
+import changePasswordImg from '../../assets/change_password.png'
 
 const useStyles = makeStyles({
   cardContainer: {

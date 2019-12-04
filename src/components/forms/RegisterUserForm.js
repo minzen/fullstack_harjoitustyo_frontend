@@ -16,8 +16,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
 import clsx from 'clsx'
-import MyTheme from '../styles/MyTheme'
-import SuccessDialog from './dialogs/SuccessDialog'
+import MyTheme from '../../styles/MyTheme'
+import SuccessDialog from '../dialogs/SuccessDialog'
 
 const useStyles = makeStyles({
   textField: {

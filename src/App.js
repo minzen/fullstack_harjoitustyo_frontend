@@ -12,11 +12,11 @@ import { ApolloProvider, Query } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
 import LoadingOverlay from 'react-loading-overlay'
 import { makeStyles } from '@material-ui/core/styles'
-import NotesPage from './components/NotesPage'
-import ProfilePage from './components/ProfilePage'
-import AboutPage from './components/AboutPage'
-import LoginPage from './components/LoginPage'
-import RegisterPage from './components/RegisterPage'
+import NotesPage from './components/pages/NotesPage'
+import ProfilePage from './components/pages/ProfilePage'
+import AboutPage from './components/pages/AboutPage'
+import LoginPage from './components/pages/LoginPage'
+import RegisterPage from './components/pages/RegisterPage'
 import MyTheme from './styles/MyTheme'
 import MenubarForLoggedInUser from './components/MenubarForLoggedInUser'
 import MenubarForNoLoggedInUser from './components/MenubarForNoLoggedInUser'
@@ -97,7 +97,6 @@ const useStyles = makeStyles({
     borderRadius: 3,
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
     color: 'white',
-    height: 80,
     padding: '0 30px',
     marginBottom: 10
   },
@@ -121,7 +120,6 @@ const useStyles = makeStyles({
 })
 
 const App = () => {
-  const classes = useStyles()
   const [token, setToken] = useState(null)
   const [page, setPage] = useState('notes')
   const [loggedInUser, setLoggedInUser] = useState(null)
@@ -129,6 +127,7 @@ const App = () => {
   const [showErrorNotification, setShowErrorNotification] = useState(false)
   const [spinnerActive, setSpinnerActive] = useState(false)
   const client = useApolloClient()
+  const classes = useStyles()
 
   useEffect(() => {
     console.log(LOGIN_PAGE, REGISTER_PAGE)
@@ -172,6 +171,7 @@ const App = () => {
 
   if (data.me && loggedInUser === null) {
     setLoggedInUser(data.me)
+    setPage(NOTES_PAGE)
   }
 
   // User logged in, show the full app
@@ -191,7 +191,12 @@ const App = () => {
         >
           <ThemeProvider theme={MyTheme}>
             <CssBaseline />
-            <Grid container direction='column' spacing={1}>
+            <Grid
+              container
+              direction='column'
+              spacing={1}
+              className={classes.container}
+            >
               <Grid item>
                 <MenubarForLoggedInUser
                   setPage={setPage}

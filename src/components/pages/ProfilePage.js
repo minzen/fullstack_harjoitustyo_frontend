@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import MyTheme from '../styles/MyTheme'
+import MyTheme from '../../styles/MyTheme'
 import { Snackbar, SnackbarContent, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import ChangePasswordCard from './cards/ChangePasswordCard'
-import EditUserCard from './cards/EditUserCard'
-import SuccessDialog from './dialogs/SuccessDialog'
+import ChangePasswordCard from '../cards/ChangePasswordCard'
+import EditUserCard from '../cards/EditUserCard'
+import SuccessDialog from '../dialogs/SuccessDialog'
 
 const useStyles = makeStyles({
   textField: {

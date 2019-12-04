@@ -16,8 +16,7 @@ import LinkField from './fieldcomponents/LinkField'
 const useStyles = makeStyles({
   card: {
     backgroundColor: '#718792',
-    marginTop: 15,
-    marginRight: 10
+    margin: 5
   },
   cardHeader: {
     backgroundColor: '#1c313a',
@@ -93,17 +92,7 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
         >
           Keywords: {extractKeywordsFromArrayWithJoin(note.keywords)}
         </Typography>
-        <Typography
-          data-cy='timestampField'
-          variant='body2'
-          gutterBottom
-          className={classes.timestamp}
-        >
-          <Timestamp timestamp={note.modified} />
-        </Typography>
-      </CardContent>
 
-      <CardContent>
         <Grid container spacing={1} direction='row'>
           <Grid item>
             <Button
@@ -133,6 +122,14 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
               Delete
             </Button>
           </Grid>
+          <Typography
+            data-cy='timestampField'
+            variant='body2'
+            gutterBottom
+            className={classes.timestamp}
+          >
+            <Timestamp timestamp={note.modified} />
+          </Typography>
         </Grid>
       </CardContent>
     </Card>

@@ -18,7 +18,7 @@ import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
-import MyTheme from '../styles/MyTheme'
+import MyTheme from '../../styles/MyTheme'
 
 const useStyles = makeStyles({
   card: {
