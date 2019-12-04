@@ -25,9 +25,13 @@ const useStyles = makeStyles({
   },
   timestamp: {
     color: 'lightblue',
-    marginTop: 10
+    marginLeft: 5,
+    marginTop: 15
   },
   cardContent: {
+    color: '#d7e6e8'
+  },
+  cardContentHeader: {
     color: 'lightblue'
   }
 })
@@ -75,24 +79,51 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
       ></CardHeader>
 
       <CardContent>
-        <Typography
-          data-cy='contentField'
-          variant='body1'
-          gutterBottom
-          className={classes.cardContent}
-        >
-          Note: {note.content}
-        </Typography>
+        <Grid container>
+          <Grid item>
+            <Typography
+              data-cy='contentField'
+              variant='body1'
+              gutterBottom
+              className={classes.cardContentHeader}
+            >
+              Note:&nbsp;
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography
+              data-cy='contentField'
+              variant='body1'
+              gutterBottom
+              className={classes.cardContent}
+            >
+              {note.content}
+            </Typography>
+          </Grid>
+        </Grid>
         <LinkField link={link} />
-        <Typography
-          data-cy='keywordsField'
-          variant='body1'
-          gutterBottom
-          className={classes.cardContent}
-        >
-          Keywords: {extractKeywordsFromArrayWithJoin(note.keywords)}
-        </Typography>
-
+        <Grid container>
+          <Grid item>
+            <Typography
+              data-cy='keywordsField'
+              variant='body1'
+              gutterBottom
+              className={classes.cardContentHeader}
+            >
+              Keywords:&nbsp;
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography
+              data-cy='keywordsField'
+              variant='body1'
+              gutterBottom
+              className={classes.cardContent}
+            >
+              {extractKeywordsFromArrayWithJoin(note.keywords)}
+            </Typography>
+          </Grid>
+        </Grid>
         <Grid container spacing={1} direction='row'>
           <Grid item>
             <Button
@@ -101,8 +132,7 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
               variant='contained'
               color='primary'
               onClick={() => {
-                //   console.log('edit note clicked')
-                return handleEditNoteClick(note)
+                handleEditNoteClick(note)
               }}
             >
               Edit
@@ -115,21 +145,22 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
               variant='contained'
               color='secondary'
               onClick={() => {
-                // console.log('delete note clicked')
-                return handleDeleteNoteClick(note)
+                handleDeleteNoteClick(note)
               }}
             >
               Delete
             </Button>
           </Grid>
-          <Typography
-            data-cy='timestampField'
-            variant='body2'
-            gutterBottom
-            className={classes.timestamp}
-          >
-            <Timestamp timestamp={note.modified} />
-          </Typography>
+          <Grid container spacing={1} direction='column'>
+            <Typography
+              data-cy='timestampField'
+              variant='body2'
+              gutterBottom
+              className={classes.timestamp}
+            >
+              <Timestamp timestamp={note.modified} />
+            </Typography>
+          </Grid>
         </Grid>
       </CardContent>
     </Card>
