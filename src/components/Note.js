@@ -82,7 +82,6 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
         <Grid container>
           <Grid item>
             <Typography
-              data-cy='contentField'
               variant='body1'
               gutterBottom
               className={classes.cardContentHeader}
@@ -105,7 +104,6 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
         <Grid container>
           <Grid item>
             <Typography
-              data-cy='keywordsField'
               variant='body1'
               gutterBottom
               className={classes.cardContentHeader}

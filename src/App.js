@@ -121,7 +121,7 @@ const useStyles = makeStyles({
 
 const App = () => {
   const [token, setToken] = useState(null)
-  const [page, setPage] = useState('notes')
+  const [page, setPage] = useState(NOTES_PAGE)
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
@@ -130,7 +130,6 @@ const App = () => {
   const classes = useStyles()
 
   useEffect(() => {
-    console.log(LOGIN_PAGE, REGISTER_PAGE)
     setToken(localStorage.getItem('memorytracks-user-token'))
   }, [])
 
@@ -146,11 +145,7 @@ const App = () => {
   }
 
   const handleSpinnerVisibility = value => {
-    if (value) {
-      setSpinnerActive(true)
-    } else {
-      setSpinnerActive(false)
-    }
+    return setSpinnerActive(value)
   }
 
   const [login] = useMutation(LOGIN, {
@@ -171,7 +166,6 @@ const App = () => {
 
   if (data.me && loggedInUser === null) {
     setLoggedInUser(data.me)
-    setPage(NOTES_PAGE)
   }
 
   // User logged in, show the full app
