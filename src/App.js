@@ -21,6 +21,7 @@ import MyTheme from './styles/MyTheme'
 import MenubarForLoggedInUser from './components/MenubarForLoggedInUser'
 import MenubarForNoLoggedInUser from './components/MenubarForNoLoggedInUser'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { useTranslation } from 'react-i18next'
 import {
   LOGIN_PAGE,
   NOTES_PAGE,
@@ -126,6 +127,7 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
   const [spinnerActive, setSpinnerActive] = useState(false)
+  const { t } = useTranslation()
   const client = useApolloClient()
   const classes = useStyles()
 
@@ -181,7 +183,7 @@ const App = () => {
               background: 'rgba(0, 0, 0, 0.5)'
             })
           }}
-          text='Processing...'
+          text={t('Processing')}
         >
           <ThemeProvider theme={MyTheme}>
             <CssBaseline />
@@ -262,7 +264,7 @@ const App = () => {
             background: 'rgba(0, 0, 0, 0.75)'
           })
         }}
-        text='Processing...'
+        text={t('Processing')}
       >
         <ThemeProvider theme={MyTheme}>
           <CssBaseline />
@@ -275,7 +277,7 @@ const App = () => {
           >
             <Grid item>
               <Typography variant='h3' gutterBottom>
-                Memory Tracks
+                {t('Memory Tracks')}
               </Typography>
             </Grid>
 

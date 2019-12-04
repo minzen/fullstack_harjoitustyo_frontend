@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { gql } from 'apollo-boost'
+import { useTranslation } from 'react-i18next'
 
 const CHANGE_PASSWORD = gql`
   mutation changePassword(
@@ -57,6 +58,7 @@ const ChangePasswordCard = props => {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [newPassword2, setNewPassword2] = useState('')
+  const { t } = useTranslation()
 
   const handleCurrentPasswordChange = event => {
     setCurrentPassword(event.target.value)
@@ -121,7 +123,7 @@ const ChangePasswordCard = props => {
           <TextField
             id='currentpassword_field'
             variant='standard'
-            label='Current password: '
+            label={t('Current password')}
             onChange={handleCurrentPasswordChange}
             value={currentPassword}
             className={classes.textField}
@@ -130,7 +132,7 @@ const ChangePasswordCard = props => {
           <TextField
             id='newpassword_field'
             variant='standard'
-            label='New password: '
+            label={t('New password')}
             onChange={handleNewPasswordChange}
             value={newPassword}
             className={classes.textField}
@@ -139,7 +141,7 @@ const ChangePasswordCard = props => {
           <TextField
             id='newpassword2_field'
             variant='standard'
-            label='New password confirmation: '
+            label={t('New password confirmation')}
             onChange={handleNewPassword2Change}
             value={newPassword2}
             className={classes.textField}
@@ -153,7 +155,7 @@ const ChangePasswordCard = props => {
             variant='contained'
             onClick={handleChangePasswordSubmit}
           >
-            Change password
+            {t('Change password')}
           </Button>
         </form>
       </CardContent>

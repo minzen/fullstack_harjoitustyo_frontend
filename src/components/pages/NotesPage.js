@@ -6,6 +6,7 @@ import DeleteDialog from '../dialogs/DeleteDialog'
 import Note from '../Note'
 import FilterField from '../fieldcomponents/FilterField'
 import AddNoteButton from '../fieldcomponents/AddNoteButton'
+import { useTranslation } from 'react-i18next'
 
 const ALL_NOTES = gql`
   query {
@@ -37,15 +38,13 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [editNoteVisible, setEditNoteVisible] = useState(false)
   const [showAll, setShowAll] = useState(true)
-
   const noteFormRef = useRef(null)
   const scrollToNoteForm = () => scrollToRef(noteFormRef)
+  const { t } = useTranslation()
 
   if (!show) {
     return null
   }
-
-  useEffect
 
   if (result && result.loading) {
     return <div>loading...</div>
@@ -180,7 +179,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               handleSearchTermChange={handleSearchTermChange}
             />
             <Grid item></Grid>
-            <h3>No stored notes found.</h3>
+            <h3>{t('No stored notes found.')}</h3>
           </Grid>
         </Grid>
         <Grid
@@ -259,9 +258,9 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
           showDialog={showDeleteDialog}
           handleDelete={handleDelete}
           handleDeleteDialogClose={handleDeleteDialogClose}
-          dialogTitle='Delete note?'
-          dialogContent='Are you certain that you want to delete the note?'
-          dialogConfirmationText='Delete'
+          dialogTitle={t('Delete note?')}
+          dialogContent={t('Are you certain that you want to delete the note?')}
+          dialogConfirmationText={t('Delete')}
         />
       </>
     )

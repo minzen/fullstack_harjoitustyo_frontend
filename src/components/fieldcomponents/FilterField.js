@@ -2,6 +2,7 @@ import React from 'react'
 import { TextField, InputAdornment } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import ClearIcon from '@material-ui/icons/Clear'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
   textField: {
@@ -14,6 +15,7 @@ const useStyles = makeStyles({
 
 const FilterField = props => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   const handleClearField = () => {
     if (props.searchTerm !== '') {
@@ -26,7 +28,7 @@ const FilterField = props => {
         <TextField
           id='search_field'
           variant='filled'
-          label='Search by keyword: '
+          label={t('Search by keyword')}
           color='secondary'
           onChange={props.handleSearchTermChange}
           value={props.searchTerm}

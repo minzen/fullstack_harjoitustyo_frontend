@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import MyTheme from '../../styles/MyTheme'
 import { Snackbar, SnackbarContent, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { useTranslation } from 'react-i18next'
 import ChangePasswordCard from '../cards/ChangePasswordCard'
 import EditUserCard from '../cards/EditUserCard'
 import SuccessDialog from '../dialogs/SuccessDialog'
@@ -39,6 +40,7 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
   const [successDialogContent, setSuccessDialogContent] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
+  const { t } = useTranslation()
   const classes = useStyles()
 
   if (!user) {
@@ -120,7 +122,7 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
         handleClose={handleDialogClose}
         title={successDialogTitle}
         content={successDialogContent}
-        confirmationText='OK'
+        confirmationText={t('OK')}
       />
     </>
   )
