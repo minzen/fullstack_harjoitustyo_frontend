@@ -117,7 +117,7 @@ const ChangePasswordCard = props => {
 
   return (
     <Card className={classes.card}>
-      <CardHeader title='Change password' className={classes.cardHeader} />
+      <CardHeader title={t('Change password')} className={classes.cardHeader} />
       <CardContent>
         <form>
           <TextField

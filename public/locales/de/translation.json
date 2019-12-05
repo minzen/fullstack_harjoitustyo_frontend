@@ -3,7 +3,7 @@
   "Processing": "In Bearbeitung...",
   "Login": "Login",
   "Register": "Registrierung",
-  "About": "Über",
+  "About": "Info",
   "Logout": "Logout",
   "Add note": "Notiz hinzufügen",
   "Search by keyword": "Mit Schlüsselwort suchen: ",
@@ -56,5 +56,6 @@
   "Language": "Sprache",
   "English": "Englisch",
   "Finnish": "Finnisch",
-  "German": "Deutsch"
+  "German": "Deutsch",
+  "Basic user data": "Basisdaten des Benutzers"
 }

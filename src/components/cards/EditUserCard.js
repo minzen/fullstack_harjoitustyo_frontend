@@ -115,7 +115,7 @@ const EditUserCard = props => {
 
   return (
     <Card className={classes.card}>
-      <CardHeader title='Basic user data' className={classes.cardHeader} />
+      <CardHeader title={t('Basic user data')} className={classes.cardHeader} />
       <CardContent>
         <form autoComplete='off'>
           <TextField

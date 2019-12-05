@@ -4,7 +4,7 @@
   "Login": "Login",
   "Register": "Rekisteröinti",
   "About": "Tietoja",
-  "Logout": "Logout",
+  "Logout": "Uloskirjautuminen",
   "Add note": "Lisää muistiinpano",
   "Search by keyword": "Etsi avainsanalla:",
   "Link": "Linkki:",
@@ -56,5 +56,6 @@
   "Language": "Kieli",
   "English": "englanti",
   "Finnish": "suomi",
-  "German": "saksa"
+  "German": "saksa",
+  "Basic user data": "Käyttäjän perustiedot"
 }
