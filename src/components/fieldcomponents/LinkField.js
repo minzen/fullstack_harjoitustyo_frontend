@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
   link: {
@@ -10,6 +11,7 @@ const useStyles = makeStyles({
 
 const LinkField = ({ link }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   if (!link) {
     return <></>
@@ -22,7 +24,7 @@ const LinkField = ({ link }) => {
       gutterBottom
       className={classes.link}
     >
-      Link: <Link href={link}>{link}</Link>
+      {t('Link')} <Link href={link}>{link}</Link>
     </Typography>
   )
 }

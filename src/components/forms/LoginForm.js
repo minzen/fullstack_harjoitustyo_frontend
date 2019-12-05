@@ -19,6 +19,7 @@ import LockIcon from '@material-ui/icons/Lock'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
 import MyTheme from '../../styles/MyTheme'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
   card: {
@@ -87,6 +88,7 @@ const LoginForm = props => {
   const [password, setPassword] = useState('')
   const [expanded, setExpanded] = useState(false)
   const [emailToRestorePwd, setEmailToRestorePwd] = useState('')
+  const { t } = useTranslation()
   const dateNow = new Date().toDateString()
 
   const handleEmailChange = event => {
@@ -160,10 +162,10 @@ const LoginForm = props => {
           className={classes.cardHeader}
           avatar={
             <Avatar aria-label='login' className={classes.avatar}>
-              Login
+              {t('Login')}
             </Avatar>
           }
-          title='Please login to the system with your credentials.'
+          title={t('Please login to the system with your credentials.')}
           subheader={dateNow}
         ></CardHeader>
 
@@ -177,7 +179,7 @@ const LoginForm = props => {
                 <TextField
                   id='email_field'
                   className={classes.textField}
-                  label='Email address'
+                  label={t('Email address')}
                   onChange={handleEmailChange}
                   variant='filled'
                   color='secondary'
@@ -194,7 +196,7 @@ const LoginForm = props => {
                 <TextField
                   id='password_field'
                   className={classes.textField}
-                  label='Password'
+                  label={t('Password')}
                   onChange={handlePasswordChange}
                   variant='outlined'
                   color='secondary'
@@ -212,7 +214,7 @@ const LoginForm = props => {
               onClick={handleLoginSubmit}
               type='submit'
             >
-              Login
+              {t('Login')}
             </Button>
           </form>
         </CardContent>
@@ -231,11 +233,7 @@ const LoginForm = props => {
 
         <Collapse in={expanded} timeout='auto' unmountOnExit>
           <CardContent>
-            <Box fontWeight='fontWeightRegular'>
-              In case you have forgotten your password, you can reset your
-              account by using your Email. Type in your email address, so
-              we&apos;ll send instructions on how to reset the password.
-            </Box>
+            <Box fontWeight='fontWeightRegular'>{t('Password forgotten')}</Box>
             <form className={classes.container}>
               <Grid container spacing={1} alignItems='flex-end'>
                 <Grid item>
@@ -245,7 +243,7 @@ const LoginForm = props => {
                   <TextField
                     id='email_to_restore_password_field'
                     className={classes.textField}
-                    label='Email to restore password'
+                    label={t('Email to restore password')}
                     color='secondary'
                     onChange={handleEmailToRestorePwdChange}
                     value={emailToRestorePwd}
@@ -260,7 +258,7 @@ const LoginForm = props => {
                 onClick={handleSubmitPwdForgottenButton}
                 type='submit'
               >
-                Restore Password
+                {t('Restore Password')}
               </Button>
             </form>
           </CardContent>

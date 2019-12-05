@@ -5,6 +5,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import InfoIcon from '@material-ui/icons/Info'
 import { PROFILE_PAGE, ABOUT_PAGE, NOTES_PAGE } from '../constants/pages'
 import AvatarField from '../components/fieldcomponents/AvatarField'
+import { useTranslation } from 'react-i18next'
+import LanguageSelector from './fieldcomponents/LanguageSelector'
 
 const MenubarForLoggedInUser = ({
   setPage,
@@ -12,6 +14,8 @@ const MenubarForLoggedInUser = ({
   client,
   loggedInUser
 }) => {
+  const { t } = useTranslation()
+
   const handleLogout = () => {
     localStorage.clear()
     setToken(null)
@@ -43,18 +47,21 @@ const MenubarForLoggedInUser = ({
             <AvatarField loggedInUser={loggedInUser} />
           </Button>
           <Button id='menu_notes_button' onClick={handleNotesClick}>
-            Memory Tracks&nbsp;
+            {t('Memory Tracks')}&nbsp;
             <MemoryIcon />
           </Button>
           <Button id='menu_about_button' onClick={handleAboutClick}>
-            About&nbsp;
+            {t('About')}&nbsp;
             <InfoIcon />
           </Button>
           <Button id='menu_logout_button' onClick={handleLogout}>
-            Logout&nbsp;
+            {t('Logout')}&nbsp;
             <ExitToAppIcon />
           </Button>
         </ButtonGroup>
+      </Grid>
+      <Grid item>
+        <LanguageSelector />
       </Grid>
     </Grid>
   )

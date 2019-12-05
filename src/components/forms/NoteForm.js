@@ -10,8 +10,8 @@ import {
   SnackbarContent,
   Container
 } from '@material-ui/core'
-import ContentPaste from 'mdi-material-ui/ContentPaste'
 import { makeStyles } from '@material-ui/core/styles'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -64,6 +64,7 @@ const NoteForm = props => {
   const [noteId, setNoteId] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
+  const { t } = useTranslation()
   const classes = useStyles()
   const client = props.client
 
@@ -241,29 +242,32 @@ const NoteForm = props => {
         <Container maxWidth='sm' className={classes.noteForm}>
           <form>
             <Card>
-              <CardHeader title='Edit note' className={classes.cardHeader} />
+              <CardHeader
+                title={t('Edit note')}
+                className={classes.cardHeader}
+              />
               <CardContent>
                 <TextField
                   id='title_field'
                   variant='filled'
-                  label='Title: '
+                  label={t('Title')}
                   className={classes.textField}
                   onChange={handleTitleChange}
                   value={title}
                 >
-                  Title
+                  {t('Title')}
                 </TextField>
                 <br />
                 <TextField
                   id='content_field'
                   variant='filled'
-                  label='Content: '
+                  label={t('Content')}
                   multiline
                   className={classes.textField}
                   onChange={handleContentChange}
                   value={content}
                 >
-                  Content
+                  {t('Content')}
                 </TextField>
                 <Button
                   id='paste_from_clipboard_button'
@@ -271,19 +275,18 @@ const NoteForm = props => {
                   color='primary'
                   onClick={handlePasteFromClipboard}
                 >
-                  <ContentPaste />
-                  Paste
+                  {t('Paste')}
                 </Button>
                 <br />
                 <TextField
                   id='keywords_field'
                   variant='filled'
-                  label='Keywords (comma-separated)'
+                  label={t('Keywords')}
                   className={classes.textField}
                   onChange={handleKeywordsChange}
                   value={keywords}
                 >
-                  Keywords
+                  {t('Keywords')}
                 </TextField>
                 <br />
                 <br />
@@ -296,7 +299,7 @@ const NoteForm = props => {
                     props.handleFormVisibility(false)
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
                 <Button
                   id='save_note_button'
@@ -306,7 +309,7 @@ const NoteForm = props => {
                   className={classes.button}
                   type='submit'
                 >
-                  Save note
+                  {t('Save note')}
                 </Button>
               </CardContent>
             </Card>

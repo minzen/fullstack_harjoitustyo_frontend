@@ -9,7 +9,7 @@ Tämä sovellus on rakennettu Full Stack Web Development -kurssille. Projekti on
 
 ## Frontend-toteutus
 
-Frontend-toteutus rakennetaan ReactJS:n ja sopivan CSS-Frameworkin päälle. Lisäksi on tarkoitus tehdä lyhyt ekskursio React Nativeen, ja toteuttaa sillä yksinkertainen frontend mobiililaitteille.
+Frontend-toteutus on rakennettu ReactJS:n ja sopivan Material UI -frameworkin päälle. Lisäksi on tarkoitus tehdä lyhyt ekskursio React Nativeen, ja toteuttaa sillä yksinkertainen frontend mobiililaitteille.
 
 ## Järjestelmävaatimukset
 
@@ -22,6 +22,15 @@ Frontendin tuotantoversio generoidaan komennolla _yarn run build_ ja saatu hakem
 
 Tällä hetkellä tuotantoversio löytyy ajossa osoitteesta:
 http://gyarados.feetunyrhinen.de:3000
+
+## Käytettyjä teknologioita
+
+- React JS
+- GraphQL + Apollo Client ja muita Apollo-kirjastoja
+- Material UI
+- ESLint
+- Webpack
+- i18next
 
 ## Työaikakirjanpito
 

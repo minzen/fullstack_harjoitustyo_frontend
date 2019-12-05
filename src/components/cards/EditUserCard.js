@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { gql } from 'apollo-boost'
+import { useTranslation } from 'react-i18next'
 
 const EDIT_USER = gql`
   mutation editUser($email: String!, $givenname: String, $surname: String) {
@@ -49,6 +50,7 @@ const EditUserCard = props => {
   const [surname, setSurname] = useState('')
   const [email, setEmail] = useState('')
   const classes = useStyles()
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (props.user) {
@@ -113,13 +115,13 @@ const EditUserCard = props => {
 
   return (
     <Card className={classes.card}>
-      <CardHeader title='Basic user data' className={classes.cardHeader} />
+      <CardHeader title={t('Basic user data')} className={classes.cardHeader} />
       <CardContent>
         <form autoComplete='off'>
           <TextField
             id='givenname_field'
             variant='standard'
-            label='Givenname: '
+            label={t('Givenname')}
             onChange={handleGivennameChange}
             value={givenname}
             className={classes.textField}
@@ -128,7 +130,7 @@ const EditUserCard = props => {
           <TextField
             id='surname_field'
             variant='standard'
-            label='Surname: '
+            label={t('Surname')}
             onChange={handleSurnameChange}
             value={surname}
             className={classes.textField}
@@ -137,7 +139,7 @@ const EditUserCard = props => {
           <TextField
             id='email_field'
             variant='standard'
-            label='Email: '
+            label={t('Email address')}
             onChange={handleEmailChange}
             value={email}
             className={classes.textField}
@@ -152,7 +154,7 @@ const EditUserCard = props => {
             onClick={handleEditUserSubmit}
           >
             {' '}
-            Update user data
+            {t('Update user data')}
           </Button>
         </form>
       </CardContent>

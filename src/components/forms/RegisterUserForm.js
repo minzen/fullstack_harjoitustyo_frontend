@@ -12,6 +12,7 @@ import {
   Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { useTranslation } from 'react-i18next'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
@@ -74,8 +75,9 @@ const RegisterUserForm = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showDialog, setShowDialog] = useState(false)
-  const classes = useStyles()
   const [expanded, setExpanded] = useState(false)
+  const { t } = useTranslation()
+  const classes = useStyles()
 
   const handleGivennameChange = event => {
     setGivenname(event.target.value)
@@ -130,10 +132,10 @@ const RegisterUserForm = props => {
           className={classes.cardHeader}
           avatar={
             <Avatar aria-label='register' className={classes.registerAvatar}>
-              Register
+              {t('Register')}
             </Avatar>
           }
-          title='In case you do not have a user account, please register a new account below.'
+          title={t('Missing Account Text')}
           subheader=''
         />
 
@@ -156,14 +158,14 @@ const RegisterUserForm = props => {
             <form className={classes.container} autoComplete='off'>
               <TextField
                 id='register_givenname'
-                label='Givenname'
+                label={t('Givenname')}
                 value={givenname}
                 onChange={handleGivennameChange}
                 className={classes.textField}
               />
               <TextField
                 id='register_surname'
-                label='Surname'
+                label={t('Surname')}
                 value={surname}
                 onChange={handleSurnameChange}
                 className={classes.textField}
@@ -175,7 +177,7 @@ const RegisterUserForm = props => {
                 <Grid item>
                   <TextField
                     id='register_email'
-                    label='Email'
+                    label={t('Email address')}
                     value={email}
                     onChange={handleEmailChange}
                     className={classes.textFieldWithIcon}
@@ -189,7 +191,7 @@ const RegisterUserForm = props => {
                 <Grid item>
                   <TextField
                     id='register_password'
-                    label='Password'
+                    label={t('Password')}
                     value={password}
                     type='password'
                     onChange={handlePasswordChange}
@@ -205,7 +207,7 @@ const RegisterUserForm = props => {
                 onClick={handleRegisterSubmit}
                 type='submit'
               >
-                Register
+                {t('Register')}
               </Button>
             </form>
           </CardContent>
@@ -213,8 +215,10 @@ const RegisterUserForm = props => {
       </Card>
 
       <SuccessDialog
-        title='User registered'
-        content='A user has been created. Please use your credentials to log in.'
+        title={t('User registered')}
+        content={t(
+          'A user has been created. Please use your credentials to log in.'
+        )}
         confirmationText='OK'
         handleClose={handleClose}
         open={showDialog}

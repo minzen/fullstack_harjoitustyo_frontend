@@ -21,6 +21,7 @@ import MyTheme from './styles/MyTheme'
 import MenubarForLoggedInUser from './components/MenubarForLoggedInUser'
 import MenubarForNoLoggedInUser from './components/MenubarForNoLoggedInUser'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { useTranslation } from 'react-i18next'
 import {
   LOGIN_PAGE,
   NOTES_PAGE,
@@ -121,16 +122,16 @@ const useStyles = makeStyles({
 
 const App = () => {
   const [token, setToken] = useState(null)
-  const [page, setPage] = useState('notes')
+  const [page, setPage] = useState(NOTES_PAGE)
   const [loggedInUser, setLoggedInUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
   const [spinnerActive, setSpinnerActive] = useState(false)
+  const { t } = useTranslation()
   const client = useApolloClient()
   const classes = useStyles()
 
   useEffect(() => {
-    console.log(LOGIN_PAGE, REGISTER_PAGE)
     setToken(localStorage.getItem('memorytracks-user-token'))
   }, [])
 
@@ -146,11 +147,7 @@ const App = () => {
   }
 
   const handleSpinnerVisibility = value => {
-    if (value) {
-      setSpinnerActive(true)
-    } else {
-      setSpinnerActive(false)
-    }
+    return setSpinnerActive(value)
   }
 
   const [login] = useMutation(LOGIN, {
@@ -171,7 +168,6 @@ const App = () => {
 
   if (data.me && loggedInUser === null) {
     setLoggedInUser(data.me)
-    setPage(NOTES_PAGE)
   }
 
   // User logged in, show the full app
@@ -187,7 +183,7 @@ const App = () => {
               background: 'rgba(0, 0, 0, 0.5)'
             })
           }}
-          text='Processing...'
+          text={t('Processing')}
         >
           <ThemeProvider theme={MyTheme}>
             <CssBaseline />
@@ -268,7 +264,7 @@ const App = () => {
             background: 'rgba(0, 0, 0, 0.75)'
           })
         }}
-        text='Processing...'
+        text={t('Processing')}
       >
         <ThemeProvider theme={MyTheme}>
           <CssBaseline />
@@ -281,7 +277,7 @@ const App = () => {
           >
             <Grid item>
               <Typography variant='h3' gutterBottom>
-                Memory Tracks
+                {t('Memory Tracks')}
               </Typography>
             </Grid>
 

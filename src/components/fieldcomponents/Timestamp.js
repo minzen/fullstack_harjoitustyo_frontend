@@ -1,6 +1,9 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 const Timestamp = ({ timestamp }) => {
+  const { t } = useTranslation()
+
   const convertTimeStampToDate = timestamp => {
     if (!timestamp) {
       return ''
@@ -26,6 +29,10 @@ const Timestamp = ({ timestamp }) => {
     return <></>
   }
 
-  return <>Last modified: {convertTimeStampToDate(timestamp)}</>
+  return (
+    <>
+      {t('Last modified')} {convertTimeStampToDate(timestamp)}
+    </>
+  )
 }
 export default Timestamp

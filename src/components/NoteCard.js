@@ -12,6 +12,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import Timestamp from './fieldcomponents/Timestamp'
 import LinkField from './fieldcomponents/LinkField'
+import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
   card: {
@@ -36,8 +37,9 @@ const useStyles = makeStyles({
   }
 })
 
-const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
+const NoteCard = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
   const classes = useStyles()
+  const { t } = useTranslation()
 
   const extractKeywordsFromArrayWithJoin = keywords => {
     // console.log('keywords :', keywords)
@@ -82,12 +84,11 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
         <Grid container>
           <Grid item>
             <Typography
-              data-cy='contentField'
               variant='body1'
               gutterBottom
               className={classes.cardContentHeader}
             >
-              Note:&nbsp;
+              {t('Note')}&nbsp;
             </Typography>
           </Grid>
           <Grid item>
@@ -105,12 +106,11 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
         <Grid container>
           <Grid item>
             <Typography
-              data-cy='keywordsField'
               variant='body1'
               gutterBottom
               className={classes.cardContentHeader}
             >
-              Keywords:&nbsp;
+              {t('Keywords')}&nbsp;
             </Typography>
           </Grid>
           <Grid item>
@@ -135,7 +135,7 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
                 handleEditNoteClick(note)
               }}
             >
-              Edit
+              {t('Edit')}
             </Button>
           </Grid>
           <Grid item>
@@ -148,7 +148,7 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
                 handleDeleteNoteClick(note)
               }}
             >
-              Delete
+              {t('Delete')}
             </Button>
           </Grid>
           <Grid container spacing={1} direction='column'>
@@ -166,4 +166,4 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
     </Card>
   )
 }
-export default Note
+export default NoteCard
