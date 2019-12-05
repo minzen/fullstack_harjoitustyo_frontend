@@ -10,8 +10,8 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
-import Timestamp from './fieldcomponents/Timestamp'
-import LinkField from './fieldcomponents/LinkField'
+import Timestamp from '../fieldcomponents/Timestamp'
+import LinkField from '../fieldcomponents/LinkField'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
