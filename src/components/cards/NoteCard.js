@@ -97,6 +97,7 @@ const NoteCard = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
               variant='body1'
               gutterBottom
               className={classes.cardContent}
+              style={{ whiteSpace: 'pre-line' }}
             >
               {note.content}
             </Typography>
