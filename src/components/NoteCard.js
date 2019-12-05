@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   }
 })
 
-const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
+const NoteCard = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -166,4 +166,4 @@ const Note = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
     </Card>
   )
 }
-export default Note
+export default NoteCard

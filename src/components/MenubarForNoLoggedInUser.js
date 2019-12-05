@@ -4,12 +4,20 @@ import LockOpenIcon from '@material-ui/icons/LockOpen'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
 import { LOGIN_PAGE, REGISTER_PAGE } from '../constants/pages'
 import { useTranslation } from 'react-i18next'
+import LanguageSelector from './fieldcomponents/LanguageSelector'
 
 const MenubarForNoLoggedInUser = ({ setPage }) => {
   const { t } = useTranslation()
+
   return (
-    <Grid container spacing={2} justify='center' alignItems='center'>
-      <Grid item style={{ padding: '12px' }}>
+    <Grid
+      container
+      direction='row'
+      spacing={2}
+      justify='center'
+      alignItems='center'
+    >
+      <Grid item>
         <ButtonGroup
           variant='contained'
           color='primary'
@@ -28,6 +36,9 @@ const MenubarForNoLoggedInUser = ({ setPage }) => {
             <PersonAddIcon />
           </Button>
         </ButtonGroup>
+      </Grid>
+      <Grid item>
+        <LanguageSelector />
       </Grid>
     </Grid>
   )

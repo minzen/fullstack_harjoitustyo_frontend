@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import { gql } from 'apollo-boost'
 import { Grid } from '@material-ui/core'
 import NoteForm from '../forms/NoteForm'
 import DeleteDialog from '../dialogs/DeleteDialog'
-import Note from '../Note'
+import NoteCard from '../NoteCard'
 import FilterField from '../fieldcomponents/FilterField'
 import AddNoteButton from '../fieldcomponents/AddNoteButton'
 import { useTranslation } from 'react-i18next'
@@ -84,7 +84,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     notesToShow.map(note => {
       return (
         <Grid item xs={12} sm={6} md={3} key={note.id}>
-          <Note
+          <NoteCard
             note={note}
             handleEditNoteClick={() => {
               return handleEditNoteClick(note)

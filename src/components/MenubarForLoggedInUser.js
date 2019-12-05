@@ -6,6 +6,8 @@ import InfoIcon from '@material-ui/icons/Info'
 import { PROFILE_PAGE, ABOUT_PAGE, NOTES_PAGE } from '../constants/pages'
 import AvatarField from '../components/fieldcomponents/AvatarField'
 import { useTranslation } from 'react-i18next'
+import LanguageSelector from './fieldcomponents/LanguageSelector'
+
 const MenubarForLoggedInUser = ({
   setPage,
   setToken,
@@ -57,6 +59,9 @@ const MenubarForLoggedInUser = ({
             <ExitToAppIcon />
           </Button>
         </ButtonGroup>
+      </Grid>
+      <Grid item>
+        <LanguageSelector />
       </Grid>
     </Grid>
   )
