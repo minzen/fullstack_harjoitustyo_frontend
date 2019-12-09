@@ -216,9 +216,7 @@ const RegisterUserForm = props => {
 
       <SuccessDialog
         title={t('User registered')}
-        content={t(
-          'A user has been created. Please use your credentials to log in.'
-        )}
+        content={t('User registered text')}
         confirmationText='OK'
         handleClose={handleClose}
         open={showDialog}

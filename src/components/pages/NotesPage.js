@@ -43,6 +43,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   const { t } = useTranslation()
 
   if (!show) {
+    console.log('not showing the notespage')
     return null
   }
 

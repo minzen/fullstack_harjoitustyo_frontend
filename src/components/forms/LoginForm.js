@@ -130,7 +130,7 @@ const LoginForm = props => {
     })
 
     if (result) {
-      console.log('token obtained on login', result.data.login.value)
+      // console.log('token obtained on login', result.data.login.value)
       const token = result.data.login.value
       await props.setToken(token)
       await localStorage.setItem('memorytracks-user-token', token)
