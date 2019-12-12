@@ -19,7 +19,7 @@
   "Givenname": "Etunimi",
   "Surname": "Sukunimi",
   "User registered": "Käyttäjä rekisteröity",
-  "User registered text": "Käyttäjä on luotu. Käytä käyttäjätietojasi kirjautuaksesi sisään.",
+  "User registered text": "Käyttäjä on luotu. Söhköpostiosoitteesesi on lähetetty tiedot tilin aktivoimiseksi. Tämän jälkeen käytä käyttäjätietojasi kirjautuaksesi sisään.",
   "Edit note": "Muokkaa muistiinpanoa",
   "Title": "Otsikko: ",
   "Content": "Sisältö: ",
@@ -57,5 +57,8 @@
   "English": "englanti",
   "Finnish": "suomi",
   "German": "saksa",
-  "Basic user data": "Käyttäjän perustiedot"
+  "Basic user data": "Käyttäjän perustiedot",
+  "Password forgotten?": "Salasana unohtunut?",
+  "Password reset request sent": "Salasanan nollauspyyntö",
+  "Password reset request sent description": "Pyyntö salasanan nollaamiseksi on lähetetty. Tarkista sähköpostiisi lähetetyt lisäohjeet, miten menetellä salasanan vaihtamiseksi!"
 }

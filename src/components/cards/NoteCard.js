@@ -27,7 +27,8 @@ const useStyles = makeStyles({
   timestamp: {
     color: 'lightblue',
     marginLeft: 5,
-    marginTop: 15
+    marginTop: 15,
+    fontSize: 10
   },
   cardContent: {
     color: '#d7e6e8'

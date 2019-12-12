@@ -19,7 +19,7 @@
   "Givenname": "Vorname",
   "Surname": "Nachname",
   "User registered": "Benutzer registriert",
-  "User registered text": "Der Benutzer wurde erstellt. Bitte die Login-Daten für den Login verwenden.",
+  "User registered text": "Der Benutzer wurde erstellt. Bitte Ihre E-Mail für Infos prüfen, um das Konto zu aktivieren. Danach können Sie die Login-Daten für den Login verwenden.",
   "Edit note": "Notiz editieren",
   "Title": "Titel: ",
   "Content": "Inhalt: ",
@@ -57,5 +57,8 @@
   "English": "Englisch",
   "Finnish": "Finnisch",
   "German": "Deutsch",
-  "Basic user data": "Basisdaten des Benutzers"
+  "Basic user data": "Basisdaten des Benutzers",
+  "Password forgotten?": "Kennwort vergessen?",
+  "Password reset request sent": "Zurücksetzen vom Kennwort",
+  "Password reset request sent description": "Eine Bitte, das Kennwort zurückzusetzen wurde abgeschickt. Bitte die E-Mails für weitere Informationen prüfen!"
 }

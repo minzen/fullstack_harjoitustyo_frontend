@@ -19,7 +19,7 @@
   "Givenname": "Givenname",
   "Surname": "Surname",
   "User registered": "User registered",
-  "User registered text": "A user has been created. Please use your credentials to log in.",
+  "User registered text": "A user has been created. Please check your Email to confirm the account and after that you may use your credentials to log in.",
   "Edit note": "Edit note",
   "Title": "Title: ",
   "Content": "Content: ",
@@ -57,5 +57,8 @@
   "English": "English",
   "Finnish": "Finnish",
   "German": "German",
-  "Basic user data": "Basic user data"
+  "Basic user data": "Basic user data",
+  "Password forgotten?": "Password forgotten?",
+  "Password reset request sent": "Password reset",
+  "Password reset request sent description": "A request for a password reset has been submitted. Please check your Email for the instructions!"
 }

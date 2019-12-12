@@ -19,6 +19,7 @@ import LockIcon from '@material-ui/icons/Lock'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
 import MyTheme from '../../styles/MyTheme'
+import SuccessDialog from '../dialogs/SuccessDialog'
 import { useTranslation } from 'react-i18next'
 import { NOTES_PAGE } from '../../constants/pages'
 
@@ -83,12 +84,19 @@ const CURRENT_USER = gql`
   ${USER_DETAILS}
 `
 
+const PASSWORD_RESET = gql`
+  mutation resetPassword($email: String!) {
+    passwordReset(email: $email)
+  }
+`
+
 const LoginForm = props => {
   const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [expanded, setExpanded] = useState(false)
   const [emailToRestorePwd, setEmailToRestorePwd] = useState('')
+  const [showDialog, setShowDialog] = useState(false)
   const { t } = useTranslation()
   const dateNow = new Date().toDateString()
 
@@ -151,10 +159,33 @@ const LoginForm = props => {
     setEmailToRestorePwd(event.target.value)
   }
 
-  const handleSubmitPwdForgottenButton = event => {
+  const handleClose = () => {
+    setShowDialog(false)
+  }
+
+  const handleSubmitPwdForgottenButton = async event => {
+    props.handleSpinnerVisibility(true)
     event.preventDefault()
-    console.log('handleSubmitPwdForgottenButton')
-    // TODO
+    console.log(
+      'handleSubmitPwdForgottenButton for the user',
+      emailToRestorePwd
+    )
+    // TODO: Validate the Email address
+    const { data, loading, error } = await props.client.mutate({
+      mutation: PASSWORD_RESET,
+      variables: {
+        email: emailToRestorePwd
+      }
+    })
+    if (!loading) {
+      if (data && data.passwordReset) {
+        console.log('password reset result data: ', data)
+        setShowDialog(true)
+      } else if (error) {
+        console.log(error)
+      }
+    }
+    props.handleSpinnerVisibility(false)
   }
 
   return (
@@ -221,16 +252,19 @@ const LoginForm = props => {
           </form>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label='show more'
-          >
-            <ExpandMoreIcon />
-          </IconButton>
+          <div> {t('Password forgotten?')}</div>
+          <div>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label='show more'
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </div>
         </CardActions>
 
         <Collapse in={expanded} timeout='auto' unmountOnExit>
@@ -266,6 +300,13 @@ const LoginForm = props => {
           </CardContent>
         </Collapse>
       </Card>
+      <SuccessDialog
+        title={t('Password reset request sent')}
+        content={t('Password reset request sent description')}
+        confirmationText='OK'
+        handleClose={handleClose}
+        open={showDialog}
+      />
     </>
   )
 }
