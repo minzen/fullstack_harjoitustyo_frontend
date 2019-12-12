@@ -20,6 +20,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import clsx from 'clsx'
 import MyTheme from '../../styles/MyTheme'
 import { useTranslation } from 'react-i18next'
+import { NOTES_PAGE } from '../../constants/pages'
 
 const useStyles = makeStyles({
   card: {
@@ -101,7 +102,7 @@ const LoginForm = props => {
 
   const getTheLoggedInUser = async () => {
     if (props.client && props.client.request) {
-      const { data } = props.client.request(CURRENT_USER, null)
+      const { data } = await props.client.request(CURRENT_USER, null)
       if (data && data.me) {
         props.setLoggedInUser(data.me)
       }
@@ -111,7 +112,7 @@ const LoginForm = props => {
   const handleLoginSubmit = async event => {
     event.preventDefault()
     props.handleSpinnerVisibility(true)
-    console.log('handle login submit', event)
+    console.log('handle login submit', event.target.value)
     let passwordObfuscated = ''
     if (password) {
       for (let i = 0; i < password.length; i++) {
@@ -135,6 +136,7 @@ const LoginForm = props => {
       await props.setToken(token)
       await localStorage.setItem('memorytracks-user-token', token)
       await getTheLoggedInUser()
+      props.setPage(NOTES_PAGE)
       setEmail('')
       setPassword('')
     }

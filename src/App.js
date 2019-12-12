@@ -293,6 +293,7 @@ const App = () => {
                   client={client}
                   setToken={setToken}
                   setLoggedInUser={setLoggedInUser}
+                  setPage={setPage}
                 />
               </ApolloProvider>
               <RegisterPage

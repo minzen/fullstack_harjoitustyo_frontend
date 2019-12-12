@@ -7,7 +7,8 @@ const LoginPage = ({
   login,
   client,
   setToken,
-  setLoggedInUser
+  setLoggedInUser,
+  setPage
 }) => {
   if (!show) {
     return null
@@ -21,6 +22,7 @@ const LoginPage = ({
         setToken={token => setToken(token)}
         handleSpinnerVisibility={handleSpinnerVisibility}
         setLoggedInUser={setLoggedInUser}
+        setPage={setPage}
       />
     </>
   )
