@@ -126,6 +126,7 @@ const ChangePasswordCard = props => {
             label={t('Current password')}
             onChange={handleCurrentPasswordChange}
             value={currentPassword}
+            required={true}
             className={classes.textField}
             type='password'
           />
@@ -135,6 +136,7 @@ const ChangePasswordCard = props => {
             label={t('New password')}
             onChange={handleNewPasswordChange}
             value={newPassword}
+            required={true}
             className={classes.textField}
             type='password'
           />
@@ -144,6 +146,7 @@ const ChangePasswordCard = props => {
             label={t('New password confirmation')}
             onChange={handleNewPassword2Change}
             value={newPassword2}
+            required={true}
             className={classes.textField}
             type='password'
           />

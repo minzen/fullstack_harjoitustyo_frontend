@@ -22,6 +22,7 @@ import MyTheme from '../../styles/MyTheme'
 import SuccessDialog from '../dialogs/SuccessDialog'
 import { useTranslation } from 'react-i18next'
 import { NOTES_PAGE } from '../../constants/pages'
+import { validEmail } from '../../utils/Utils'
 
 const useStyles = makeStyles({
   card: {
@@ -97,11 +98,20 @@ const LoginForm = props => {
   const [expanded, setExpanded] = useState(false)
   const [emailToRestorePwd, setEmailToRestorePwd] = useState('')
   const [showDialog, setShowDialog] = useState(false)
+  const [error, setError] = useState(false)
+  const [errorText, setErrorText] = useState('')
   const { t } = useTranslation()
   const dateNow = new Date().toDateString()
 
   const handleEmailChange = event => {
     setEmail(event.target.value)
+    if (!validEmail(event.target.value)) {
+      setError(true)
+      setErrorText('Incorrect entry. Please check the Email address format')
+    } else {
+      setError(false)
+      setErrorText('')
+    }
   }
 
   const handlePasswordChange = event => {
@@ -215,7 +225,10 @@ const LoginForm = props => {
                   label={t('Email address')}
                   onChange={handleEmailChange}
                   variant='filled'
+                  required={true}
                   color='secondary'
+                  error={error}
+                  helperText={errorText}
                   value={email}
                 />
               </Grid>
@@ -232,6 +245,7 @@ const LoginForm = props => {
                   label={t('Password')}
                   onChange={handlePasswordChange}
                   variant='outlined'
+                  required={true}
                   color='secondary'
                   value={password}
                   type='password'
@@ -281,6 +295,7 @@ const LoginForm = props => {
                     className={classes.textField}
                     label={t('Email to restore password')}
                     color='secondary'
+                    required={true}
                     onChange={handleEmailToRestorePwdChange}
                     value={emailToRestorePwd}
                   />

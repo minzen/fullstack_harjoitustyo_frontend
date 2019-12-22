@@ -19,6 +19,7 @@ import LockIcon from '@material-ui/icons/Lock'
 import clsx from 'clsx'
 import MyTheme from '../../styles/MyTheme'
 import SuccessDialog from '../dialogs/SuccessDialog'
+import { validEmail } from '../../utils/Utils'
 
 const useStyles = makeStyles({
   textField: {
@@ -76,6 +77,8 @@ const RegisterUserForm = props => {
   const [password, setPassword] = useState('')
   const [showDialog, setShowDialog] = useState(false)
   const [expanded, setExpanded] = useState(false)
+  const [error, setError] = useState(false)
+  const [errorText, setErrorText] = useState('')
   const { t } = useTranslation()
   const classes = useStyles()
 
@@ -89,6 +92,13 @@ const RegisterUserForm = props => {
 
   const handleEmailChange = event => {
     setEmail(event.target.value)
+    if (!validEmail(event.target.value)) {
+      setError(true)
+      setErrorText('Incorrect entry. Please check the Email address format')
+    } else {
+      setError(false)
+      setErrorText('')
+    }
   }
 
   const handlePasswordChange = event => {
@@ -178,8 +188,11 @@ const RegisterUserForm = props => {
                   <TextField
                     id='register_email'
                     label={t('Email address')}
+                    error={error}
                     value={email}
+                    required={true}
                     onChange={handleEmailChange}
+                    helperText={errorText}
                     className={classes.textFieldWithIcon}
                   />
                 </Grid>
@@ -194,6 +207,7 @@ const RegisterUserForm = props => {
                     label={t('Password')}
                     value={password}
                     type='password'
+                    required={true}
                     onChange={handlePasswordChange}
                     className={classes.textFieldWithIcon}
                   />

@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles'
 import { gql } from 'apollo-boost'
 import { useTranslation } from 'react-i18next'
+import { validEmail } from '../../utils/Utils'
 
 const EDIT_USER = gql`
   mutation editUser($email: String!, $givenname: String, $surname: String) {
@@ -51,6 +52,8 @@ const EditUserCard = props => {
   const [email, setEmail] = useState('')
   const classes = useStyles()
   const { t } = useTranslation()
+  const [error, setError] = useState(false)
+  const [errorText, setErrorText] = useState('')
 
   useEffect(() => {
     if (props.user) {
@@ -71,6 +74,13 @@ const EditUserCard = props => {
 
   const handleEmailChange = event => {
     setEmail(event.target.value)
+    if (!validEmail(event.target.value)) {
+      setError(true)
+      setErrorText('Incorrect entry. Please check the Email address format')
+    } else {
+      setError(false)
+      setErrorText('')
+    }
   }
 
   const handleEditUserSubmit = async event => {
@@ -140,9 +150,12 @@ const EditUserCard = props => {
             id='email_field'
             variant='standard'
             label={t('Email address')}
+            error={error}
+            required={true}
             onChange={handleEmailChange}
             value={email}
             className={classes.textField}
+            helperText={errorText}
           />
           <br />
           <br />

@@ -252,6 +252,7 @@ const NoteForm = props => {
                   variant='filled'
                   label={t('Title')}
                   className={classes.textField}
+                  required={true}
                   onChange={handleTitleChange}
                   value={title}
                 >
@@ -264,6 +265,7 @@ const NoteForm = props => {
                   label={t('Content')}
                   multiline
                   className={classes.textField}
+                  required={true}
                   onChange={handleContentChange}
                   value={content}
                 >
