@@ -9,20 +9,19 @@ import {
 } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 
-const DeleteDialog = ({
+const ArchiveDialog = ({
   showDialog,
-  handleDelete,
-  handleDeleteDialogClose,
+  handleAction,
+  handleDialogClose,
   dialogTitle,
   dialogContent,
   dialogConfirmationText
 }) => {
   const { t } = useTranslation()
-
   return (
     <Dialog
       open={showDialog}
-      onClose={handleDeleteDialogClose}
+      onClose={handleDialogClose}
       aria-labelledby='alert-dialog-title'
       aria-describedby='alert-dialog-description'
     >
@@ -35,7 +34,7 @@ const DeleteDialog = ({
       <DialogActions>
         <Button
           data-cy='cancelConfirmation'
-          onClick={handleDeleteDialogClose}
+          onClick={handleDialogClose}
           color='default'
           variant='contained'
         >
@@ -44,8 +43,8 @@ const DeleteDialog = ({
         <Button
           data-cy='submitConfirmation'
           onClick={() => {
-            handleDeleteDialogClose()
-            handleDelete()
+            handleDialogClose()
+            handleAction()
           }}
           color='secondary'
           autoFocus
@@ -57,4 +56,4 @@ const DeleteDialog = ({
     </Dialog>
   )
 }
-export default DeleteDialog
+export default ArchiveDialog

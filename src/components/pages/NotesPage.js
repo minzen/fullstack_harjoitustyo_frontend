@@ -7,10 +7,27 @@ import NoteCard from '../cards/NoteCard'
 import FilterField from '../fieldcomponents/FilterField'
 import AddNoteButton from '../fieldcomponents/AddNoteButton'
 import { useTranslation } from 'react-i18next'
+import ArchiveDialog from '../dialogs/ArchiveDialog'
 
 const ALL_NOTES = gql`
   query {
     allNotes {
+      id
+      title
+      content
+      keywords
+      user {
+        id
+        email
+      }
+      modified
+    }
+  }
+`
+
+const NOT_ARCHIVED_NOTES = gql`
+  query {
+    notArchivedNotes {
       id
       title
       content
@@ -30,12 +47,19 @@ const DELETE_NOTE = gql`
   }
 `
 
+const ARCHIVE_NOTE = gql`
+  mutation archiveNote($id: ID!) {
+    archiveNote(id: $id)
+  }
+`
+
 const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop)
 
 const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedNote, setSelectedNote] = useState(null)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const [showArchiveDialog, setShowArchiveDialog] = useState(false)
   const [editNoteVisible, setEditNoteVisible] = useState(false)
   const [showAll, setShowAll] = useState(true)
   const noteFormRef = useRef(null)
@@ -51,8 +75,8 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     return <div>loading...</div>
   }
   let notes = []
-  if (result.data.allNotes) {
-    notes = result.data.allNotes
+  if (result.data.notArchivedNotes) {
+    notes = result.data.notArchivedNotes
   }
 
   // Filters the notes based on a keyword
@@ -87,6 +111,9 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
         <Grid item xs={12} sm={6} md={3} key={note.id}>
           <NoteCard
             note={note}
+            handleArchiveNoteClick={() => {
+              return handleArchiveNoteClick(note)
+            }}
             handleEditNoteClick={() => {
               return handleEditNoteClick(note)
             }}
@@ -104,6 +131,14 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     setShowDeleteDialog(true)
   }
 
+  const handleArchiveDialogOpen = () => {
+    setShowArchiveDialog(true)
+  }
+
+  const handleArchiveDialogClose = () => {
+    setShowArchiveDialog(false)
+  }
+
   const handleDelete = async () => {
     // console.log('handleDelete', selectedNote.id)
     handleSpinnerVisibility(true)
@@ -114,7 +149,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
         variables: {
           id: selectedNote.id
         },
-        refetchQueries: [{ query: ALL_NOTES }]
+        refetchQueries: [{ query: NOT_ARCHIVED_NOTES }]
       })
       if (!loading && !error) {
         if (data) {
@@ -125,6 +160,31 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
       }
     } catch (e) {
       console.log('error when deleting a note', e)
+      handleSpinnerVisibility(false)
+    }
+  }
+
+  const handleArchive = async () => {
+    console.log('handleArchive', selectedNote.id)
+    handleSpinnerVisibility(true)
+
+    try {
+      const { data, loading, error } = await client.mutate({
+        mutation: ARCHIVE_NOTE,
+        variables: {
+          id: selectedNote.id
+        },
+        refetchQueries: [{ query: NOT_ARCHIVED_NOTES }]
+      })
+      if (!loading && !error) {
+        if (data) {
+          handleSpinnerVisibility(false)
+          console.log('Response data of archiveNote', data)
+          setSelectedNote(null)
+        }
+      }
+    } catch (e) {
+      console.log('error when archiving a note', e)
       handleSpinnerVisibility(false)
     }
   }
@@ -153,6 +213,13 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     await setSelectedNote(note)
     await scrollToNoteForm()
     await handleDeleteDialogOpen()
+  }
+
+  const handleArchiveNoteClick = async note => {
+    await setEditNoteVisible(false)
+    await setSelectedNote(note)
+    console.log('handleArchiveNoteClick()', note)
+    await handleArchiveDialogOpen()
   }
 
   const handleFormVisibility = async value => {
@@ -262,6 +329,16 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
           dialogTitle={t('Delete note?')}
           dialogContent={t('Are you certain that you want to delete the note?')}
           dialogConfirmationText={t('Delete')}
+        />
+        <ArchiveDialog
+          showDialog={showArchiveDialog}
+          handleAction={handleArchive}
+          handleDialogClose={handleArchiveDialogClose}
+          dialogTitle={t('Archive note?')}
+          dialogContent={t(
+            'Are you certain that you want to archive the selected note?'
+          )}
+          dialogConfirmationText={t('Archive')}
         />
       </>
     )

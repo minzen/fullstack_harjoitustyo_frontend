@@ -60,5 +60,8 @@
   "Basic user data": "Basic user data",
   "Password forgotten?": "Password forgotten?",
   "Password reset request sent": "Password reset",
-  "Password reset request sent description": "A request for a password reset has been submitted. Please check your Email for the instructions!"
+  "Password reset request sent description": "A request for a password reset has been submitted. Please check your Email for the instructions!",
+  "Archive": "Archive",
+  "Archive note?": "Archive note?",
+  "Are you certain that you want to archive the selected note?": "Are you certain that you want to archive the selected note?"
 }

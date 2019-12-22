@@ -60,5 +60,8 @@
   "Basic user data": "Basisdaten des Benutzers",
   "Password forgotten?": "Kennwort vergessen?",
   "Password reset request sent": "Zurücksetzen vom Kennwort",
-  "Password reset request sent description": "Eine Bitte, das Kennwort zurückzusetzen wurde abgeschickt. Bitte die E-Mails für weitere Informationen prüfen!"
+  "Password reset request sent description": "Eine Bitte, das Kennwort zurückzusetzen wurde abgeschickt. Bitte die E-Mails für weitere Informationen prüfen!",
+  "Archive": "Archivieren",
+  "Archive note?": "Notiz archivieren?",
+  "Are you certain that you want to archive the selected note?": "Simnd Sie Sicher, dass Sie den ausgewählten Notiz archivieren möchten?"
 }

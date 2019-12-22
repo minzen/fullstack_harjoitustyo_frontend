@@ -91,6 +91,22 @@ const ALL_NOTES = gql`
   ${USER_DETAILS}
 `
 
+const NOT_ARCHIVED_NOTES = gql`
+  query {
+    notArchivedNotes {
+      id
+      title
+      content
+      keywords
+      user {
+        ...UserDetails
+      }
+      modified
+    }
+  }
+  ${USER_DETAILS}
+`
+
 const useStyles = makeStyles({
   root: {
     background: MyTheme.palette.primary.main,
@@ -204,7 +220,7 @@ const App = () => {
               <Grid item>
                 <ApolloConsumer>
                   {client => (
-                    <Query query={ALL_NOTES} pollInterval={2000}>
+                    <Query query={NOT_ARCHIVED_NOTES} pollInterval={2000}>
                       {result => (
                         <NotesPage
                           show={page === NOTES_PAGE}

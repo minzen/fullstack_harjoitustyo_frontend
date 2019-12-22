@@ -60,5 +60,8 @@
   "Basic user data": "Käyttäjän perustiedot",
   "Password forgotten?": "Salasana unohtunut?",
   "Password reset request sent": "Salasanan nollauspyyntö",
-  "Password reset request sent description": "Pyyntö salasanan nollaamiseksi on lähetetty. Tarkista sähköpostiisi lähetetyt lisäohjeet, miten menetellä salasanan vaihtamiseksi!"
+  "Password reset request sent description": "Pyyntö salasanan nollaamiseksi on lähetetty. Tarkista sähköpostiisi lähetetyt lisäohjeet, miten menetellä salasanan vaihtamiseksi!",
+  "Archive": "Arkistoi",
+  "Archive note?": "Arkistoi muistiinpano?",
+  "Are you certain that you want to archive the selected note?": "Oletko varma, että haluat arkistoida valitun muistiinpanon?"
 }

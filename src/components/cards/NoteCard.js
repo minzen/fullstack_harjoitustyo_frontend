@@ -38,7 +38,12 @@ const useStyles = makeStyles({
   }
 })
 
-const NoteCard = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
+const NoteCard = ({
+  note,
+  handleEditNoteClick,
+  handleDeleteNoteClick,
+  handleArchiveNoteClick
+}) => {
   const classes = useStyles()
   const { t } = useTranslation()
 
@@ -127,6 +132,17 @@ const NoteCard = ({ note, handleEditNoteClick, handleDeleteNoteClick }) => {
           </Grid>
         </Grid>
         <Grid container spacing={1} direction='row'>
+          <Grid item>
+            <Button
+              data-cy='archiveSubmit'
+              startIcon={null}
+              variant='contained'
+              color='primary'
+              onClick={() => handleArchiveNoteClick(note)}
+            >
+              {t('Archive')}
+            </Button>
+          </Grid>
           <Grid item>
             <Button
               data-cy='editSubmit'
