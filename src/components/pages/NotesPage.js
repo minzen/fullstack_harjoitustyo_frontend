@@ -83,7 +83,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   if (result.data.allNotes) {
     console.log(result.data.allNotes)
     if (showArchivedNotes) {
-      console.log('Showing archived (all) notes')
+      console.log('Showing all (with archived) notes')
       notes = result.data.allNotes
     } else {
       console.log('Showing not archived notes')

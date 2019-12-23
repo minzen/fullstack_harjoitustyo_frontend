@@ -149,7 +149,12 @@ const NoteForm = props => {
     try {
       const { data, loading, error } = await client.mutate({
         mutation: ADD_NOTE,
-        variables: { title: title, content: content, keywords: keywordsArr }
+        variables: {
+          title: title,
+          content: content,
+          keywords: keywordsArr,
+          archived: false
+        }
       })
       if (!loading) {
         if (data) {
@@ -181,7 +186,8 @@ const NoteForm = props => {
           id: noteId,
           title: title,
           content: content,
-          keywords: keywordsArr
+          keywords: keywordsArr,
+          archived: false
         }
       })
       if (!loading) {
