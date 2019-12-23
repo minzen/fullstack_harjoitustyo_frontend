@@ -1,5 +1,5 @@
-import React from 'react'
-import { TextField, InputAdornment } from '@material-ui/core'
+import React, { useState } from 'react'
+import { TextField, InputAdornment, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import ClearIcon from '@material-ui/icons/Clear'
 import { useTranslation } from 'react-i18next'
@@ -22,6 +22,7 @@ const FilterField = props => {
       props.setSearchTerm('')
     }
   }
+
   return (
     <>
       <form>
@@ -41,6 +42,14 @@ const FilterField = props => {
             )
           }}
         />
+        <Button
+          data-cy='submitConfirmation'
+          onClick={props.handleToggleShowAllNotes}
+          color='primary'
+          variant='contained'
+        >
+          {props.showNotesButtonText}
+        </Button>
       </form>
     </>
   )

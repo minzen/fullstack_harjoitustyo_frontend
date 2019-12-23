@@ -63,5 +63,7 @@
   "Password reset request sent description": "Eine Bitte, das Kennwort zurückzusetzen wurde abgeschickt. Bitte die E-Mails für weitere Informationen prüfen!",
   "Archive": "Archivieren",
   "Archive note?": "Notiz archivieren?",
-  "Are you certain that you want to archive the selected note?": "Simnd Sie Sicher, dass Sie den ausgewählten Notiz archivieren möchten?"
+  "Are you certain that you want to archive the selected note?": "Sind Sie Sicher, dass Sie den ausgewählten Notiz archivieren möchten?",
+  "Show all notes": "Alle Notizen anzeigen",
+  "Show not archived notes": "Alle nicht archivierten Notizen anzeigen"
 }

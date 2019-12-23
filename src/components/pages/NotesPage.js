@@ -21,25 +21,26 @@ const ALL_NOTES = gql`
         email
       }
       modified
+      archived
     }
   }
 `
 
-const NOT_ARCHIVED_NOTES = gql`
-  query {
-    notArchivedNotes {
-      id
-      title
-      content
-      keywords
-      user {
-        id
-        email
-      }
-      modified
-    }
-  }
-`
+// const NOT_ARCHIVED_NOTES = gql`
+//   query {
+//     notArchivedNotes {
+//       id
+//       title
+//       content
+//       keywords
+//       user {
+//         id
+//         email
+//       }
+//       modified
+//     }
+//   }
+// `
 
 const DELETE_NOTE = gql`
   mutation deleteNote($id: ID!) {
@@ -62,9 +63,13 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   const [showArchiveDialog, setShowArchiveDialog] = useState(false)
   const [editNoteVisible, setEditNoteVisible] = useState(false)
   const [showAll, setShowAll] = useState(true)
+  const [showArchivedNotes, setShowArchivedNotes] = useState(false)
+  const { t } = useTranslation()
+  const [showNotesButtonText, setShowNotesButtonText] = useState(
+    t('Show all notes')
+  )
   const noteFormRef = useRef(null)
   const scrollToNoteForm = () => scrollToRef(noteFormRef)
-  const { t } = useTranslation()
 
   if (!show) {
     console.log('not showing the notespage')
@@ -75,8 +80,15 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
     return <div>loading...</div>
   }
   let notes = []
-  if (result.data.notArchivedNotes) {
-    notes = result.data.notArchivedNotes
+  if (result.data.allNotes) {
+    console.log(result.data.allNotes)
+    if (showArchivedNotes) {
+      console.log('Showing archived (all) notes')
+      notes = result.data.allNotes
+    } else {
+      console.log('Showing not archived notes')
+      notes = result.data.allNotes.filter(n => n.archived === false)
+    }
   }
 
   // Filters the notes based on a keyword
@@ -149,7 +161,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
         variables: {
           id: selectedNote.id
         },
-        refetchQueries: [{ query: NOT_ARCHIVED_NOTES }]
+        refetchQueries: [{ query: ALL_NOTES }]
       })
       if (!loading && !error) {
         if (data) {
@@ -174,7 +186,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
         variables: {
           id: selectedNote.id
         },
-        refetchQueries: [{ query: NOT_ARCHIVED_NOTES }]
+        refetchQueries: [{ query: ALL_NOTES }]
       })
       if (!loading && !error) {
         if (data) {
@@ -229,6 +241,19 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
       setEditNoteVisible(false)
     }
   }
+
+  const handleToggleShowAllNotes = () => {
+    console.log('handleToggleShowAllNotes()', showArchivedNotes)
+    let toggleShow = !showArchivedNotes
+    setShowArchivedNotes(toggleShow)
+    if (toggleShow) {
+      setShowNotesButtonText(t('Show not archived notes'))
+    } else {
+      setShowNotesButtonText(t('Show all notes'))
+    }
+    console.log('handleToggleShowAllNotes() after toggle', toggleShow)
+  }
+
   //console.log('rows', rows())
   if (rows().length === 0) {
     return (
@@ -245,6 +270,8 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
               handleSearchTermChange={handleSearchTermChange}
+              handleToggleShowAllNotes={handleToggleShowAllNotes}
+              showNotesButtonText={showNotesButtonText}
             />
             <Grid item></Grid>
             <h3>{t('No stored notes found.')}</h3>
@@ -265,7 +292,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
               visible={editNoteVisible}
               handleFormVisibility={handleFormVisibility}
               handleEditNoteClick={() => {
-                return handleEditNoteClick(selectedNote)
+                handleEditNoteClick(selectedNote)
               }}
               handleSpinnerVisibility={handleSpinnerVisibility}
             />
@@ -288,6 +315,8 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
             <FilterField
               searchTerm={searchTerm}
               handleSearchTermChange={handleSearchTermChange}
+              handleToggleShowAllNotes={handleToggleShowAllNotes}
+              showNotesButtonText={showNotesButtonText}
             />
           </Grid>
         </Grid>

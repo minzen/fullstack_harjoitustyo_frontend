@@ -63,5 +63,7 @@
   "Password reset request sent description": "Pyyntö salasanan nollaamiseksi on lähetetty. Tarkista sähköpostiisi lähetetyt lisäohjeet, miten menetellä salasanan vaihtamiseksi!",
   "Archive": "Arkistoi",
   "Archive note?": "Arkistoi muistiinpano?",
-  "Are you certain that you want to archive the selected note?": "Oletko varma, että haluat arkistoida valitun muistiinpanon?"
+  "Are you certain that you want to archive the selected note?": "Oletko varma, että haluat arkistoida valitun muistiinpanon?",
+  "Show all notes": "Näytä kaikki muistiinpanot",
+  "Show not archived notes": "Näytä ei-arkistoidut muistiinpanot"
 }
