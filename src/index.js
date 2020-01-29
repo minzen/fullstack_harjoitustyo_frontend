@@ -17,7 +17,7 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://sleepy-woodland-08922.herokuapp.com/graphql',
+  uri: 'wss://sleepy-woodland-08922.herokuapp.com/graphql',
   options: { reconnect: true }
 })
 
