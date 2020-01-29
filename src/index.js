@@ -17,12 +17,12 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri: 'ws://sleepy-woodland-08922.herokuapp.com/graphql',
   options: { reconnect: true }
 })
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'https://sleepy-woodland-08922.herokuapp.com/graphql'
 })
 
 const authLink = setContext((_, { headers }) => {
