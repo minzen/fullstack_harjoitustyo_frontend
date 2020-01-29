@@ -5,7 +5,7 @@ Tämä sovellus on rakennettu Full Stack Web Development -kurssille. Projekti on
 
 ## Yleistä
 
-"Muistijäljet"-sovellus on tarkoitettu käyttäjälle, joka käyttää monia päätelaitteita ja haluaa päästä helposti käsiksi aiemmin tallennettuihin tietoihin. Sovellus mahdollistaa käyttäjälle helpon tavan tallentaa/linkittää merkityksellistä sisältöä (esim. tärkeät muistiinpanot, linkit resursseihin, joihin käyttäjä haluaa palata myöhemmin, mutta juuri kyseisellä hetkellä ei ole aikaa tai halua tehdä sitä). Kunkin tallennettavan tiedon yhteyteen tallennetaan asiasanoja, joiden mukaan sisältöjä luokitellaan ja on mahdollista hakea myöhemmin. Fronend huolehtii tietojen hakemisesta ja näyttämisestä Backendin tarjoaman API:n kautta.
+"Muistijäljet"-sovellus on tarkoitettu käyttäjälle, joka käyttää monia päätelaitteita ja haluaa päästä helposti käsiksi aiemmin tallennettuihin tietoihin. Sovellus mahdollistaa käyttäjälle helpon tavan tallentaa/linkittää merkityksellistä sisältöä (esim. tärkeät muistiinpanot, linkit resursseihin, joihin käyttäjä haluaa palata myöhemmin, mutta juuri kyseisellä hetkellä ei ole aikaa tai halua tehdä sitä). Kunkin tallennettavan tiedon yhteyteen tallennetaan asiasanoja, joiden mukaan sisältöjä luokitellaan ja on mahdollista hakea myöhemmin. Frontend huolehtii tietojen hakemisesta ja näyttämisestä Backendin tarjoaman API:n kautta.
 
 ## Frontend-toteutus
 
@@ -21,7 +21,7 @@ Frontend-toteutus on rakennettu ReactJS:n ja sopivan Material UI -frameworkin p�
 Frontendin tuotantoversio generoidaan komennolla _yarn run build_ ja saatu hakemisto kopioidaan halutulle serverille, jossa sitä voidaan ajaa esim. komennolla _serve -s build -l 3000_, jossa viimeinen parametri on portti, missä sovellus on ajossa. Serve komento on oltava asennettuna yarn- tai npm-pakettimanagerilla luonnollisesti ensin.
 
 Tällä hetkellä tuotantoversio löytyy ajossa osoitteesta:
-http://gyarados.feetunyrhinen.de:3000
+https://minzen.github.io/fullstack_harjoitustyo_frontend/
 
 ## Käytettyjä teknologioita
 
