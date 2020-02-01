@@ -15,16 +15,9 @@ jobs:
           uses: actions/setup-node@v1
           with:
             node-version: ${{ matrix.node-version }}  
-        - name: Install Packages
-          run: npm install
-        - name: Build the software
-          run: | 
-            git config --global user.name "minzen"
-            git config --global user.email "feetu.nyrhinen@gmail.com"
-            git remote set-url origin https://${{ secrets.ACCESS_TOKEN }}@github.com/minzen/fullstack_harjoitustyo_frontend.git
-            npm run build
-        - name: Deploy to GH Pages
-          run: |
+        - run: npm install
+        - run: npm run build
+        - run: |
             git config --global user.name "minzen"
             git config --global user.email "feetu.nyrhinen@gmail.com"
             git remote set-url origin https://${{ secrets.ACCESS_TOKEN }}@github.com/minzen/fullstack_harjoitustyo_frontend.git
