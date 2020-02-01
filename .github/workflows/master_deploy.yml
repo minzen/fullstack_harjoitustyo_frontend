@@ -18,10 +18,10 @@ jobs:
         - name: Install Packages
           run: npm install     
         - name: Deploy to GH Pages
-          run: | 
-          export GIT_USER="Feetu Nyrhinen"
-          git config --global user.name "$GIT_USER"
-          git config --global user.email "feetu.nyrhinen@gmail.com"
-          npm run deploy        
+          run: |
+            export GIT_USER="Feetu Nyrhinen"
+            git config --global user.name "$GIT_USER"
+            git config --global user.email "feetu.nyrhinen@gmail.com"
+            npm run deploy        
       - name: Updating Domain
           run: echo "Update domain"
