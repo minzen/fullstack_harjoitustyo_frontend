@@ -22,7 +22,8 @@ jobs:
           run: |
             git config --global user.name "minzen"
             git config --global user.email "feetu.nyrhinen@gmail.com"
-            git remote set-url origin https://${{secrets.PERSONAL_TOKEN}}@github.com/minzen/fullstack_harjoitustyo_frontend.git
-            npm run deploy        
+            git remote set-url origin https://${{secrets.GITHUB_TOKEN}}@github.com/minzen/fullstack_harjoitustyo_frontend.git
+            npm run build
+            npm run deploy
       - name: Updating Domain
           run: echo "Update domain"
