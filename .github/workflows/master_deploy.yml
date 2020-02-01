@@ -22,10 +22,9 @@ jobs:
           run: npm install     
         - name: Deploy to GH Pages
           run: |
-            export GIT_USER="minzen"
-          git config --global user.name "$GIT_USER"
-          git config --global user.email "feetu.nyrhinen@gmail.com"
-          git remote set-url origin https://{{GITHUB_TOKEN}}@github.com/minzen/fullstack_harjoitustyo_frontend.git
+            git config --global user.name "minzen"
+            git config --global user.email "feetu.nyrhinen@gmail.com"
+            git remote set-url origin https://{{GITHUB_TOKEN}}@github.com/minzen/fullstack_harjoitustyo_frontend.git
             npm run deploy        
       - name: Updating Domain
           run: echo "Update domain"
