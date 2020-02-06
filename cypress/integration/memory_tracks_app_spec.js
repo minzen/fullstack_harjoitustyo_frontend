@@ -54,3 +54,4 @@ describe('Testing the logout with a logged in user', function() {
 // TODO:
 // - Test validation
 // - Negative cases as well
+// - Test translations

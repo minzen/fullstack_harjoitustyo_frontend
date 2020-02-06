@@ -3706,10 +3706,10 @@ cypress-wait-until@^1.6.0:
   resolved "https://registry.yarnpkg.com/cypress-wait-until/-/cypress-wait-until-1.6.0.tgz#c70d403ec31cad7ec73220c4de9e58f3e5a57399"
   integrity sha512-uGbEKZQ8tnCvq+G058jvcj1zMb6dF2lg5KxsWXnkk1EQ/5lZewvqGWb/RV7hiPvwxQblUDBH1Chb8tyjH2ZmLg==
 
-cypress@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.7.0.tgz#e2cd71b87b6ce0d4c72c6ea25da1005d75c1f231"
-  integrity sha512-o+vfRxqAba8TduelzfZQ4WHmj2yNEjaoO2EuZ8dZ9pJpuW+WGtBGheKIp6zkoQsp8ZgFe8OoHh1i2mY8BDnMAw==
+cypress@3.8.3:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.8.3.tgz#e921f5482f1cbe5814891c878f26e704bbffd8f4"
+  integrity sha512-I9L/d+ilTPPA4vq3NC1OPKmw7jJIpMKNdyfR8t1EXYzYCjyqbc59migOm1YSse/VRbISLJ+QGb5k4Y3bz2lkYw==
   dependencies:
     "@cypress/listr-verbose-renderer" "0.4.1"
     "@cypress/xvfb" "1.2.4"
@@ -3722,6 +3722,7 @@ cypress@^3.7.0:
     commander "2.15.1"
     common-tags "1.8.0"
     debug "3.2.6"
+    eventemitter2 "4.1.2"
     execa "0.10.0"
     executable "4.1.1"
     extract-zip "1.6.7"
@@ -4573,6 +4574,11 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+
+eventemitter2@4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-4.1.2.tgz#0e1a8477af821a6ef3995b311bf74c23a5247f15"
+  integrity sha1-DhqEd6+CGm7zmVsxG/dMI6UkfxU=
 
 eventemitter3@^3.1.0:
   version "3.1.2"
@@ -9245,7 +9251,7 @@ prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.3"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -9536,6 +9542,13 @@ react-loading-overlay@^1.0.1:
     emotion "^10.0.1"
     prop-types "^15.6.2"
     react-transition-group "^2.5.0"
+
+react-paginate@^6.3.2:
+  version "6.3.2"
+  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-6.3.2.tgz#4e18cbdb2654d308566775fa14df11e820188391"
+  integrity sha512-Ch++Njfv8UHpLtIMiQouAPeJQA5Ki86kIYfCer6c1B96Rvn3UF27se+goCilCP8oHNXNsA2R2kxvzanY1YIkyg==
+  dependencies:
+    prop-types "^15.6.1"
 
 react-scripts@3.2.0:
   version "3.2.0"

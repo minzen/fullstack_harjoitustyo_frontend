@@ -110,8 +110,17 @@ describe('Manipulating notes with a logged in user', function() {
     cy.get('#search_field').type('shopping')
     cy.contains(THIRD_NOTE_TITLE)
   })
+
+  it('a note is shown on the screen, but it will be set as hidden, when the archive functionality is executed', function() {
+    cy.log('Click the archive functionality on a note')
+    cy.contains(THIRD_NOTE_TITLE)
+    cy.contains(THIRD_NOTE_CONTENT)
+    cy.contains(THIRD_NOTE_KEYWORDS)
+    cy.get('#archiveSubmit').click()
+  })
 })
 
 // TODO:
 // - Test validation
+// - function to Archive notes 
 // - Negative cases as well
