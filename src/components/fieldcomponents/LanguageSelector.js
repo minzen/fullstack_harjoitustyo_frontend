@@ -26,6 +26,7 @@ const LanguageSelector = () => {
     <>
       <InputLabel id='language_select_label'>{t('Language')}</InputLabel>
       <Select
+        data-cy= "language_selection"
         labelId='language_select_label'
         id='language_select'
         value={lang}

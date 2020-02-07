@@ -34,6 +34,23 @@ describe('Testing the login/logout with a user not logged in', function() {
     cy.contains('Login')
     cy.contains('Error: wrong credentials')
   })
+
+  it('language switch on the front side switches the application language according to the selection', function() {
+    cy.visit('http://localhost:3000')
+    cy.log('Checking the default language English')
+    // Check that English is the default language
+    cy.contains('The application enables storing of')
+    cy.log('Switching the language to Finnish')
+    cy.get('[data-cy=language_selection').first().click()
+    cy.contains('Finnish').trigger('mousemove').click()
+    cy.contains('Muistijäljet')
+    cy.contains('Sovellus')
+    cy.log('Switching the language to German')
+    cy.get('[data-cy=language_selection]').first().click()
+    cy.contains('saksa').trigger('mousemove').click()
+    cy.contains('Teure Erinnerungen')
+    cy.contains('Allgemeines')
+  })
 })
 
 // Test which views are not visible
