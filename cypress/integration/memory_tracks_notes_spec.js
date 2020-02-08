@@ -46,9 +46,9 @@ describe('Manipulating notes with a logged in user', function() {
     cy.contains(DEFAULT_TITLE)
     cy.contains(DEFAULT_CONTENT)
     cy.contains(DEFAULT_KEYWORDS)
-    cy.get('[data-cy=deleteSubmit]').click()
+    cy.get('[data-cy=deleteSubmit]').first().click()
     cy.contains('Are you certain that you want to delete the note?')
-    cy.get('[data-cy=submitConfirmation').click()
+    cy.get('[data-cy=submitConfirmation').last().click()
     cy.contains('No stored notes found.')
   })
 
@@ -59,8 +59,6 @@ describe('Manipulating notes with a logged in user', function() {
     cy.get('#keywords_field').type(ANOTHER_NOTE_KEYWORDS)
     cy.get('#save_note_button').click()
     cy.contains('This is a fancy test note')
-    cy.contains('keyword1')
-    cy.contains('another keyword')
   })
 
   it('a logged in user is able to change an existing note, and its attributes are changed accordingly and the timestamp is updated', function() {
@@ -122,5 +120,5 @@ describe('Manipulating notes with a logged in user', function() {
 
 // TODO:
 // - Test validation
-// - function to Archive notes 
+// - function to Archive notes
 // - Negative cases as well
