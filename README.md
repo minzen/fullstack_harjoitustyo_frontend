@@ -23,7 +23,7 @@ Frontendin tuotantoversio generoidaan komennolla _yarn run build_ ja saatu hakem
 Tällä hetkellä tuotantoversio löytyy ajossa osoitteesta:
 https://minzen.github.io/fullstack_harjoitustyo_frontend/
 
-# E2E-testien ajaminen
+## E2E-testien ajaminen
 
 Projektiin sisältyy joukko End-To-End-testejä, jotka on toteutettu Cypress-frameworkkiä käyttäen. Testien ajaminen tapahtuu komennolla _yarn run cypress:open_. Tätä ennen Backend on käynnistettävä komennolla _yarn run e2e_.
 
@@ -35,6 +35,7 @@ Projektiin sisältyy joukko End-To-End-testejä, jotka on toteutettu Cypress-fra
 - ESLint
 - Webpack
 - i18next
+- Cypress.io
 
 ## Työaikakirjanpito
 
