@@ -15,7 +15,7 @@ describe('A logged in user wants to see/change his profile', function() {
   })
 
   beforeEach(function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     cy.log('Executing login before each test!')
     // Click the menu bar button to get the login view
     cy.get('#menu_login_button').click()

@@ -25,7 +25,7 @@ describe('Testing the login/logout with a user not logged in', function() {
   })
 
   it('user types in invalid credentials, and an error message is shown on the page', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     // Click the menu bar button to get the login view
     cy.get('#menu_login_button').click()
     cy.get('#email_field').type('Jani')
@@ -36,7 +36,7 @@ describe('Testing the login/logout with a user not logged in', function() {
   })
 
   it('language switch on the front side switches the application language according to the selection', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     cy.log('Checking the default language English')
     // Check that English is the default language
     cy.contains('The application enables storing of')
@@ -65,7 +65,7 @@ describe('Testing the login/logout with a user not logged in', function() {
 
 describe('Testing the logout with a logged in user', function() {
   it('a logged in user is able to see the logout button and may log out by using it', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     // Click the menu bar button to get the login view
     cy.get('#menu_login_button').click()
     cy.get('#email_field').type(USER)
