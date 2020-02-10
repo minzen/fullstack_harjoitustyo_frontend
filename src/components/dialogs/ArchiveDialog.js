@@ -41,7 +41,7 @@ const ArchiveDialog = ({
           {t('Cancel')}
         </Button>
         <Button
-          data-cy='submitConfirmation'
+          data-cy='archiveConfirmation'
           onClick={() => {
             handleDialogClose()
             handleAction()

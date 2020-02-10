@@ -8,7 +8,7 @@ const SURNAME = 'Tester'
 describe('A new user wants to create a user account for the system', function() {
   this.beforeAll(function() {
     cy.log('Running the re-initialization of the test db')
-    utils.initDb()
+    utils.reInitTestDb()
   })
 
   it('types in the user details without providing a valid email address and gets an error notification', function() {

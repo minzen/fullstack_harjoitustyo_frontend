@@ -10,22 +10,31 @@ const NEW_PWD = 'ThisIsMyPwd_2019b'
 describe('A logged in user wants to see/change his profile', function() {
   this.beforeAll(function() {
     cy.log('Running the re-initialization of the test db')
-    utils.initDb()
+    utils.reInitTestDb()
+    cy.log('Test DB (re-)initialized')
   })
 
   beforeEach(function() {
-    cy.log('Executing login before each test!')
     cy.visit('http://localhost:3000')
+    cy.log('Executing login before each test!')
     // Click the menu bar button to get the login view
     cy.get('#menu_login_button').click()
     cy.get('#email_field').type(USER)
     cy.get('#password_field').type(CURRENT_PWD)
     cy.get('#login_button').click()
-    cy.get('#menu_profile_button').click()
+  })
+
+  it('the logged in user is able to see his/her profile', function() {
+    cy.visit('/')
+    cy.get('[data-cy=menuProfileBtn]').click()
+    cy.contains(GIVENNAME)
+    cy.contains(SURNAME)
   })
 
   it('changes personal data (givenname and surname)', function() {
+    cy.visit('/')
     cy.contains('TT')
+    cy.get('[data-cy=menuProfileBtn]').click()
     cy.contains(GIVENNAME)
     cy.contains(SURNAME)
     cy.get('#givenname_field').type(NEW_GIVENNAME)

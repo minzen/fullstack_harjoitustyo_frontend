@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 
-const initDb = async () => {
+const reInitTestDb = async () => {
   const query = `{
     resetTestDb
   }`
@@ -12,4 +12,4 @@ const initDb = async () => {
   console.log('DB resetted:', data)
 }
 
-module.exports = { initDb }
+module.exports = { reInitTestDb }
