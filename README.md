@@ -21,7 +21,7 @@ Frontend-toteutus on rakennettu ReactJS:n ja sopivan Material UI -frameworkin p�
 Frontendin tuotantoversio generoidaan komennolla _yarn run build_ ja saatu hakemisto kopioidaan halutulle serverille, jossa sitä voidaan ajaa esim. komennolla _serve -s build -l 3000_, jossa viimeinen parametri on portti, missä sovellus on ajossa. Serve komento on oltava asennettuna yarn- tai npm-pakettimanagerilla luonnollisesti ensin.
 
 Tällä hetkellä tuotantoversio löytyy ajossa osoitteesta:
-https://minzen.github.io/fullstack_harjoitustyo_frontend/
+https://minzen.github.io/fullstack_harjoitustyo_frontend/. End-to-end-testeille tarkoitettu frontend löytyy osoitteesta (https://agile-dusk-61060.herokuapp.com/)[https://agile-dusk-61060.herokuapp.com]
 
 ## E2E-testien ajaminen
 
