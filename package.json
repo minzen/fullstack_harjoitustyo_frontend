@@ -36,14 +36,15 @@
     "subscriptions-transport-ws": "^0.9.16"
   },
   "scripts": {
-    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "start": "webpack-dev-server",
     "build": "webpack --mode=production",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "cypress:open": "cypress open",
     "eslint": "eslint .",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "heroku-prebuild": "npm install --dev"
   },
   "eslintConfig": {
     "extends": "react-app"
