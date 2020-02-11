@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-16.04
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [10]
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
@@ -19,7 +19,11 @@ jobs:
       - run: npm install
       - run: npm run eslint
   cypress-run:
-    runs-on: ubuntu-16.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [10]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
