@@ -41,7 +41,7 @@ describe('Testing the login/logout with a user not logged in', function() {
     // Check that English is the default language
     cy.contains('The application enables storing of')
     cy.log('Switching the language to Finnish')
-    cy.get('[data-cy=language_selection')
+    cy.get('[data-cy=language_selection]')
       .first()
       .click()
     cy.contains('Finnish')
