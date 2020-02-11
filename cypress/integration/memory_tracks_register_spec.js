@@ -46,7 +46,7 @@ describe('A new user wants to create a user account for the system', function() 
     cy.get('#register_submit_button').click()
     cy.contains('Error: Invalid password')
   })
-  it('types in a valid email address and a valid password and gets a confirmation about that the user account was created, and can log in with the account', function() {
+  it.skip('types in a valid email address and a valid password and gets a confirmation about that the user account was created, and can log in with the account', function() {
     cy.visit('/')
     cy.get('#menu_register_button').click()
     cy.get('[data-cy=submit_expand_register_form').click()

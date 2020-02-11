@@ -31,7 +31,7 @@ describe('A logged in user wants to see/change his profile', function() {
     cy.contains(SURNAME)
   })
 
-  it('changes personal data (givenname and surname)', function() {
+  it.skip('changes personal data (givenname and surname)', function() {
     cy.visit('/')
     cy.contains('TT')
     cy.get('[data-cy=menuProfileBtn]').click()
@@ -50,7 +50,7 @@ describe('A logged in user wants to see/change his profile', function() {
   // User types in the correct current password, and a new password twice, but as these do not match, an error message is shown to the user.
   // User types in the correct current password, and a new password twice (matching), and the password is changed after the submit. -> Logout and a new login with the new password.
 
-  it('an attempt to change the password of the user is carried out, but as the passwords do not match, the operation fails and an error message is shown', function() {
+  it.skip('an attempt to change the password of the user is carried out, but as the passwords do not match, the operation fails and an error message is shown', function() {
     cy.contains(NEW_GIVENNAME)
     cy.contains(NEW_SURNAME)
     cy.get('#currentpassword_field').type(CURRENT_PWD)
