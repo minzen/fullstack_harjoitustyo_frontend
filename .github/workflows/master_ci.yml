@@ -1,0 +1,25 @@
+name: MasterDeployCI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        node-version: [10]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run eslint
+      - run: npm run build
+      - run: |
+          git config --global user.name "minzen"
+          git config --global user.email "feetu.nyrhinen@gmail.com"
+          git remote set-url origin https://${{ secrets.ACCESS_TOKEN }}@github.com/minzen/fullstack_harjoitustyo_frontend.git
+          npm run deploy

@@ -8,11 +8,11 @@ const SURNAME = 'Tester'
 describe('A new user wants to create a user account for the system', function() {
   this.beforeAll(function() {
     cy.log('Running the re-initialization of the test db')
-    utils.initDb()
+    utils.reInitTestDb()
   })
 
   it('types in the user details without providing a valid email address and gets an error notification', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     cy.get('#menu_register_button').click()
     // The register form is not visible as of default, so click on the expand button first
     cy.get('[data-cy=submit_expand_register_form').click()
@@ -24,7 +24,7 @@ describe('A new user wants to create a user account for the system', function() 
     cy.contains('Error: User validation failed: email')
   })
   it('types in the user details without a password and gets an error notification', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     cy.get('#menu_register_button').click()
     cy.get('[data-cy=submit_expand_register_form').click()
     cy.get('#register_givenname').type(GIVENNAME)
@@ -35,7 +35,7 @@ describe('A new user wants to create a user account for the system', function() 
     cy.contains('Error: Invalid password')
   })
   it('types in the user details with too short a password and gets an error notification', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     cy.get('#menu_register_button').click()
     cy.get('[data-cy=submit_expand_register_form').click()
     cy.get('#register_givenname').type(GIVENNAME)
@@ -46,8 +46,8 @@ describe('A new user wants to create a user account for the system', function() 
     cy.get('#register_submit_button').click()
     cy.contains('Error: Invalid password')
   })
-  it('types in a valid email address and a valid password and gets a confirmation about that the user account was created, and can log in with the account', function() {
-    cy.visit('http://localhost:3000')
+  it.skip('types in a valid email address and a valid password and gets a confirmation about that the user account was created, and can log in with the account', function() {
+    cy.visit('/')
     cy.get('#menu_register_button').click()
     cy.get('[data-cy=submit_expand_register_form').click()
     cy.get('#register_givenname').type(GIVENNAME)
@@ -69,7 +69,7 @@ describe('A new user wants to create a user account for the system', function() 
     cy.contains('No stored notes found')
   })
   it('another user account is attempted to be created by using the same email address as in the previous step, and an error notification is shown to the user', function() {
-    cy.visit('http://localhost:3000')
+    cy.visit('/')
     cy.get('#menu_register_button').click()
     cy.get('[data-cy=submit_expand_register_form').click()
     cy.get('#register_givenname').type(GIVENNAME)

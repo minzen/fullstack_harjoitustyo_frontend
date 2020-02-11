@@ -92,22 +92,6 @@ const ALL_NOTES = gql`
   ${USER_DETAILS}
 `
 
-// const NOT_ARCHIVED_NOTES = gql`
-//   query {
-//     notArchivedNotes {
-//       id
-//       title
-//       content
-//       keywords
-//       user {
-//         ...UserDetails
-//       }
-//       modified
-//     }
-//   }
-//   ${USER_DETAILS}
-// `
-
 const useStyles = makeStyles({
   root: {
     background: MyTheme.palette.primary.main,

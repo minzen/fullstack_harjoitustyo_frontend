@@ -1,7 +1,7 @@
 # Helsingin yliopiston Full Stack Web Development -kurssin harjoitustyö "Muistijäljet"
 
 Kts. https://courses.helsinki.fi/en/aytkt21010/129098202 ja https://github.com/fullstackopen-2019/misc/blob/master/projekti.md
-Tämä sovellus on rakennettu Full Stack Web Development -kurssille. Projekti on jaettu kahteen kahteen eri repositoryyn: toisessa Backend-toteutus ja toisessa Frontend.
+Tämä sovellus on rakennettu Full Stack Web Development -kurssille. Projekti on jaettu kahteen kolmeen eri repositoryyn: [ensimmäisessä Backend-toteutus](https://github.com/minzen/fullstack_harjoitustyo_backend) ja [toisessa normaali Frontend](https://github.com/minzen/fullstack_harjoitustyo_frontend) ja [kolmannessa](https://github.com/minzen/fullstackharjoitustyoreactnative) kokeellinen React Native -toteutus.
 
 ## Yleistä
 
@@ -21,7 +21,11 @@ Frontend-toteutus on rakennettu ReactJS:n ja sopivan Material UI -frameworkin p�
 Frontendin tuotantoversio generoidaan komennolla _yarn run build_ ja saatu hakemisto kopioidaan halutulle serverille, jossa sitä voidaan ajaa esim. komennolla _serve -s build -l 3000_, jossa viimeinen parametri on portti, missä sovellus on ajossa. Serve komento on oltava asennettuna yarn- tai npm-pakettimanagerilla luonnollisesti ensin.
 
 Tällä hetkellä tuotantoversio löytyy ajossa osoitteesta:
-https://minzen.github.io/fullstack_harjoitustyo_frontend/
+https://minzen.github.io/fullstack_harjoitustyo_frontend/. End-to-end-testeille tarkoitettu frontend löytyy osoitteesta (https://agile-dusk-61060.herokuapp.com/)[https://agile-dusk-61060.herokuapp.com]
+
+## E2E-testien ajaminen
+
+Projektiin sisältyy joukko End-To-End-testejä, jotka on toteutettu Cypress-frameworkkiä käyttäen. Testien ajaminen tapahtuu komennolla _yarn run cypress:open_. Tätä ennen Backend on käynnistettävä komennolla _yarn run e2e_.
 
 ## Käytettyjä teknologioita
 
@@ -31,6 +35,7 @@ https://minzen.github.io/fullstack_harjoitustyo_frontend/
 - ESLint
 - Webpack
 - i18next
+- Cypress.io
 
 ## Työaikakirjanpito
 

@@ -257,6 +257,7 @@ const NoteForm = props => {
                   id='title_field'
                   variant='filled'
                   label={t('Title')}
+                  data-cy='title_field'
                   className={classes.textField}
                   required={true}
                   onChange={handleTitleChange}
@@ -269,6 +270,7 @@ const NoteForm = props => {
                   id='content_field'
                   variant='filled'
                   label={t('Content')}
+                  data-cy='content_field'
                   multiline
                   className={classes.textField}
                   required={true}
@@ -290,6 +292,7 @@ const NoteForm = props => {
                   id='keywords_field'
                   variant='filled'
                   label={t('Keywords')}
+                  data-cy='keywords_field'
                   className={classes.textField}
                   onChange={handleKeywordsChange}
                   value={keywords}
@@ -300,6 +303,7 @@ const NoteForm = props => {
                 <br />
                 <Button
                   id='cancel_note_edit_button'
+                  data-cy='cancel_edit_btn'
                   variant='contained'
                   color='default'
                   onClick={() => {
@@ -311,6 +315,7 @@ const NoteForm = props => {
                 </Button>
                 <Button
                   id='save_note_button'
+                  data-cy='save_btn'
                   variant='contained'
                   color='primary'
                   onClick={handleSubmit}

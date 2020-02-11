@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { TextField, InputAdornment, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import ClearIcon from '@material-ui/icons/Clear'

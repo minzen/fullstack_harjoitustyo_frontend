@@ -17,12 +17,22 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
 const wsLink = new WebSocketLink({
-  uri: 'wss://sleepy-woodland-08922.herokuapp.com/graphql',
+  // PROD:
+  // uri: 'wss://sleepy-woodland-08922.herokuapp.com/graphql',
+  // DEV:
+  uri: 'wss://pacific-spire-56237.herokuapp.com/graphql',
+  // LOCAL:
+  //uri: 'ws://localhost:4000/graphql',
   options: { reconnect: true }
 })
 
 const httpLink = createHttpLink({
-  uri: 'https://sleepy-woodland-08922.herokuapp.com/graphql'
+  // PROD:
+  //uri: 'https://sleepy-woodland-08922.herokuapp.com/graphql'
+  // DEV:
+  uri: 'https://pacific-spire-56237.herokuapp.com/graphql'
+  // LOCAL:
+  //uri: 'http://localhost:4000/graphql'
 })
 
 const authLink = setContext((_, { headers }) => {
