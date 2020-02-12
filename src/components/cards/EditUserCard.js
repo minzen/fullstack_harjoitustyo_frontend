@@ -106,9 +106,9 @@ const EditUserCard = props => {
         if (data) {
           console.log('Response data of editUser', data)
           props.handleSpinnerVisibility(false)
-          props.setSuccessDialogTitle('User data updated')
+          props.setSuccessDialogTitle(t('User data updated'))
           props.setSuccessDialogContent(
-            'The user data have been updated successfully'
+            t('The user data have been updated successfully')
           )
           props.handleDialogOpen()
         }
