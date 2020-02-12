@@ -20,9 +20,9 @@ const wsLink = new WebSocketLink({
   // PROD:
   // uri: 'wss://sleepy-woodland-08922.herokuapp.com/graphql',
   // DEV:
-  // uri: 'wss://pacific-spire-56237.herokuapp.com/graphql',
+  uri: 'wss://pacific-spire-56237.herokuapp.com/graphql',
   // LOCAL:
-  uri: 'ws://localhost:4000/graphql',
+  // uri: 'ws://localhost:4000/graphql',
   options: { reconnect: true }
 })
 
@@ -30,9 +30,9 @@ const httpLink = createHttpLink({
   // PROD:
   //uri: 'https://sleepy-woodland-08922.herokuapp.com/graphql'
   // DEV:
-  //uri: 'https://pacific-spire-56237.herokuapp.com/graphql'
+  uri: 'https://pacific-spire-56237.herokuapp.com/graphql'
   // LOCAL:
-  uri: 'http://localhost:4000/graphql'
+  // uri: 'http://localhost:4000/graphql'
 })
 
 const authLink = setContext((_, { headers }) => {
