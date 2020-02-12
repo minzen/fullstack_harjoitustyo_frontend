@@ -65,5 +65,8 @@
   "Archive note?": "Arkistoi muistiinpano?",
   "Are you certain that you want to archive the selected note?": "Oletko varma, että haluat arkistoida valitun muistiinpanon?",
   "Show all notes": "Näytä kaikki muistiinpanot",
-  "Show not archived notes": "Näytä ei-arkistoidut muistiinpanot"
+  "Show not archived notes": "Näytä ei-arkistoidut muistiinpanot",
+  "Password changed": "Salasana vaihdettu",
+  "Password changed successfully": "Salasanan vaihto onnistui.",
+  "Incorrect entry": "Laiton arvo. Tarkista sähköpostiosoitteen muoto"
 }

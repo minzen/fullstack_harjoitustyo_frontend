@@ -65,5 +65,8 @@
   "Archive note?": "Notiz archivieren?",
   "Are you certain that you want to archive the selected note?": "Sind Sie Sicher, dass Sie den ausgewählten Notiz archivieren möchten?",
   "Show all notes": "Alle Notizen anzeigen",
-  "Show not archived notes": "Alle nicht archivierten Notizen anzeigen"
+  "Show not archived notes": "Alle nicht archivierten Notizen anzeigen",
+  "Password changed": "Passwort geändert",
+  "Password changed successfully": "Passwort erfolgreich geändert.",
+  "Incorrect entry": "Invalider Wert. Bitte das Format der E-Mail-Adresse prüfen"
 }

@@ -99,8 +99,8 @@ const ChangePasswordCard = props => {
             setCurrentPassword('')
             setNewPassword('')
             setNewPassword2('')
-            props.setSuccessDialogTitle('Password changed')
-            props.setSuccessDialogContent('Password changed successfully.')
+            props.setSuccessDialogTitle(t('Password changed'))
+            props.setSuccessDialogContent(t('Password changed successfully.'))
             props.handleDialogOpen()
           }
         }
