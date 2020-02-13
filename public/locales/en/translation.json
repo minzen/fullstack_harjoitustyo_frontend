@@ -70,5 +70,6 @@
   "Password changed successfully": "Password changed successfully.",
   "Incorrect entry": "Incorrect entry. Please check the Email address format",
   "User data updated": "User data updated",
-  "The user data have been updated successfully": "The user data have been updated successfully"
+  "The user data have been updated successfully": "The user data have been updated successfully",
+  "Profile": "Profile"
 }

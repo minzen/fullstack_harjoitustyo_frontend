@@ -2,8 +2,8 @@ const utils = require('./utils')
 const USER = 'teemu.testaaja@test.net'
 const CURRENT_PWD = 'ThisIsMyPwd_2019'
 
-describe('Testing the login/logout with a user not logged in', function() {
-  this.beforeAll(function() {
+describe('Login', function() {
+  beforeEach(function() {
     cy.log('Running the re-initialization of the test db')
     utils.reInitTestDb()
   })
@@ -24,7 +24,7 @@ describe('Testing the login/logout with a user not logged in', function() {
     cy.contains('Logout')
   })
 
-  it('user types in invalid credentials, and an error message is shown on the page', function() {
+  it('user types in invalid login credentials, and an error message is shown on the page', function() {
     cy.visit('/')
     // Click the menu bar button to get the login view
     cy.get('#menu_login_button').click()
@@ -34,7 +34,9 @@ describe('Testing the login/logout with a user not logged in', function() {
     cy.contains('Login')
     cy.contains('Error: wrong credentials')
   })
+})
 
+describe('Language Switch', function() {
   it('language switch on the front side switches the application language according to the selection', function() {
     cy.visit('/')
     cy.log('Checking the default language English')
@@ -63,7 +65,7 @@ describe('Testing the login/logout with a user not logged in', function() {
 
 // Test which views are not visible
 
-describe('Testing the logout with a logged in user', function() {
+describe('Logout', function() {
   it('a logged in user is able to see the logout button and may log out by using it', function() {
     cy.visit('/')
     // Click the menu bar button to get the login view
@@ -74,9 +76,11 @@ describe('Testing the logout with a logged in user', function() {
     cy.get('#menu_logout_button').click()
     cy.contains('Login')
   })
-})
 
-// TODO:
-// - Test validation
-// - Negative cases as well
-// - Test translations
+  it('a not logged in user is not able to see the logout button', function() {
+    cy.visit('/')
+    cy.contains('Login')
+    cy.contains('Register')
+    cy.get('#menu_logout_button').should('not.exist')
+  })
+})

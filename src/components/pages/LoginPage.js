@@ -7,7 +7,6 @@ const LoginPage = ({
   login,
   client,
   setToken,
-  setLoggedInUser,
   setPage
 }) => {
   if (!show) {
@@ -19,9 +18,8 @@ const LoginPage = ({
       <LoginForm
         login={login}
         client={client}
-        setToken={token => setToken(token)}
+        setToken={setToken}
         handleSpinnerVisibility={handleSpinnerVisibility}
-        setLoggedInUser={setLoggedInUser}
         setPage={setPage}
       />
     </>

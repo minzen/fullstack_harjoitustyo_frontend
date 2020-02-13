@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useQuery } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
 import MyTheme from '../../styles/MyTheme'
 import { Snackbar, SnackbarContent, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -6,6 +8,24 @@ import { useTranslation } from 'react-i18next'
 import ChangePasswordCard from '../cards/ChangePasswordCard'
 import EditUserCard from '../cards/EditUserCard'
 import SuccessDialog from '../dialogs/SuccessDialog'
+
+const USER_DETAILS = gql`
+  fragment UserDetails on User {
+    id
+    email
+    givenname
+    surname
+  }
+`
+
+const CURRENT_USER = gql`
+  query {
+    me {
+      ...UserDetails
+    }
+  }
+  ${USER_DETAILS}
+`
 
 const useStyles = makeStyles({
   textField: {
@@ -34,7 +54,7 @@ const useStyles = makeStyles({
   }
 })
 
-const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
+const ProfilePage = ({ show, client, token, handleSpinnerVisibility }) => {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [successDialogTitle, setSuccessDialogTitle] = useState('')
   const [successDialogContent, setSuccessDialogContent] = useState('')
@@ -42,9 +62,19 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
   const [showErrorNotification, setShowErrorNotification] = useState(false)
   const { t } = useTranslation()
   const classes = useStyles()
+  let loggedInUser
 
-  if (!user) {
+  const { loading, data } = useQuery(CURRENT_USER)
+  if (!show || !token) {
     return null
+  }
+
+  if (loading) {
+    return '<p>Loading</p>'
+  }
+
+  if (data && data.me) {
+    loggedInUser = data.me
   }
 
   const handleDialogOpen = () => {
@@ -58,7 +88,6 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
   }
 
   const handleError = error => {
-    console.log(error)
     setErrorMessage('Error: ' + error.graphQLErrors[0].message)
     setShowErrorNotification(true)
     setTimeout(() => {
@@ -67,9 +96,6 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
     }, 6000)
   }
 
-  if (!show) {
-    return null
-  }
   return (
     <>
       <Snackbar
@@ -96,7 +122,7 @@ const ProfilePage = ({ show, client, user, handleSpinnerVisibility }) => {
       >
         <Grid item>
           <EditUserCard
-            user={user}
+            user={loggedInUser}
             client={client}
             handleSpinnerVisibility={handleSpinnerVisibility}
             setSuccessDialogTitle={setSuccessDialogTitle}

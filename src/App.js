@@ -7,7 +7,7 @@ import {
   SnackbarContent
 } from '@material-ui/core'
 import { gql } from 'apollo-boost'
-import { useMutation, useQuery, ApolloConsumer } from '@apollo/react-hooks'
+import { useMutation, ApolloConsumer } from '@apollo/react-hooks'
 import { ApolloProvider, Query } from 'react-apollo'
 import { useApolloClient } from '@apollo/react-hooks'
 import LoadingOverlay from 'react-loading-overlay'
@@ -67,14 +67,6 @@ const REGISTER = gql`
   ${USER_DETAILS}
 `
 
-const CURRENT_USER = gql`
-  query {
-    me {
-      ...UserDetails
-    }
-  }
-  ${USER_DETAILS}
-`
 const ALL_NOTES = gql`
   query {
     allNotes {
@@ -124,7 +116,6 @@ const useStyles = makeStyles({
 const App = () => {
   const [token, setToken] = useState(null)
   const [page, setPage] = useState(NOTES_PAGE)
-  const [loggedInUser, setLoggedInUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
   const [spinnerActive, setSpinnerActive] = useState(false)
@@ -152,24 +143,17 @@ const App = () => {
   }
 
   const [login] = useMutation(LOGIN, {
-    onError: handleError
+    onError: handleError,
+    onCompleted: () => {
+      if (page !== NOTES_PAGE) {
+        setPage(NOTES_PAGE)
+      }
+    }
   })
 
   const [register] = useMutation(REGISTER, {
     onError: handleError
   })
-
-  const { loading, error, data } = useQuery(CURRENT_USER)
-  if (loading) {
-    return null
-  }
-  if (error) {
-    return 'error'
-  }
-
-  if (data.me && loggedInUser === null) {
-    setLoggedInUser(data.me)
-  }
 
   // User logged in, show the full app
   if (token) {
@@ -199,7 +183,7 @@ const App = () => {
                   setPage={setPage}
                   setToken={setToken}
                   client={client}
-                  loggedInUser={loggedInUser}
+                  token={token}
                 />
               </Grid>
               <Grid item>
@@ -223,7 +207,7 @@ const App = () => {
                   <ProfilePage
                     show={page === PROFILE_PAGE}
                     client={client}
-                    user={loggedInUser}
+                    token={token}
                     handleSpinnerVisibility={handleSpinnerVisibility}
                   ></ProfilePage>
                 </ApolloProvider>
@@ -293,7 +277,6 @@ const App = () => {
                   login={login}
                   client={client}
                   setToken={setToken}
-                  setLoggedInUser={setLoggedInUser}
                   setPage={setPage}
                 />
               </ApolloProvider>

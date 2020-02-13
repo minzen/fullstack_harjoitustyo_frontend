@@ -13,7 +13,7 @@ const THIRD_NOTE_TITLE = 'A reminder from 28.11.2019'
 const THIRD_NOTE_CONTENT = 'Buy milk at the store'
 //const THIRD_NOTE_KEYWORDS = 'shopping'
 
-describe('Manipulating notes with a logged in user', function() {
+describe('Handling of notes', function() {
   beforeEach(function() {
     cy.log('Running the re-initialization of the test db')
     utils.reInitTestDb()
@@ -55,6 +55,7 @@ describe('Manipulating notes with a logged in user', function() {
 
   it('a logged in user is able to add a new note', function() {
     cy.contains(DEFAULT_TITLE)
+    cy.contains(DEFAULT_CONTENT)
     cy.get('#add_note_button').click()
     cy.get('#title_field').type(ANOTHER_NOTE_TITLE)
     cy.get('#content_field').type(ANOTHER_NOTE_CONTENT)

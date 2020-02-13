@@ -38,6 +38,7 @@ const SuccessDialog = ({
       </DialogContent>
       <DialogActions>
         <Button
+          id='successConfirmButton'
           data-cy='confirm_ok_user_registered'
           onClick={handleClose}
           color='primary'

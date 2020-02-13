@@ -26,22 +26,6 @@ const ALL_NOTES = gql`
   }
 `
 
-// const NOT_ARCHIVED_NOTES = gql`
-//   query {
-//     notArchivedNotes {
-//       id
-//       title
-//       content
-//       keywords
-//       user {
-//         id
-//         email
-//       }
-//       modified
-//     }
-//   }
-// `
-
 const DELETE_NOTE = gql`
   mutation deleteNote($id: ID!) {
     deleteNote(id: $id)
@@ -72,7 +56,6 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   const scrollToNoteForm = () => scrollToRef(noteFormRef)
 
   if (!show) {
-    console.log('not showing the notespage')
     return null
   }
 

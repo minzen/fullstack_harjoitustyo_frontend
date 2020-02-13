@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request'
 
-const serverUrl = 'https://pacific-spire-56237.herokuapp.com/graphql'
+const serverUrl = 'http://localhost:4000/graphql'
 
 const reInitTestDb = async () => {
   const query = `{
