@@ -70,5 +70,6 @@
   "Password changed successfully": "Salasanan vaihto onnistui.",
   "Incorrect entry": "Laiton arvo. Tarkista sähköpostiosoitteen muoto",
   "User data updated": "Käyttäjätiedot päivitetty",
-  "The user data have been updated successfully": "Käyttäjätietojen päivitys onnistui"
+  "The user data have been updated successfully": "Käyttäjätietojen päivitys onnistui",
+  "Profile": "Profiili"
 }

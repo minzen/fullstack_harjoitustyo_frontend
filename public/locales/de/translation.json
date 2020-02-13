@@ -70,5 +70,6 @@
   "Password changed successfully": "Passwort erfolgreich geändert.",
   "Incorrect entry": "Invalider Wert. Bitte das Format der E-Mail-Adresse prüfen",
   "User data updated": "Benutzerdaten aktualisiert",
-  "The user data have been updated successfully": "Die Benutzerdaten wurden erfolgreich aktualisiert"
+  "The user data have been updated successfully": "Die Benutzerdaten wurden erfolgreich aktualisiert",
+  "Profile": "Profil"
 }
