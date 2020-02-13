@@ -21,7 +21,6 @@ import clsx from 'clsx'
 import MyTheme from '../../styles/MyTheme'
 import SuccessDialog from '../dialogs/SuccessDialog'
 import { useTranslation } from 'react-i18next'
-import { NOTES_PAGE } from '../../constants/pages'
 import { validEmail } from '../../utils/Utils'
 
 const useStyles = makeStyles({
