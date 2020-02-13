@@ -94,7 +94,7 @@ const RegisterUserForm = props => {
     setEmail(event.target.value)
     if (!validEmail(event.target.value)) {
       setError(true)
-      setErrorText('Incorrect entry. Please check the Email address format')
+      setErrorText(t('Incorrect entry. Please check the Email address format'))
     } else {
       setError(false)
       setErrorText('')

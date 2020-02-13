@@ -4,17 +4,33 @@ import MemoryIcon from '@material-ui/icons/Memory'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import InfoIcon from '@material-ui/icons/Info'
 import { PROFILE_PAGE, ABOUT_PAGE, NOTES_PAGE } from '../constants/pages'
-import AvatarField from '../components/fieldcomponents/AvatarField'
 import { useTranslation } from 'react-i18next'
 import LanguageSelector from './fieldcomponents/LanguageSelector'
+import AvatarField from './fieldcomponents/AvatarField'
+import { useQuery } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
 
-const MenubarForLoggedInUser = ({
-  setPage,
-  setToken,
-  client,
-  loggedInUser
-}) => {
+const USER_DETAILS = gql`
+  fragment UserDetails on User {
+    id
+    email
+    givenname
+    surname
+  }
+`
+
+const CURRENT_USER = gql`
+  query {
+    me {
+      ...UserDetails
+    }
+  }
+  ${USER_DETAILS}
+`
+
+const MenubarForLoggedInUser = ({ setPage, setToken, client }) => {
   const { t } = useTranslation()
+  let loggedInUser
 
   const handleLogout = () => {
     localStorage.clear()
@@ -34,6 +50,15 @@ const MenubarForLoggedInUser = ({
     setPage(PROFILE_PAGE)
   }
 
+  const { loading, data } = useQuery(CURRENT_USER)
+  if (loading) {
+    return '<p>Loading</p>'
+  }
+
+  if (data && data.me) {
+    loggedInUser = data.me
+  }
+
   return (
     <Grid container spacing={2} justify='center' alignItems='center'>
       <Grid item style={{ padding: '12px' }}>
@@ -43,7 +68,11 @@ const MenubarForLoggedInUser = ({
           size='large'
           aria-label='large contained primary button group'
         >
-          <Button id='menu_profile_button' onClick={handleProfileClick}>
+          <Button
+            id='menu_profile_button'
+            data-cy='menuProfileBtn'
+            onClick={handleProfileClick}
+          >
             <AvatarField loggedInUser={loggedInUser} />
           </Button>
           <Button id='menu_notes_button' onClick={handleNotesClick}>

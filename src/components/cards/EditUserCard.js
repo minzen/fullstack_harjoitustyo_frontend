@@ -106,9 +106,9 @@ const EditUserCard = props => {
         if (data) {
           console.log('Response data of editUser', data)
           props.handleSpinnerVisibility(false)
-          props.setSuccessDialogTitle('User data updated')
+          props.setSuccessDialogTitle(t('User data updated'))
           props.setSuccessDialogContent(
-            'The user data have been updated successfully'
+            t('The user data have been updated successfully')
           )
           props.handleDialogOpen()
         }
@@ -130,6 +130,7 @@ const EditUserCard = props => {
         <form autoComplete='off'>
           <TextField
             id='givenname_field'
+            data-cy='givennameFld'
             variant='standard'
             label={t('Givenname')}
             onChange={handleGivennameChange}
@@ -139,6 +140,7 @@ const EditUserCard = props => {
           <br />
           <TextField
             id='surname_field'
+            data-cy='surnameFld'
             variant='standard'
             label={t('Surname')}
             onChange={handleSurnameChange}
@@ -148,6 +150,7 @@ const EditUserCard = props => {
           <br />
           <TextField
             id='email_field'
+            data-cy='emailFld'
             variant='standard'
             label={t('Email address')}
             error={error}
@@ -162,6 +165,7 @@ const EditUserCard = props => {
           {/* Data last modified: {user.modified} */}
           <Button
             id='submit_user_data_button'
+            data-cy='submitUserDataBtn'
             color='primary'
             variant='contained'
             onClick={handleEditUserSubmit}

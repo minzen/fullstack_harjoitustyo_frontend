@@ -65,5 +65,11 @@
   "Archive note?": "Archive note?",
   "Are you certain that you want to archive the selected note?": "Are you certain that you want to archive the selected note?",
   "Show all notes": "Show all notes",
-  "Show not archived notes": "Show not archived notes"
+  "Show not archived notes": "Show not archived notes",
+  "Password changed": "Password changed",
+  "Password changed successfully": "Password changed successfully.",
+  "Incorrect entry": "Incorrect entry. Please check the Email address format",
+  "User data updated": "User data updated",
+  "The user data have been updated successfully": "The user data have been updated successfully",
+  "Profile": "Profile"
 }

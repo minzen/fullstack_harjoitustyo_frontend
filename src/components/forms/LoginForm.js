@@ -21,7 +21,6 @@ import clsx from 'clsx'
 import MyTheme from '../../styles/MyTheme'
 import SuccessDialog from '../dialogs/SuccessDialog'
 import { useTranslation } from 'react-i18next'
-import { NOTES_PAGE } from '../../constants/pages'
 import { validEmail } from '../../utils/Utils'
 
 const useStyles = makeStyles({
@@ -67,24 +66,6 @@ const useStyles = makeStyles({
   }
 })
 
-const USER_DETAILS = gql`
-  fragment UserDetails on User {
-    id
-    email
-    givenname
-    surname
-  }
-`
-
-const CURRENT_USER = gql`
-  query {
-    me {
-      ...UserDetails
-    }
-  }
-  ${USER_DETAILS}
-`
-
 const PASSWORD_RESET = gql`
   mutation resetPassword($email: String!) {
     passwordReset(email: $email)
@@ -118,19 +99,11 @@ const LoginForm = props => {
     setPassword(event.target.value)
   }
 
-  const getTheLoggedInUser = async () => {
-    if (props.client && props.client.request) {
-      const { data } = await props.client.request(CURRENT_USER, null)
-      if (data && data.me) {
-        props.setLoggedInUser(data.me)
-      }
-    }
-  }
-
-  const handleLoginSubmit = async event => {
+  const handleLoginSubmit = async () => {
     event.preventDefault()
     props.handleSpinnerVisibility(true)
-    console.log('handle login submit', event.target.value)
+    console.log('handle login submit')
+
     let passwordObfuscated = ''
     if (password) {
       for (let i = 0; i < password.length; i++) {
@@ -147,14 +120,11 @@ const LoginForm = props => {
     const result = await props.login({
       variables: { email, password }
     })
-
     if (result) {
       // console.log('token obtained on login', result.data.login.value)
       const token = result.data.login.value
-      await props.setToken(token)
-      await localStorage.setItem('memorytracks-user-token', token)
-      await getTheLoggedInUser()
-      props.setPage(NOTES_PAGE)
+      props.setToken(token)
+      localStorage.setItem('memorytracks-user-token', token)
       setEmail('')
       setPassword('')
     }
