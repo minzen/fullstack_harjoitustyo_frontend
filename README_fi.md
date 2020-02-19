@@ -7,6 +7,8 @@ Tämä sovellus on rakennettu Full Stack Web Development -kurssille. Projekti on
 
 "Muistijäljet"-sovellus on tarkoitettu käyttäjälle, joka käyttää monia päätelaitteita ja haluaa päästä helposti käsiksi aiemmin tallennettuihin tietoihin. Sovellus mahdollistaa käyttäjälle helpon tavan tallentaa/linkittää merkityksellistä sisältöä (esim. tärkeät muistiinpanot, linkit resursseihin, joihin käyttäjä haluaa palata myöhemmin, mutta juuri kyseisellä hetkellä ei ole aikaa tai halua tehdä sitä). Kunkin tallennettavan tiedon yhteyteen tallennetaan asiasanoja, joiden mukaan sisältöjä luokitellaan ja on mahdollista hakea myöhemmin. Backend-huolehtii tietojen tallentamisesta dokumenttitietokantaan sekä tarjoaa API:n tietojen hakuun ja tallennukseen.
 
+Sovelluksen käyttö vaatii käyttäjätilin. Sellaisen voi rekisteröidä ohjeiden mukaan, jotka näytetään sovelluksen aloitussivulla.
+
 ## Frontend-toteutus
 
 Frontend-toteutus on rakennettu ReactJS:n ja Material UI -frameworkin päälle. Rinnakkaisessa repositoryssä (kts. linkki ylhäältä) on rakennettu yksinkertainen frontend mobiililaitteille React Nativeä käyttäen.

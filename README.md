@@ -8,6 +8,8 @@ The project has been implemented in three different git repositories: [the first
 
 The application "Memory tracks" is designated for a user who utilizes Internet services with multiple devices and wants to easily access the previously store data. The application enables an easy way of storing/linking meaningful content (e.g. important notes, links to web resources that the user wants to have a look at a bit later). The notes can be stored, classified and searched by using keywords. The frontend takes care of fetching and presenting the information obtained from the API provided by the backend.
 
+The use of the application requires a user account. You can register one by using the instructions listed on the landing page of the application.
+
 ## Frontend implementation
 
 The frontend implementation has been mostly built on ReactJS and Material UI framework. Apollo Client is used to access the data from the GraphQL API.
