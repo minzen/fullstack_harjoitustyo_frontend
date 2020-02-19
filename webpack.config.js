@@ -1,3 +1,4 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const webpack = require('webpack')
 
@@ -14,7 +15,7 @@ module.exports = env => {
   return {
     entry: './src/index.js',
     output: {
-      path: path.resolve(__dirname, 'build'),
+      path: path.resolve(__dirname, './build'),
       filename: 'main.js'
     },
     node: {
@@ -43,7 +44,10 @@ module.exports = env => {
         }
       ]
     },
-    plugins: [new webpack.DefinePlugin(envKeys)],
+    plugins: [
+      new webpack.DefinePlugin(envKeys),
+      new HtmlWebpackPlugin({ template: 'index.template.ejs', inject: 'body' })
+    ],
     devServer: {
       contentBase: path.resolve(__dirname, 'build'),
       compress: true,
