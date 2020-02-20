@@ -109,7 +109,7 @@ const useStyles = makeStyles({
     fontSize: 30
   },
   errorNotification: {
-    backgroundColor: MyTheme.palette.error.main
+    backgroundColor: MyTheme.palette.primary.error
   }
 })
 
@@ -229,7 +229,10 @@ const App = () => {
                   variant='error'
                   autoHideDuration={6000}
                 >
-                  <SnackbarContent message={errorMessage} />
+                  <SnackbarContent
+                    message={errorMessage}
+                    className={classes.errorNotification}
+                  />
                 </Snackbar>
               </Grid>
             </Grid>
@@ -304,7 +307,10 @@ const App = () => {
                 variant='error'
                 autoHideDuration={6000}
               >
-                <SnackbarContent message={errorMessage} />
+                <SnackbarContent
+                  message={errorMessage}
+                  className={classes.errorNotification}
+                />
               </Snackbar>
             </Grid>
           </Grid>
