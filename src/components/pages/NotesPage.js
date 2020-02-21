@@ -244,12 +244,12 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
       <>
         <Grid
           container
-          spacing={2}
+          spacing={1}
           direction='column'
           justify='center'
           alignItems='center'
         >
-          <Grid item style={{ padding: '12px' }}>
+          <Grid item>
             <FilterField
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -290,12 +290,12 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
       <>
         <Grid
           container
-          spacing={2}
+          spacing={1}
           direction='column'
           justify='center'
           alignItems='center'
         >
-          <Grid item style={{ padding: '12px' }}>
+          <Grid item>
             <FilterField
               searchTerm={searchTerm}
               handleSearchTermChange={handleSearchTermChange}

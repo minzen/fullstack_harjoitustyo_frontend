@@ -6,17 +6,12 @@ import {
   CardHeader,
   CardContent,
   Avatar,
-  Collapse,
-  CardActions,
-  IconButton,
   Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
-import clsx from 'clsx'
 import MyTheme from '../../styles/MyTheme'
 import SuccessDialog from '../dialogs/SuccessDialog'
 import { validEmail } from '../../utils/Utils'
@@ -46,16 +41,6 @@ const useStyles = makeStyles({
     height: 0,
     paddingTop: '56.25%' // 16:9
   },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: MyTheme.transitions.create('transform', {
-      duration: MyTheme.transitions.duration.shortest
-    })
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)'
-  },
   registerAvatar: {
     backgroundColor: '#455a64',
     width: 80,
@@ -76,7 +61,6 @@ const RegisterUserForm = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showDialog, setShowDialog] = useState(false)
-  const [expanded, setExpanded] = useState(true)
   const [error, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
   const { t } = useTranslation()
@@ -108,7 +92,6 @@ const RegisterUserForm = props => {
   const handleRegisterSubmit = async event => {
     event.preventDefault()
     props.handleSpinnerVisibility(true)
-    // TODO: implement login after the registration
     console.log('submit registration', email, givenname, surname)
     const result = await props.addUser({
       variables: { email, password, givenname, surname }
@@ -131,102 +114,80 @@ const RegisterUserForm = props => {
     setShowDialog(false)
   }
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
-
   return (
-    <>
-      <Card className={classes.card}>
-        <CardHeader
-          className={classes.cardHeader}
-          avatar={
-            <Avatar aria-label='register' className={classes.registerAvatar}>
-              {t('Register')}
-            </Avatar>
-          }
-          title={t('Missing Account Text')}
-          subheader=''
-        />
+    <Card className={classes.card}>
+      <CardHeader
+        className={classes.cardHeader}
+        avatar={
+          <Avatar aria-label='register' className={classes.registerAvatar}>
+            {t('Register')}
+          </Avatar>
+        }
+        title={t('Missing Account Text')}
+        subheader=''
+      />
 
-        <CardActions disableSpacing>
-          <IconButton
-            data-cy='submit_expand_register_form'
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label='show more'
+      <CardContent>
+        <form className={classes.container} autoComplete='off'>
+          <TextField
+            id='register_givenname'
+            label={t('Givenname')}
+            value={givenname}
+            onChange={handleGivennameChange}
+            className={classes.textField}
+          />
+          <TextField
+            id='register_surname'
+            label={t('Surname')}
+            value={surname}
+            onChange={handleSurnameChange}
+            className={classes.textField}
+          />
+          <Grid container spacing={1} alignItems='flex-end'>
+            <Grid item>
+              <EmailIcon />
+            </Grid>
+            <Grid item>
+              <TextField
+                id='register_email'
+                label={t('Email address')}
+                error={error}
+                value={email}
+                required={true}
+                onChange={handleEmailChange}
+                helperText={errorText}
+                className={classes.textFieldWithIcon}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={1} alignItems='flex-end'>
+            <Grid item>
+              <LockIcon />
+            </Grid>
+            <Grid item>
+              <TextField
+                id='register_password'
+                label={t('Password')}
+                value={password}
+                type='password'
+                required={true}
+                onChange={handlePasswordChange}
+                className={classes.textFieldWithIcon}
+              />
+            </Grid>
+          </Grid>
+          <Button
+            id='register_submit_button'
+            className={classes.button}
+            variant='contained'
+            color='primary'
+            onClick={handleRegisterSubmit}
+            type='submit'
           >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-
-        <Collapse in={expanded} timeout='auto' unmountOnExit>
-          <CardContent>
-            <form className={classes.container} autoComplete='off'>
-              <TextField
-                id='register_givenname'
-                label={t('Givenname')}
-                value={givenname}
-                onChange={handleGivennameChange}
-                className={classes.textField}
-              />
-              <TextField
-                id='register_surname'
-                label={t('Surname')}
-                value={surname}
-                onChange={handleSurnameChange}
-                className={classes.textField}
-              />
-              <Grid container spacing={1} alignItems='flex-end'>
-                <Grid item>
-                  <EmailIcon />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id='register_email'
-                    label={t('Email address')}
-                    error={error}
-                    value={email}
-                    required={true}
-                    onChange={handleEmailChange}
-                    helperText={errorText}
-                    className={classes.textFieldWithIcon}
-                  />
-                </Grid>
-              </Grid>
-              <Grid container spacing={1} alignItems='flex-end'>
-                <Grid item>
-                  <LockIcon />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id='register_password'
-                    label={t('Password')}
-                    value={password}
-                    type='password'
-                    required={true}
-                    onChange={handlePasswordChange}
-                    className={classes.textFieldWithIcon}
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                id='register_submit_button'
-                className={classes.button}
-                variant='contained'
-                color='primary'
-                onClick={handleRegisterSubmit}
-                type='submit'
-              >
-                {t('Register')}
-              </Button>
-            </form>
-          </CardContent>
-        </Collapse>
-      </Card>
+            {t('Register')}
+          </Button>
+        </form>
+      </CardContent>
 
       <SuccessDialog
         title={t('User registered')}
@@ -235,7 +196,7 @@ const RegisterUserForm = props => {
         handleClose={handleClose}
         open={showDialog}
       />
-    </>
+    </Card>
   )
 }
 export default RegisterUserForm

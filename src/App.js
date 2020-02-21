@@ -178,7 +178,6 @@ const App = () => {
                   setPage={setPage}
                   setToken={setToken}
                   client={client}
-                  token={token}
                 />
               </Grid>
               <Grid item>
@@ -273,7 +272,6 @@ const App = () => {
             <Grid item>
               <AboutPage show={page === ABOUT_PAGE} />
             </Grid>
-
             <Grid item>
               <ErrorBar
                 showErrorNotification={showErrorNotification}
