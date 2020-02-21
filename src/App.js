@@ -17,6 +17,7 @@ import ProfilePage from './components/pages/ProfilePage'
 import AboutPage from './components/pages/AboutPage'
 import LoginPage from './components/pages/LoginPage'
 import RegisterPage from './components/pages/RegisterPage'
+import ErrorBar from './components/general/ErrorBar'
 import MyTheme from './styles/MyTheme'
 import MenubarForLoggedInUser from './components/MenubarForLoggedInUser'
 import MenubarForNoLoggedInUser from './components/MenubarForNoLoggedInUser'
@@ -220,20 +221,10 @@ const App = () => {
                 />
               </Grid>
               <Grid item>
-                <Snackbar
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center'
-                  }}
-                  open={showErrorNotification}
-                  variant='error'
-                  autoHideDuration={6000}
-                >
-                  <SnackbarContent
-                    message={errorMessage}
-                    className={classes.errorNotification}
-                  />
-                </Snackbar>
+                <ErrorBar
+                  showErrorNotification={showErrorNotification}
+                  errorMessage={errorMessage}
+                />
               </Grid>
             </Grid>
           </ThemeProvider>
@@ -298,20 +289,10 @@ const App = () => {
             </Grid>
 
             <Grid item>
-              <Snackbar
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center'
-                }}
-                open={showErrorNotification}
-                variant='error'
-                autoHideDuration={6000}
-              >
-                <SnackbarContent
-                  message={errorMessage}
-                  className={classes.errorNotification}
-                />
-              </Snackbar>
+              <ErrorBar
+                showErrorNotification={showErrorNotification}
+                errorMessage={errorMessage}
+              />
             </Grid>
           </Grid>
         </ThemeProvider>
