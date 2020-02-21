@@ -9,6 +9,7 @@ import LanguageSelector from './fieldcomponents/LanguageSelector'
 import AvatarField from './fieldcomponents/AvatarField'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
+import Loading from './general/Loading'
 
 const USER_DETAILS = gql`
   fragment UserDetails on User {
@@ -52,7 +53,7 @@ const MenubarForLoggedInUser = ({ setPage, setToken, client }) => {
 
   const { loading, data } = useQuery(CURRENT_USER)
   if (loading) {
-    return '<p>Loading</p>'
+    return <Loading />
   }
 
   if (data && data.me) {

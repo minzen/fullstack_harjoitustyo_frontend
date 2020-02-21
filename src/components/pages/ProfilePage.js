@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
+import { Grid } from '@material-ui/core'
 import { useQuery } from '@apollo/react-hooks'
 import { gql } from 'apollo-boost'
-import MyTheme from '../../styles/MyTheme'
-import { Snackbar, SnackbarContent, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
 import ChangePasswordCard from '../cards/ChangePasswordCard'
 import EditUserCard from '../cards/EditUserCard'
 import SuccessDialog from '../dialogs/SuccessDialog'
+import Loading from '../general/Loading'
+import ErrorBar from '../general/ErrorBar'
 
 const USER_DETAILS = gql`
   fragment UserDetails on User {
@@ -27,33 +28,6 @@ const CURRENT_USER = gql`
   ${USER_DETAILS}
 `
 
-const useStyles = makeStyles({
-  textField: {
-    marginLeft: 10,
-    marginRight: 10,
-    minWidth: 200,
-    width: 400
-  },
-  button: {
-    margin: 15
-  },
-  card: {
-    minWidth: 275,
-    maxWidth: 345,
-    backgroundColor: '#718792',
-    marginTop: 15,
-    marginRight: 10
-  },
-  cardHeader: {
-    backgroundColor: '#1c313a',
-    padding: 5,
-    margin: 5
-  },
-  errorNotification: {
-    backgroundColor: MyTheme.palette.error.main
-  }
-})
-
 const ProfilePage = ({ show, client, token, handleSpinnerVisibility }) => {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   const [successDialogTitle, setSuccessDialogTitle] = useState('')
@@ -61,7 +35,6 @@ const ProfilePage = ({ show, client, token, handleSpinnerVisibility }) => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
   const { t } = useTranslation()
-  const classes = useStyles()
   let loggedInUser
 
   const { loading, data } = useQuery(CURRENT_USER)
@@ -70,7 +43,7 @@ const ProfilePage = ({ show, client, token, handleSpinnerVisibility }) => {
   }
 
   if (loading) {
-    return '<p>Loading</p>'
+    return <Loading />
   }
 
   if (data && data.me) {
@@ -98,20 +71,10 @@ const ProfilePage = ({ show, client, token, handleSpinnerVisibility }) => {
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center'
-        }}
-        open={showErrorNotification}
-        variant='error'
-        autoHideDuration={6000}
-      >
-        <SnackbarContent
-          message={errorMessage}
-          className={classes.errorNotification}
-        />
-      </Snackbar>
+      <ErrorBar
+        showErrorNotification={showErrorNotification}
+        errorMessage={errorMessage}
+      />
 
       <Grid
         container

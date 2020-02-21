@@ -6,12 +6,11 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Snackbar,
-  SnackbarContent,
   Container
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
+import ErrorBar from '../general/ErrorBar'
 
 const useStyles = makeStyles(theme => ({
   textField: {
@@ -29,7 +28,6 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-// addNote(title: String!, content: String!, keywords: [String]): Note
 const ADD_NOTE = gql`
   mutation addNote($title: String!, $content: String!, $keywords: [String]) {
     addNote(title: $title, content: $content, keywords: $keywords) {
@@ -40,7 +38,6 @@ const ADD_NOTE = gql`
     }
   }
 `
-//     editNote(id: ID!, title: String!, content: String!, keywords: [String]): Note
 const EDIT_NOTE = gql`
   mutation editNote(
     $id: ID!
@@ -233,17 +230,10 @@ const NoteForm = props => {
   if (visible) {
     return (
       <>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}
-          open={showErrorNotification}
-          variant='error'
-          autoHideDuration={6000}
-        >
-          <SnackbarContent message={errorMessage} />
-        </Snackbar>
+        <ErrorBar
+          showErrorNotification={showErrorNotification}
+          errorMessage={errorMessage}
+        />
 
         <Container maxWidth='sm' className={classes.noteForm}>
           <form>

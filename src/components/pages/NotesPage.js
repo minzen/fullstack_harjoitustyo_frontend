@@ -8,6 +8,7 @@ import FilterField from '../fieldcomponents/FilterField'
 import AddNoteButton from '../fieldcomponents/AddNoteButton'
 import { useTranslation } from 'react-i18next'
 import ArchiveDialog from '../dialogs/ArchiveDialog'
+import Loading from '../general/Loading'
 
 const ALL_NOTES = gql`
   query {
@@ -60,7 +61,7 @@ const NotesPage = ({ show, client, result, handleSpinnerVisibility }) => {
   }
 
   if (result && result.loading) {
-    return <div>loading...</div>
+    return <Loading />
   }
   let notes = []
   if (result.data.allNotes) {
