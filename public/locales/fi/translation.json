@@ -19,7 +19,7 @@
   "Givenname": "Etunimi",
   "Surname": "Sukunimi",
   "User registered": "Käyttäjä rekisteröity",
-  "User registered text": "Käyttäjä on luotu. Söhköpostiosoitteesesi on lähetetty tiedot tilin aktivoimiseksi. Tämän jälkeen käytä käyttäjätietojasi kirjautuaksesi sisään.",
+  "User registered text": "Käyttäjätili on luotu. Söhköpostiosoitteesesi on lähetetty tiedot tilin aktivoimiseksi. Tämän jälkeen käytä käyttäjätietojasi kirjautuaksesi sisään.",
   "Edit note": "Muokkaa muistiinpanoa",
   "Title": "Otsikko: ",
   "Content": "Sisältö: ",
