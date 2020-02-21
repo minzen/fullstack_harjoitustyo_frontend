@@ -18,16 +18,16 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run eslint
-  cypress-run:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        node-version: [10]
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v1
+  # cypress-run:
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       node-version: [10]
+  #       os: [ubuntu-latest, windows-latest, macos-latest]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v1
+  #     # Install NPM dependencies, cache them correctly
+  #     # and run all Cypress tests
+  #     - name: Cypress run
+  #       uses: cypress-io/github-action@v1

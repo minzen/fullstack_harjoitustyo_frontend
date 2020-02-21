@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Grid,
-  Typography,
-  ThemeProvider,
-  Snackbar,
-  SnackbarContent
-} from '@material-ui/core'
+import { Grid, Typography, ThemeProvider } from '@material-ui/core'
 import { gql } from 'apollo-boost'
 import { useMutation, ApolloConsumer } from '@apollo/react-hooks'
 import { ApolloProvider, Query } from 'react-apollo'
