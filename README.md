@@ -31,7 +31,7 @@ At the moment the production version of the application [resides at https://minz
 
 ## Executing the end-to-end tests
 
-The project includes a set of end-to-end tests implemented on top of the framework cypress.io. Running the tests locally can be achieved by executing the command _yarn run cypress:open_. Before this the backend has to be started with the command _yarn run e2e_. This triggers an initialization of an In-Memory MongoDB instance that can easily be restored to the desired state before the tests.
+The project includes a set of end-to-end tests implemented on top of the framework cypress.io. Running the tests locally can be achieved by executing the command _yarn run cypress:open_. Before this the backend has to be started with the command _yarn run e2e_. This triggers an initialization of an In-Memory MongoDB instance that can easily be restored to the desired state before the tests. Note: Verify the file _cypress.json_ contains a correct BASE_URL where the frontend to be tested can be reached, e.g. http://localhost:3000
 
 ## Used technologies
 

@@ -28,7 +28,7 @@ Tällä hetkellä tuotantoversio löytyy [ajossa osoitteesta https://minzen.gith
 
 ## E2E-testien ajaminen
 
-Projektiin sisältyy joukko End-To-End-testejä, jotka on toteutettu Cypress-frameworkkiä käyttäen. Testien ajaminen tapahtuu komennolla _yarn run cypress:open_. Tätä ennen Backend on käynnistettävä komennolla _yarn run e2e_. Tällöin käyttöön otetaan keskusmuistissa ajettava MongoDB-instanssi, joka on palautetaan haluttuun tilaan ennen testejä.
+Projektiin sisältyy joukko End-To-End-testejä, jotka on toteutettu Cypress-frameworkkiä käyttäen. Testien ajaminen tapahtuu komennolla _yarn run cypress:open_. Tätä ennen Backend on käynnistettävä komennolla _yarn run e2e_. Tällöin käyttöön otetaan keskusmuistissa ajettava MongoDB-instanssi, joka on palautetaan haluttuun tilaan ennen testejä. Huomio: Varmista, että tiedostossa _cypress.json_ on oikea BASE_URL osoitteelle, jossa testattava frontend on ajossa, e.g. http://localhost:3000.
 
 ## Käytettyjä teknologioita
 
