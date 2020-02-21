@@ -110,7 +110,7 @@ const useStyles = makeStyles({
 
 const App = () => {
   const [token, setToken] = useState(null)
-  const [page, setPage] = useState(NOTES_PAGE)
+  const [page, setPage] = useState(LOGIN_PAGE)
   const [errorMessage, setErrorMessage] = useState(null)
   const [showErrorNotification, setShowErrorNotification] = useState(false)
   const [spinnerActive, setSpinnerActive] = useState(false)
@@ -208,11 +208,7 @@ const App = () => {
                 </ApolloProvider>
               </Grid>
               <Grid item>
-                <AboutPage
-                  show={page === ABOUT_PAGE}
-                  client={client}
-                  handleSpinnerVisibility={handleSpinnerVisibility}
-                />
+                <AboutPage show={page === ABOUT_PAGE} />
               </Grid>
               <Grid item>
                 <ErrorBar
@@ -275,11 +271,7 @@ const App = () => {
               />
             </Grid>
             <Grid item>
-              <AboutPage
-                show={true}
-                client={client}
-                handleSpinnerVisibility={handleSpinnerVisibility}
-              />
+              <AboutPage show={page === ABOUT_PAGE} />
             </Grid>
 
             <Grid item>

@@ -3,7 +3,12 @@ import { ButtonGroup, Button, Grid } from '@material-ui/core'
 import MemoryIcon from '@material-ui/icons/Memory'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import InfoIcon from '@material-ui/icons/Info'
-import { PROFILE_PAGE, ABOUT_PAGE, NOTES_PAGE } from '../constants/pages'
+import {
+  PROFILE_PAGE,
+  ABOUT_PAGE,
+  NOTES_PAGE,
+  LOGIN_PAGE
+} from '../constants/pages'
 import { useTranslation } from 'react-i18next'
 import LanguageSelector from './fieldcomponents/LanguageSelector'
 import AvatarField from './fieldcomponents/AvatarField'
@@ -37,6 +42,7 @@ const MenubarForLoggedInUser = ({ setPage, setToken, client }) => {
     localStorage.clear()
     setToken(null)
     client.resetStore()
+    setPage(LOGIN_PAGE)
   }
 
   const handleAboutClick = () => {

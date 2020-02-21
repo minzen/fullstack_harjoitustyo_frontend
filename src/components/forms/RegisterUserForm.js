@@ -76,7 +76,7 @@ const RegisterUserForm = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showDialog, setShowDialog] = useState(false)
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
   const [error, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
   const { t } = useTranslation()

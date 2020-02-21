@@ -2,7 +2,8 @@ import React from 'react'
 import { ButtonGroup, Button, Grid } from '@material-ui/core'
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 import PersonAddIcon from '@material-ui/icons/PersonAdd'
-import { LOGIN_PAGE, REGISTER_PAGE } from '../constants/pages'
+import InfoIcon from '@material-ui/icons/Info'
+import { LOGIN_PAGE, REGISTER_PAGE, ABOUT_PAGE } from '../constants/pages'
 import { useTranslation } from 'react-i18next'
 import LanguageSelector from './fieldcomponents/LanguageSelector'
 
@@ -34,6 +35,10 @@ const MenubarForNoLoggedInUser = ({ setPage }) => {
           >
             {t('Register')}&nbsp;
             <PersonAddIcon />
+          </Button>
+          <Button id='menu_about_button' onClick={() => setPage(ABOUT_PAGE)}>
+            {t('About')}&nbsp;
+            <InfoIcon />
           </Button>
         </ButtonGroup>
       </Grid>
