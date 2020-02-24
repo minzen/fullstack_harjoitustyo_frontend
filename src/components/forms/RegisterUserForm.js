@@ -6,17 +6,12 @@ import {
   CardHeader,
   CardContent,
   Avatar,
-  Collapse,
-  CardActions,
-  IconButton,
   Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useTranslation } from 'react-i18next'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import EmailIcon from '@material-ui/icons/Email'
 import LockIcon from '@material-ui/icons/Lock'
-import clsx from 'clsx'
 import MyTheme from '../../styles/MyTheme'
 import SuccessDialog from '../dialogs/SuccessDialog'
 import { validEmail } from '../../utils/Utils'
@@ -76,7 +71,6 @@ const RegisterUserForm = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showDialog, setShowDialog] = useState(false)
-  const [expanded, setExpanded] = useState(true)
   const [error, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
   const { t } = useTranslation()
@@ -129,10 +123,6 @@ const RegisterUserForm = props => {
   }
   const handleClose = () => {
     setShowDialog(false)
-  }
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
   }
 
   return (
