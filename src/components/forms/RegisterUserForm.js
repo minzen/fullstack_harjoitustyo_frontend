@@ -149,83 +149,67 @@ const RegisterUserForm = props => {
           subheader=''
         />
 
-        <CardActions disableSpacing>
-          <IconButton
-            data-cy='submit_expand_register_form'
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label='show more'
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-
-        <Collapse in={expanded} timeout='auto' unmountOnExit>
-          <CardContent>
-            <form className={classes.container} autoComplete='off'>
-              <TextField
-                id='register_givenname'
-                label={t('Givenname')}
-                value={givenname}
-                onChange={handleGivennameChange}
-                className={classes.textField}
-              />
-              <TextField
-                id='register_surname'
-                label={t('Surname')}
-                value={surname}
-                onChange={handleSurnameChange}
-                className={classes.textField}
-              />
-              <Grid container spacing={1} alignItems='flex-end'>
-                <Grid item>
-                  <EmailIcon />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id='register_email'
-                    label={t('Email address')}
-                    error={error}
-                    value={email}
-                    required={true}
-                    onChange={handleEmailChange}
-                    helperText={errorText}
-                    className={classes.textFieldWithIcon}
-                  />
-                </Grid>
+        <CardContent>
+          <form className={classes.container} autoComplete='off'>
+            <TextField
+              id='register_givenname'
+              label={t('Givenname')}
+              value={givenname}
+              onChange={handleGivennameChange}
+              className={classes.textField}
+            />
+            <TextField
+              id='register_surname'
+              label={t('Surname')}
+              value={surname}
+              onChange={handleSurnameChange}
+              className={classes.textField}
+            />
+            <Grid container spacing={1} alignItems='flex-end'>
+              <Grid item>
+                <EmailIcon />
               </Grid>
-              <Grid container spacing={1} alignItems='flex-end'>
-                <Grid item>
-                  <LockIcon />
-                </Grid>
-                <Grid item>
-                  <TextField
-                    id='register_password'
-                    label={t('Password')}
-                    value={password}
-                    type='password'
-                    required={true}
-                    onChange={handlePasswordChange}
-                    className={classes.textFieldWithIcon}
-                  />
-                </Grid>
+              <Grid item>
+                <TextField
+                  id='register_email'
+                  label={t('Email address')}
+                  error={error}
+                  value={email}
+                  required={true}
+                  onChange={handleEmailChange}
+                  helperText={errorText}
+                  className={classes.textFieldWithIcon}
+                />
               </Grid>
-              <Button
-                id='register_submit_button'
-                className={classes.button}
-                variant='contained'
-                color='primary'
-                onClick={handleRegisterSubmit}
-                type='submit'
-              >
-                {t('Register')}
-              </Button>
-            </form>
-          </CardContent>
-        </Collapse>
+            </Grid>
+            <Grid container spacing={1} alignItems='flex-end'>
+              <Grid item>
+                <LockIcon />
+              </Grid>
+              <Grid item>
+                <TextField
+                  id='register_password'
+                  label={t('Password')}
+                  value={password}
+                  type='password'
+                  required={true}
+                  onChange={handlePasswordChange}
+                  className={classes.textFieldWithIcon}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              id='register_submit_button'
+              className={classes.button}
+              variant='contained'
+              color='primary'
+              onClick={handleRegisterSubmit}
+              type='submit'
+            >
+              {t('Register')}
+            </Button>
+          </form>
+        </CardContent>
       </Card>
 
       <SuccessDialog

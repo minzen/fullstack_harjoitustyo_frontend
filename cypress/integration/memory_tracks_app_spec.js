@@ -41,7 +41,7 @@ describe('Language Switch', function() {
     cy.visit('/')
     cy.log('Checking the default language English')
     // Check that English is the default language
-    cy.contains('The application enables storing of')
+    cy.contains('Please login to the system')
     cy.log('Switching the language to Finnish')
     cy.get('[data-cy=language_selection]')
       .first()
@@ -50,7 +50,6 @@ describe('Language Switch', function() {
       .trigger('mousemove')
       .click()
     cy.contains('Muistijäljet')
-    cy.contains('Sovellus')
     cy.log('Switching the language to German')
     cy.get('[data-cy=language_selection]')
       .first()
@@ -59,7 +58,6 @@ describe('Language Switch', function() {
       .trigger('mousemove')
       .click()
     cy.contains('Teure Erinnerungen')
-    cy.contains('Allgemeines')
   })
 })
 
